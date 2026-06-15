@@ -1,0 +1,767 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Handled - AI Automation for Local Businesses</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0;padding:0;box-sizing:border-box; }
+:root {
+  --bg:#f5f0ea;
+  --surface:#fdfaf6;
+  --border:#e0d6cc;
+  --border-strong:#c8bab0;
+  --text:#1e1612;
+  --text-dim:#6b5d52;
+  --muted:#a09082;
+  --green:#15803d;
+  --orange:#d4500a;
+  --orange-light:#f4874a;
+  --orange-dim:rgba(212,80,10,0.10);
+  --accent:#d4500a;
+}
+body { background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale; }
+a { text-decoration:none; }
+
+/* Nav */
+nav {
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.nav-brand { font-size:17px;font-weight:700;letter-spacing:-0.02em; }
+.nav-cta {
+  background:var(--orange);
+  color:#fff;
+  padding:8px 20px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:600;
+  transition:opacity 0.15s;
+}
+.nav-cta:hover { opacity:0.82; }
+
+/* Hero */
+.hero {
+  max-width:780px;
+  margin:0 auto;
+  padding:96px 40px 80px;
+  text-align:center;
+}
+.hero-tag {
+  display:inline-block;
+  background:var(--orange-dim);
+  border:1px solid rgba(212,80,10,0.2);
+  color:var(--orange);
+  font-size:11px;
+  padding:4px 14px;
+  border-radius:20px;
+  margin-bottom:28px;
+  font-family:'Inter',sans-serif;
+  font-weight:800;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.hero h1 {
+  font-family:'Inter',sans-serif;
+  font-size:clamp(38px,5.5vw,62px);
+  font-weight:800;
+  line-height:1.06;
+  letter-spacing:-0.04em;
+  margin-bottom:22px;
+}
+.hero h1 em { font-style:italic;color:var(--text-dim);font-weight:700; }
+.hero-sub {
+  font-size:18px;
+  color:var(--text-dim);
+  line-height:1.6;
+  max-width:500px;
+  margin:0 auto 40px;
+}
+.hero-sub strong { color:var(--text);font-weight:600; }
+.hero-actions { display:flex;gap:12px;justify-content:center;flex-wrap:wrap; }
+.btn-primary {
+  background:var(--orange);
+  color:#fff;
+  padding:14px 30px;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:700;
+  transition:all 0.15s;
+  display:inline-block;
+  box-shadow:0 2px 12px rgba(212,80,10,0.28);
+}
+.btn-primary:hover { background:#b84208;box-shadow:0 4px 18px rgba(212,80,10,0.38); }
+.btn-ghost {
+  background:transparent;
+  color:var(--text-dim);
+  padding:14px 24px;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:500;
+  border:1px solid var(--border-strong);
+  transition:all 0.15s;
+  display:inline-block;
+}
+.btn-ghost:hover { border-color:var(--text-dim);color:var(--text); }
+
+hr { border:none;border-top:1px solid var(--border); }
+section { max-width:960px;margin:0 auto;padding:72px 40px; }
+.label { font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px; }
+.title { font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-0.03em;margin-bottom:14px;line-height:1.1;font-family:'Inter',sans-serif; }
+.sub { font-size:17px;color:var(--text-dim);line-height:1.6;max-width:540px; }
+
+/* Pain section */
+.pain-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:40px; }
+.pain-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:22px;
+}
+.pain-card .hours { font-size:52px;font-weight:800;font-family:'Inter',sans-serif;color:var(--orange);letter-spacing:-0.04em;margin-bottom:4px;line-height:1; }
+.pain-card h4 { font-size:14px;font-weight:700;margin-bottom:6px; }
+.pain-card p { font-size:13px;color:var(--text-dim);line-height:1.5; }
+
+/* How it works */
+.steps { display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px; }
+.step { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px;position:relative; }
+.step-num { font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:12px;letter-spacing:0.1em;text-transform:uppercase; }
+.step h3 { font-size:15px;font-weight:700;margin-bottom:8px;letter-spacing:-0.01em; }
+.step p { font-size:13px;color:var(--text-dim);line-height:1.6; }
+.step strong { color:var(--text); }
+
+/* Included */
+.included-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:40px; }
+.included-item {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px 20px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.check { color:var(--green);flex-shrink:0;margin-top:1px; }
+.included-item h4 { font-size:13px;font-weight:700;margin-bottom:3px; }
+.included-item p { font-size:12px;color:var(--text-dim);line-height:1.5; }
+
+/* Plans */
+.plans-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;align-items:start; }
+.plan {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  min-height:480px;
+}
+.plan-featured { border:2px solid var(--orange); }
+.plan-badge {
+  position:absolute;
+  top:-13px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--orange);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  padding:3px 14px;
+  border-radius:20px;
+  white-space:nowrap;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.plan-name { font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);margin-bottom:8px; }
+.plan-headline { font-size:16px;font-weight:700;letter-spacing:-0.01em;margin-bottom:18px;line-height:1.3; }
+.plan-price { font-size:44px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-0.04em;line-height:1; }
+.plan-price-sub { font-size:12px;color:var(--muted);margin-bottom:22px;font-family:'DM Mono',monospace;margin-top:4px;min-height:18px; }
+.plan-features { list-style:none;flex:1;display:flex;flex-direction:column;gap:9px;margin-bottom:24px; }
+.plan-features li { display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--text-dim);line-height:1.4; }
+.plan-features li svg { flex-shrink:0;margin-top:2px; }
+.plan-features .no svg { color:var(--muted); }
+.plan-features .no { opacity:0.45; }
+.plan-btn {
+  display:block;
+  text-align:center;
+  padding:12px 20px;
+  border-radius:9px;
+  font-size:14px;
+  font-weight:700;
+  border:1px solid var(--border-strong);
+  color:var(--text);
+  background:var(--bg);
+  transition:all 0.15s;
+  margin-top:auto;
+}
+.plan-btn:hover { background:var(--border); }
+.plan-btn-dark { background:var(--orange);color:#fff;border-color:var(--orange);box-shadow:0 2px 14px rgba(212,80,10,0.30); }
+.plan-btn-dark:hover { background:#b84208;box-shadow:0 4px 20px rgba(212,80,10,0.42);opacity:1; }
+.no-haggle {
+  background:rgba(124,58,237,0.07);
+  border:1px solid rgba(124,58,237,0.15);
+  border-radius:7px;
+  padding:10px 14px;
+  font-size:11px;
+  color:var(--purple);
+  margin-bottom:14px;
+  text-align:center;
+  font-family:'DM Mono',monospace;
+  font-weight:500;
+}
+
+/* FAQ */
+.faq-list { margin-top:40px; }
+.faq-item { border-top:1px solid var(--border);padding:20px 0; }
+.faq-item:last-child { border-bottom:1px solid var(--border); }
+.faq-q { font-size:15px;font-weight:700;margin-bottom:8px; }
+.faq-a { font-size:14px;color:var(--text-dim);line-height:1.7; }
+.faq-a strong { color:var(--text); }
+
+/* Footer */
+footer {
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  padding:28px 40px;
+  text-align:center;
+}
+.footer-brand { font-size:15px;font-weight:700;margin-bottom:5px; }
+.footer-sub { font-size:12px;color:var(--muted); }
+.footer-sub a { color:var(--muted); }
+
+
+/* Text glow for key phrases */
+.glow {
+  color: var(--orange);
+  text-shadow: 0 0 24px rgba(212,80,10,0.45), 0 0 48px rgba(212,80,10,0.18);
+  font-weight: 800;
+}
+.glow-sm {
+  color: var(--orange);
+  text-shadow: 0 0 16px rgba(212,80,10,0.35);
+  font-weight: 700;
+}
+
+
+
+
+
+
+
+
+/* Time-loss tiles embedded in page */
+.timetile {
+  position: absolute;
+  width: 150px;
+  height: 168px;
+  z-index: 6;
+  pointer-events: none;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.timetile svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.timetile .tt-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 40px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--orange);
+}
+.timetile .tt-hours {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-top: 2px;
+  opacity: 0.85;
+}
+.timetile .tt-task {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--text-dim);
+  margin-top: 8px;
+  width: 108px;
+}
+
+/* The scale / weigh-down finale */
+#weigh-section {
+  background: var(--text);
+  color: #fff;
+  padding: 90px 40px 110px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.weigh-headline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: clamp(26px, 4vw, 42px);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  max-width: 680px;
+  margin: 0 auto 12px;
+}
+.weigh-headline .big {
+  color: var(--orange-light);
+  text-shadow: 0 0 40px rgba(244,135,74,0.5);
+}
+.weigh-sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  max-width: 480px;
+  margin: 0 auto 60px;
+  line-height: 1.6;
+}
+#scale-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  height: 280px;
+  margin: 0 auto;
+}
+#scale-canvas { width: 100%; height: 100%; }
+.weigh-cta {
+  margin-top: 56px;
+}
+
+/* Responsive */
+@media (max-width:760px) {
+  nav { padding:0 20px; }
+  .hero { padding:60px 20px 56px; }
+  section { padding:56px 20px; }
+  .pain-grid,.steps,.included-grid,.plans-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Handled</div>
+  <a href="https://buy.stripe.com/test_5kQ5kCewsa9yfVA8Bnb3q01" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- Hero -->
+
+<div class="hero">
+  <div class="hero-tag">Guaranteed Setup in 3 Days</div>
+  <h1>Stop doing it <span class="glow">manually.</span><br><em>We handle <span class="glow">everything.</span></em></h1>
+  <p class="hero-sub">
+    AI automation for local businesses.<br>
+    <strong><span class="glow-sm">Zero technical work</span> on your end. <span class="glow-sm">Guaranteed.</span></strong>
+  </p>
+  <div class="hero-actions">
+    <a href="https://buy.stripe.com/test_5kQ5kCewsa9yfVA8Bnb3q01" class="btn-primary">Start for $150 &rarr;</a>
+    <a href="mailto:lelandgm09@gmail.com?subject=Custom inquiry" class="btn-ghost">Custom work</a>
+  </div>
+</div>
+
+<hr>
+
+<!-- How it works -->
+<section style="position:relative;">
+  <div class="timetile" id="tt1" style="top:40px;right:40px;">
+    <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
+      <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+    </svg>
+    <div class="tt-num">3</div>
+    <div class="tt-hours">Hours</div>
+    <div class="tt-task">responding to reviews</div>
+  </div>
+
+  <div class="label">How It Works</div>
+  <div class="title">Three steps. Then nothing.</div>
+  <p class="sub">We built this so you never have to think about it again.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">Step 01</div>
+      <h3>Tell us what's costing you time</h3>
+      <p>After payment, fill out a <strong>5-minute form</strong>. Tell us what's eating your week. That's the last time you'll think about it.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 02</div>
+      <h3>We build it. You do nothing.</h3>
+      <p>Within <strong>3 business days</strong>, your automation is live. No installs, no logins, no calls. We configure, test, and deploy everything.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 03</div>
+      <h3>It runs itself. Forever.</h3>
+      <p>Bookings confirmed. Reviews answered. Leads followed up. <strong>Automatically.</strong> We monitor and maintain it every month.</p>
+    </div>
+  </div>
+
+
+</section>
+
+<hr>
+
+<!-- Included -->
+<section style="position:relative;">
+  <div class="timetile" id="tt2" style="top:60px;left:-40px;">
+    <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
+      <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+    </svg>
+    <div class="tt-num">4</div>
+    <div class="tt-hours">Hours</div>
+    <div class="tt-task">chasing leads that went cold</div>
+  </div>
+
+  <div class="label">What You Get</div>
+  <div class="title">Everything automated.<br>Nothing for you to manage.</div>
+  <div class="included-grid">
+    <div class="included-item">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <div>
+        <h4>Booking Automation</h4>
+        <p>Confirms, reschedules, and sends reminders. Zero back-and-forth.</p>
+      </div>
+    </div>
+    <div class="included-item">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <div>
+        <h4>Review Responses</h4>
+        <p>Google, Yelp, and Facebook answered automatically. In your voice.</p>
+      </div>
+    </div>
+    <div class="included-item">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <div>
+        <h4>Lead Follow-Up</h4>
+        <p>New inquiries get a response in seconds. No lead goes cold.</p>
+      </div>
+    </div>
+    <div class="included-item">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <div>
+        <h4>Client Email Sequences</h4>
+        <p>Automated follow-ups for quotes, onboarding, and check-ins.</p>
+      </div>
+    </div>
+    <div class="included-item">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <div>
+        <h4>Monthly Maintenance</h4>
+        <p>Security, uptime monitoring, and up to 2 adjustments per month.</p>
+      </div>
+    </div>
+    <div class="included-item">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <div>
+        <h4>Full Refund Guarantee</h4>
+        <p>If it breaks and we cannot fix it, you get every dollar back.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- Pricing -->
+<section style="text-align:center;position:relative;">
+  <div class="timetile" id="tt3" style="top:30px;right:50px;">
+    <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
+      <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+    </svg>
+    <div class="tt-num">5</div>
+    <div class="tt-hours">Hours</div>
+    <div class="tt-task">booking back-and-forth</div>
+  </div>
+
+  <div class="label">Pricing</div>
+  <div class="title">Flat pricing. No surprises.<br>No negotiations.</div>
+  <p class="sub" style="margin:0 auto 48px">Every plan is the same price for everyone. Pick what fits your business today.</p>
+  <div class="plans-grid">
+
+    <!-- Starter -->
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-headline">One automation, running in days.</div>
+      <div class="plan-price">$150</div>
+      <div class="plan-price-sub">one-time setup</div>
+      <ul class="plan-features">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>One automation of your choice</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live within 3 business days</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Zero technical work from you</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
+        <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>No ongoing maintenance</li>
+      </ul>
+      <a href="https://buy.stripe.com/test_fZu9AS740a9y24K8Bnb3q00" class="plan-btn">Get Started</a>
+    </div>
+
+    <!-- Full Setup -->
+    <div class="plan plan-featured">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Full Setup</div>
+      <div class="plan-headline">Everything automated. Maintained every month.</div>
+      <div class="plan-price">$300</div>
+      <div class="plan-price-sub">setup + $50/month maintenance</div>
+      <ul class="plan-features">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>Full automation suite</strong> - all workflows</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live within 3 business days</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Zero technical work from you</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>Monthly security + monitoring</strong></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>2 adjustments or additions per month</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
+      </ul>
+      <div style="font-size:13px;color:var(--orange);text-align:center;margin-bottom:16px;font-family:'Inter',sans-serif;letter-spacing:-0.01em;font-weight:800;background:var(--orange-dim);padding:10px 14px;border-radius:7px;border:1px solid rgba(212,80,10,0.22)">Same Price. Every Time. No Exceptions.</div>
+      <a href="https://buy.stripe.com/test_5kQ5kCewsa9yfVA8Bnb3q01" class="plan-btn plan-btn-dark">Pay Now and Get Started</a>
+    </div>
+
+    <!-- Custom -->
+    <div class="plan">
+      <div class="plan-name">Custom</div>
+      <div class="plan-headline">Larger scope or unique requirements.</div>
+      <div class="plan-price" style="font-size:44px;line-height:1;font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-0.04em;font-family:'Inter',sans-serif">Let's Talk</div>
+      <div class="plan-price-sub">scoped to your needs</div>
+      <ul class="plan-features">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Multi-location or multi-system</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Integrations with existing software</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Custom maintenance plan</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Priority turnaround</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
+      </ul>
+      <a href="mailto:lelandgm09@gmail.com?subject=Custom inquiry" class="plan-btn">Contact Us</a>
+    </div>
+
+  </div>
+
+
+</section>
+
+<hr>
+
+<!-- FAQ -->
+<section>
+  <div class="label">FAQ</div>
+  <div class="title">Straight answers.</div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Do I need any technical knowledge?</div>
+      <div class="faq-a"><strong>None. Zero.</strong> You tell us what is eating your time, we build it, and you walk away. No software to learn, no logins to manage, nothing on your end at any point.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if something breaks?</div>
+      <div class="faq-a">We fix it. That is what the monthly plan is for. If we cannot fix it, you get <strong>every dollar back</strong>. No questions, no clauses.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How long does setup actually take?</div>
+      <div class="faq-a"><strong>Guaranteed within 3 business days.</strong> Usually faster. You fill out a 5-minute form after payment, and we take it from there.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What exactly gets automated?</div>
+      <div class="faq-a">Whatever is eating your time. After payment, you tell us the specific tasks. We build exactly that. Common setups include booking confirmation, review responses, lead follow-up, and client email sequences.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I cancel the monthly plan?</div>
+      <div class="faq-a"><strong>Yes, anytime.</strong> No contracts, no cancellation fees, no awkward conversations. Cancel and it stops. Simple.</div>
+    </div>
+  </div>
+
+
+</section>
+
+<hr>
+
+<!-- Weigh-down finale -->
+<div id="weigh-section">
+  <div class="weigh-headline"><span class="big" id="weigh-total">12 Hours</span> spent this week<br>on tasks that run themselves.</div>
+  <div class="weigh-sub">Every one of those moments was something Handled does automatically. That is most of a workday, gone, every single week.</div>
+  <div id="scale-wrap">
+    <canvas id="scale-canvas"></canvas>
+  </div>
+  <div class="weigh-cta">
+    <a href="https://buy.stripe.com/test_5kQ5kCewsa9yfVA8Bnb3q01" class="btn-primary">Get it Handled &mdash; $150</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">Handled</div>
+  <div class="footer-sub">AI Automation for Local Businesses &middot; Built by Leland &middot; <a href="mailto:lelandgm09@gmail.com">lelandgm09@gmail.com</a></div>
+</footer>
+
+
+
+
+
+<script>
+(function(){
+  // ---- Embedded tiles drop when scrolled to ----
+  const tiles = ['tt1','tt2','tt3'].map(id=>{
+    const el=document.getElementById(id);
+    return el?{el,fired:false,start:0,
+      rot:(Math.random()>.5?1:-1)*(12+Math.random()*16),
+      dx:(Math.random()-.5)*50,
+      dur:650+Math.random()*150}:null;
+  }).filter(Boolean);
+
+  function easeIn(t){return t*t*t;}
+
+  let dropping=false;
+  function dropTick(now){
+    let any=false;
+    tiles.forEach(t=>{
+      if(!t.fired)return;
+      if(!t.start)t.start=now;
+      const p=Math.min(1,(now-t.start)/t.dur);
+      const e=easeIn(p);
+      const ty=e*(window.innerHeight*0.75+200);
+      t.el.style.transform=`translateY(${ty}px) translateX(${t.dx*e}px) rotate(${t.rot*e}deg)`;
+      if(p<1)any=true; else t.el.style.visibility='hidden';
+    });
+    if(any)requestAnimationFrame(dropTick);
+    else dropping=false;
+  }
+
+  // Trigger when the tile's center scrolls up to ~22% from the top of the viewport.
+  // This keeps the tile fully readable on screen for a while before it drops.
+  function checkDrop(){
+    const triggerLine = window.innerHeight * 0.22;
+    tiles.forEach(t=>{
+      if(t.fired) return;
+      const rect = t.el.getBoundingClientRect();
+      const center = rect.top + rect.height/2;
+      // fire only once the tile has risen to near the top of the screen
+      if(center <= triggerLine){
+        t.fired = true;
+        if(!dropping){dropping=true;requestAnimationFrame(dropTick);}
+        else requestAnimationFrame(dropTick);
+      }
+    });
+  }
+  window.addEventListener('scroll', checkDrop, {passive:true});
+  checkDrop();
+
+  // ---- Scale physics finale ----
+  const canvas=document.getElementById('scale-canvas');
+  const wrap=document.getElementById('scale-wrap');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  function fit(){canvas.width=wrap.offsetWidth;canvas.height=wrap.offsetHeight;}
+  fit();window.addEventListener('resize',fit);
+
+  // Tiles that rest on the scale pan - uneven, random angles
+  const restTiles=[
+    {n:'3',a:-0.18},{n:'4',a:0.12},{n:'5',a:-0.06}
+  ];
+
+  let scaleStarted=false;
+  let animStart=0;
+
+  function drawHex(cx,cy,r,rot,fill,stroke){
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(rot);
+    ctx.beginPath();
+    for(let i=0;i<6;i++){
+      const ang=Math.PI/180*(60*i-30);
+      const x=r*Math.cos(ang),y=r*Math.sin(ang);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.fillStyle=fill;ctx.fill();
+    ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawScale(progress){
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2;
+    // Tilt of the beam based on weight (settles with slight overshoot)
+    const settle=Math.min(1,progress);
+    const tilt=Math.sin(settle*Math.PI*1.5)*Math.exp(-settle*3)*0.18+0.14*settle;
+
+    // Fulcrum
+    const fy=H*0.42;
+    ctx.strokeStyle='rgba(255,255,255,0.25)';
+    ctx.lineWidth=2;
+    // base post
+    ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx,H-30);ctx.stroke();
+    // base foot
+    ctx.beginPath();ctx.moveTo(cx-50,H-30);ctx.lineTo(cx+50,H-30);ctx.stroke();
+    // fulcrum triangle
+    ctx.fillStyle='rgba(255,255,255,0.2)';
+    ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx-14,fy+18);ctx.lineTo(cx+14,fy+18);ctx.closePath();ctx.fill();
+
+    // Beam (tilts down on the loaded side - left)
+    const beamLen=W*0.36;
+    const lx=cx-Math.cos(tilt)*beamLen, ly=fy+Math.sin(tilt)*beamLen;
+    const rx=cx+Math.cos(tilt)*beamLen, ry=fy-Math.sin(tilt)*beamLen;
+    ctx.strokeStyle='rgba(255,255,255,0.5)';
+    ctx.lineWidth=4;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(rx,ry);ctx.stroke();
+
+    // Left pan (loaded) - hanging chains + platform
+    const panY=ly+46;
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(lx-30,ly);ctx.lineTo(lx-18,panY);ctx.moveTo(lx+30,ly);ctx.lineTo(lx+18,panY);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(lx-40,panY);ctx.lineTo(lx+40,panY);ctx.stroke();
+
+    // Right pan (empty) - floats up
+    const rPanY=ry+46;
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(rx-30,ry);ctx.lineTo(rx-18,rPanY);ctx.moveTo(rx+30,ry);ctx.lineTo(rx+18,rPanY);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(rx-40,rPanY);ctx.lineTo(rx+40,rPanY);ctx.stroke();
+
+    // Stack the fallen tiles on the left pan, resting at uneven angles
+    restTiles.forEach((t,i)=>{
+      const appear=Math.max(0,Math.min(1,(progress*3)-(i*0.5)));
+      if(appear<=0)return;
+      const stackY=panY-22-(i*26)*appear;
+      const ox=(i-1)*16;
+      drawHex(lx+ox, stackY, 22, t.a, 'rgba(244,135,74,'+(0.85*appear)+')', 'rgba(244,135,74,'+appear+')');
+      // hour number on tile
+      ctx.save();
+      ctx.globalAlpha=appear;
+      ctx.fillStyle='#1e1612';
+      ctx.font='800 16px Inter, sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(t.n, lx+ox, stackY);
+      ctx.restore();
+    });
+  }
+
+  function scaleTick(now){
+    if(!animStart)animStart=now;
+    const p=(now-animStart)/1800;
+    drawScale(Math.min(1.2,p));
+    if(p<1.2)requestAnimationFrame(scaleTick);
+  }
+
+  const scaleObs=new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting&&!scaleStarted){
+        scaleStarted=true;
+        animStart=0;
+        requestAnimationFrame(scaleTick);
+      }
+    });
+  },{threshold:0.4});
+  scaleObs.observe(wrap);
+  drawScale(0);
+})();
+</script>
+
+</body>
+</html>
+
