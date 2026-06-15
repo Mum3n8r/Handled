@@ -185,8 +185,8 @@ section { max-width:960px;margin:0 auto;padding:72px 40px; }
 .plan-name { font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);margin-bottom:8px; }
 .plan-headline { font-size:16px;font-weight:700;letter-spacing:-0.01em;margin-bottom:18px;line-height:1.3; }
 .plan-price { font-size:44px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-0.04em;line-height:1; }
-.plan-price-sub { font-size:12px;color:var(--muted);margin-bottom:22px;font-family:'DM Mono',monospace;margin-top:4px;min-height:18px; }
-.plan-features { list-style:none;flex:1;display:flex;flex-direction:column;gap:9px;margin-bottom:24px; }
+.plan-price-sub { font-size:12px;color:var(--muted);margin-bottom:0;font-family:'DM Mono',monospace;margin-top:4px; }
+.plan-features { list-style:none;flex:1;display:flex;flex-direction:column;gap:9px;margin-bottom:24px;margin-top:0; }
 .plan-features li { display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--text-dim);line-height:1.4; }
 .plan-features li svg { flex-shrink:0;margin-top:2px; }
 .plan-features .no svg { color:var(--muted); }
@@ -207,6 +207,7 @@ section { max-width:960px;margin:0 auto;padding:72px 40px; }
 .plan-btn:hover { background:var(--border); }
 .plan-btn-dark { background:var(--orange);color:#fff;border-color:var(--orange);box-shadow:0 2px 14px rgba(212,80,10,0.30); }
 .plan-btn-dark:hover { background:#b84208;box-shadow:0 4px 20px rgba(212,80,10,0.42);opacity:1; }
+.plan-price-block { min-height: 80px; display:flex; flex-direction:column; justify-content:flex-start; margin-bottom:22px; }
 .no-haggle {
   background:rgba(124,58,237,0.07);
   border:1px solid rgba(124,58,237,0.15);
@@ -415,7 +416,7 @@ footer {
 
 <!-- Included -->
 <section style="position:relative;">
-  <div class="timetile" id="tt2" style="top:60px;left:-40px;">
+  <div class="timetile" id="tt2" style="top:60px;left:-80px;">
     <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
       <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
     </svg>
@@ -494,8 +495,7 @@ footer {
     <div class="plan">
       <div class="plan-name">Starter</div>
       <div class="plan-headline">One automation, running in days.</div>
-      <div class="plan-price">$150</div>
-      <div class="plan-price-sub">one-time setup</div>
+      <div class="plan-price-block"><div class="plan-price">$150</div><div class="plan-price-sub">one-time setup</div></div>
       <ul class="plan-features">
         <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>One automation of your choice</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live within 3 business days</li>
@@ -511,10 +511,9 @@ footer {
       <div class="plan-badge">Most Popular</div>
       <div class="plan-name">Full Setup</div>
       <div class="plan-headline">Everything automated. Maintained every month.</div>
-      <div class="plan-price">$300</div>
-      <div class="plan-price-sub">setup + $50/month maintenance</div>
+      <div class="plan-price-block"><div class="plan-price">$300</div><div class="plan-price-sub">setup + $50/month maintenance</div></div>
       <ul class="plan-features">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>Full automation suite</strong> - all workflows</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>Full automation suite</strong> &mdash; all workflows</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live within 3 business days</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Zero technical work from you</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>Monthly security + monitoring</strong></li>
@@ -529,8 +528,7 @@ footer {
     <div class="plan">
       <div class="plan-name">Custom</div>
       <div class="plan-headline">Larger scope or unique requirements.</div>
-      <div class="plan-price" style="font-size:44px;line-height:1;font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-0.04em;font-family:'Inter',sans-serif">Let's Talk</div>
-      <div class="plan-price-sub">scoped to your needs</div>
+      <div class="plan-price-block"><div class="plan-price" style="font-size:44px;line-height:1;font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-0.04em">Let's Talk</div><div class="plan-price-sub">scoped to your needs</div></div>
       <ul class="plan-features">
         <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Multi-location or multi-system</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Integrations with existing software</li>
