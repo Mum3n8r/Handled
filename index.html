@@ -165,6 +165,7 @@ section { max-width:960px;margin:0 auto;padding:72px 40px; }
   flex-direction:column;
   position:relative;
   min-height:480px;
+  text-align:left;
 }
 .plan-featured { border:2px solid var(--orange); }
 .plan-badge {
@@ -182,9 +183,9 @@ section { max-width:960px;margin:0 auto;padding:72px 40px; }
   letter-spacing:0.06em;
   text-transform:uppercase;
 }
-.plan-name { font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);margin-bottom:8px; }
-.plan-headline { font-size:16px;font-weight:700;letter-spacing:-0.01em;margin-bottom:18px;line-height:1.3; }
-.plan-price { font-size:44px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-0.04em;line-height:1; }
+.plan-name { font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;text-align:left; }
+.plan-headline { font-size:16px;font-weight:700;letter-spacing:-0.01em;margin-bottom:18px;line-height:1.3;text-align:left; }
+.plan-price { font-size:44px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-0.04em;line-height:1;text-align:left; }
 .plan-price-sub { font-size:12px;color:var(--muted);margin-bottom:0;font-family:'DM Mono',monospace;margin-top:4px; }
 .plan-features { list-style:none;flex:1;display:flex;flex-direction:column;gap:9px;margin-bottom:24px;margin-top:0; }
 .plan-features li { display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--text-dim);line-height:1.4; }
@@ -416,7 +417,7 @@ footer {
 
 <!-- Included -->
 <section style="position:relative;">
-  <div class="timetile" id="tt2" style="top:60px;left:-80px;">
+  <div class="timetile" id="tt2" style="top:60px;left:-110px;">
     <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
       <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
     </svg>
@@ -476,7 +477,7 @@ footer {
 <hr>
 
 <!-- Pricing -->
-<section style="text-align:center;position:relative;">
+<section style="position:relative;">
   <div class="timetile" id="tt3" style="top:30px;right:50px;">
     <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
       <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
@@ -486,9 +487,9 @@ footer {
     <div class="tt-task">booking back-and-forth</div>
   </div>
 
-  <div class="label">Pricing</div>
-  <div class="title">Flat pricing. No surprises.<br>No negotiations.</div>
-  <p class="sub" style="margin:0 auto 48px">Every plan is the same price for everyone. Pick what fits your business today.</p>
+  <div class="label" style="text-align:center">Pricing</div>
+  <div class="title" style="text-align:center">Flat pricing. No surprises.<br>No negotiations.</div>
+  <p class="sub" style="margin:0 auto 48px;text-align:center">Every plan is the same price for everyone. Pick what fits your business today.</p>
   <div class="plans-grid">
 
     <!-- Starter -->
@@ -763,4 +764,3 @@ footer {
 </body>
 </html>
 
-<!-- deployed 2026-06-15 13:04 -->
