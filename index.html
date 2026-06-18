@@ -245,13 +245,19 @@ footer {
 /* Text glow for key phrases */
 .glow {
   color: var(--orange);
-  text-shadow: 0 0 24px rgba(212,80,10,0.45), 0 0 48px rgba(212,80,10,0.18);
   font-weight: 800;
+  display: inline-block;
+  filter: drop-shadow(0 0 18px rgba(212,80,10,0.55)) drop-shadow(0 0 40px rgba(212,80,10,0.22));
 }
 .glow-sm {
   color: var(--orange);
-  text-shadow: 0 0 16px rgba(212,80,10,0.35);
   font-weight: 700;
+  display: inline-block;
+  filter: drop-shadow(0 0 12px rgba(212,80,10,0.45));
+}
+.hero h1 {
+  overflow: visible;
+  padding: 8px 0;
 }
 
 
@@ -861,7 +867,7 @@ footer {
   window.addEventListener('resize',()=>{ resize(); drawScale(scaleStarted?1.2:0); });
 
   const restTiles=[
-    {n:'3',a:0.18},{n:'2',a:-0.15},{n:'4',a:0.08},{n:'1',a:-0.22},{n:'5',a:0.12},{n:'2',a:-0.06}
+    {n:'3',a:0.18},{n:'2',a:-0.15},{n:'4',a:0.08},{n:'1',a:-0.22}
   ];
 
   let scaleStarted=false;
