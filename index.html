@@ -721,21 +721,7 @@ footer {
   let scaleStarted=false;
   let animStart=0;
 
-  function drawHex(cx,cy,r,rot,fill,stroke){
-    ctx.save();
-    ctx.translate(cx,cy);
-    ctx.rotate(rot);
-    ctx.beginPath();
-    for(let i=0;i<6;i++){
-      const ang=Math.PI/180*(60*i-30);
-      const x=r*Math.cos(ang),y=r*Math.sin(ang);
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    }
-    ctx.closePath();
-    ctx.fillStyle=fill;ctx.fill();
-    ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();
-    ctx.restore();
-  }
+
 
   function drawScale(progress){
     const W=canvas.width,H=canvas.height;
@@ -785,14 +771,31 @@ footer {
       if(appear<=0)return;
       const stackY=panY-22-(i*26)*appear;
       const ox=(i-1)*16;
-      drawHex(lx+ox, stackY, 22, t.a, 'rgba(244,135,74,'+(0.85*appear)+')', 'rgba(244,135,74,'+appear+')');
-      // hour number on tile
+      // Simple pill/rounded rect tile
       ctx.save();
       ctx.globalAlpha=appear;
+      const tw=38, th=24, tr=6;
+      const tx=lx+ox-tw/2, ty=stackY-th/2;
+      ctx.beginPath();
+      ctx.moveTo(tx+tr, ty);
+      ctx.lineTo(tx+tw-tr, ty);
+      ctx.quadraticCurveTo(tx+tw, ty, tx+tw, ty+tr);
+      ctx.lineTo(tx+tw, ty+th-tr);
+      ctx.quadraticCurveTo(tx+tw, ty+th, tx+tw-tr, ty+th);
+      ctx.lineTo(tx+tr, ty+th);
+      ctx.quadraticCurveTo(tx, ty+th, tx, ty+th-tr);
+      ctx.lineTo(tx, ty+tr);
+      ctx.quadraticCurveTo(tx, ty, tx+tr, ty);
+      ctx.closePath();
+      ctx.fillStyle='rgba(244,135,74,0.85)';
+      ctx.fill();
+      ctx.strokeStyle='rgba(244,135,74,1)';
+      ctx.lineWidth=1.5;
+      ctx.stroke();
       ctx.fillStyle='#1e1612';
-      ctx.font='800 16px Inter, sans-serif';
+      ctx.font='800 13px Inter, sans-serif';
       ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.fillText(t.n, lx+ox, stackY);
+      ctx.fillText(t.n+'h', lx+ox, stackY);
       ctx.restore();
     });
   }
