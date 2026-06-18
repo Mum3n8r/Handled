@@ -848,6 +848,116 @@ footer {
 
 <script>
 (function(){
+  const canvas=document.getElementById('scale-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const wrap=document.getElementById('scale-wrap');
+
+  function resize(){
+    canvas.width=wrap.clientWidth;
+    canvas.height=wrap.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize',()=>{ resize(); drawScale(scaleStarted?1.2:0); });
+
+  const restTiles=[
+    {n:'3',a:0.18},{n:'2',a:-0.15},{n:'4',a:0.08},{n:'1',a:-0.22},{n:'5',a:0.12},{n:'2',a:-0.06}
+  ];
+
+  let scaleStarted=false;
+  let animStart=0;
+
+  function drawScale(progress){
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2;
+    const settle=Math.min(1,progress);
+    const tilt=Math.sin(settle*Math.PI*1.5)*Math.exp(-settle*3)*0.18+0.14*settle;
+
+    // Fulcrum
+    const fy=H*0.42;
+    ctx.strokeStyle='rgba(255,255,255,0.25)';
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx,H-30);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx-50,H-30);ctx.lineTo(cx+50,H-30);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.2)';
+    ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx-14,fy+18);ctx.lineTo(cx+14,fy+18);ctx.closePath();ctx.fill();
+
+    // Beam
+    const beamLen=W*0.36;
+    const lx=cx-Math.cos(tilt)*beamLen, ly=fy+Math.sin(tilt)*beamLen;
+    const rx=cx+Math.cos(tilt)*beamLen, ry=fy-Math.sin(tilt)*beamLen;
+    ctx.strokeStyle='rgba(255,255,255,0.5)';
+    ctx.lineWidth=4;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(rx,ry);ctx.stroke();
+
+    // Left pan (loaded)
+    const panY=ly+46;
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(lx-30,ly);ctx.lineTo(lx-18,panY);ctx.moveTo(lx+30,ly);ctx.lineTo(lx+18,panY);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(lx-40,panY);ctx.lineTo(lx+40,panY);ctx.stroke();
+
+    // Right pan (empty)
+    const rPanY=ry+46;
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(rx-30,ry);ctx.lineTo(rx-18,rPanY);ctx.moveTo(rx+30,ry);ctx.lineTo(rx+18,rPanY);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(rx-40,rPanY);ctx.lineTo(rx+40,rPanY);ctx.stroke();
+
+    // Stacked tiles on left pan
+    restTiles.forEach((t,i)=>{
+      const appear=Math.max(0,Math.min(1,(progress*3)-(i*0.5)));
+      if(appear<=0)return;
+      const stackY=panY-22-(i*26)*appear;
+      const ox=(i-1)*16;
+      ctx.save();
+      ctx.globalAlpha=appear;
+      const tw=38, th=24, tr=6;
+      const tx=lx+ox-tw/2, ty=stackY-th/2;
+      ctx.beginPath();
+      ctx.moveTo(tx+tr,ty);ctx.lineTo(tx+tw-tr,ty);
+      ctx.quadraticCurveTo(tx+tw,ty,tx+tw,ty+tr);
+      ctx.lineTo(tx+tw,ty+th-tr);
+      ctx.quadraticCurveTo(tx+tw,ty+th,tx+tw-tr,ty+th);
+      ctx.lineTo(tx+tr,ty+th);
+      ctx.quadraticCurveTo(tx,ty+th,tx,ty+th-tr);
+      ctx.lineTo(tx,ty+tr);
+      ctx.quadraticCurveTo(tx,ty,tx+tr,ty);
+      ctx.closePath();
+      ctx.fillStyle='rgba(244,135,74,0.85)';ctx.fill();
+      ctx.strokeStyle='rgba(244,135,74,1)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle='#1e1612';
+      ctx.font='800 13px Inter, sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(t.n+'h',lx+ox,stackY);
+      ctx.restore();
+    });
+  }
+
+  function scaleTick(now){
+    if(!animStart)animStart=now;
+    const p=(now-animStart)/1800;
+    drawScale(Math.min(1.2,p));
+    if(p<1.2)requestAnimationFrame(scaleTick);
+  }
+
+  const scaleObs=new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting&&!scaleStarted){
+        scaleStarted=true;
+        animStart=0;
+        requestAnimationFrame(scaleTick);
+      }
+    });
+  },{threshold:0.4});
+  scaleObs.observe(wrap);
+  drawScale(0);
+})();
+</script>
+
+<script>
+(function(){
   const PROXY = 'https://duvet-habitant-stimulate.ngrok-free.app/chat';
   const INTAKE = 'https://duvet-habitant-stimulate.ngrok-free.app/intake';
 
