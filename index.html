@@ -247,13 +247,13 @@ footer {
   color: var(--orange);
   font-weight: 800;
   display: inline-block;
-  filter: drop-shadow(0 0 18px rgba(212,80,10,0.55)) drop-shadow(0 0 40px rgba(212,80,10,0.22));
+  filter: drop-shadow(0 0 3px rgba(212,80,10,0.7)) drop-shadow(0 0 8px rgba(212,80,10,0.35));
 }
 .glow-sm {
   color: var(--orange);
   font-weight: 700;
   display: inline-block;
-  filter: drop-shadow(0 0 12px rgba(212,80,10,0.45));
+  filter: drop-shadow(0 0 3px rgba(212,80,10,0.6));
 }
 .hero h1 {
   overflow: visible;
@@ -325,6 +325,7 @@ footer {
   pointer-events: none;
   z-index: 0;
 }
+.hero > *:not(.blob-container) { position: relative; z-index: 1; }
 .blob {
   position: absolute;
   border-radius: 50%;
