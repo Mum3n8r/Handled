@@ -761,6 +761,405 @@ footer {
 })();
 </script>
 
+
+<!-- Handled Chat Widget -->
+<style>
+#hd-chat-bubble {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+#hd-chat-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--orange);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(212,80,10,0.38);
+  transition: all 0.18s;
+}
+#hd-chat-btn:hover { background: #b84208; transform: scale(1.06); }
+#hd-chat-btn svg { width: 24px; height: 24px; color: #fff; }
+
+#hd-chat-nudge {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  white-space: nowrap;
+  font-weight: 500;
+  animation: hd-nudge-in 0.3s ease;
+  cursor: pointer;
+}
+#hd-chat-nudge:hover { border-color: var(--orange); color: var(--orange); }
+
+@keyframes hd-nudge-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#hd-chat-panel {
+  position: fixed;
+  bottom: 96px;
+  right: 28px;
+  width: 360px;
+  max-height: 520px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.13);
+  display: none;
+  flex-direction: column;
+  z-index: 9998;
+  overflow: hidden;
+  animation: hd-panel-in 0.22s ease;
+}
+#hd-chat-panel.open { display: flex; }
+
+@keyframes hd-panel-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+#hd-chat-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#hd-chat-header-left { display: flex; align-items: center; gap: 10px; }
+#hd-chat-avatar {
+  width: 32px; height: 32px;
+  background: var(--orange-dim);
+  border: 1px solid rgba(212,80,10,0.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+#hd-chat-header-text { font-size: 13px; font-weight: 700; }
+#hd-chat-header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+#hd-chat-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); padding: 4px;
+  border-radius: 6px; transition: color 0.15s;
+}
+#hd-chat-close:hover { color: var(--text); }
+
+#hd-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+
+.hd-msg {
+  max-width: 85%;
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 10px 13px;
+  border-radius: 12px;
+  animation: hd-msg-in 0.18s ease;
+}
+@keyframes hd-msg-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hd-msg-ai {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.hd-msg-user {
+  background: var(--orange);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.hd-msg-typing {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  padding: 12px 16px;
+}
+.hd-dots { display: flex; gap: 4px; align-items: center; }
+.hd-dots span {
+  width: 6px; height: 6px;
+  background: var(--muted);
+  border-radius: 50%;
+  animation: hd-dot 1.2s infinite;
+}
+.hd-dots span:nth-child(2) { animation-delay: 0.2s; }
+.hd-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes hd-dot {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.4; }
+  40% { transform: scale(1.1); opacity: 1; }
+}
+
+#hd-chat-done {
+  padding: 24px 20px;
+  text-align: center;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+#hd-chat-done .hd-done-icon { font-size: 28px; }
+#hd-chat-done .hd-done-title { font-size: 15px; font-weight: 700; }
+#hd-chat-done .hd-done-sub { font-size: 13px; color: var(--text-dim); line-height: 1.5; max-width: 260px; }
+
+#hd-chat-input-row {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+#hd-chat-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  resize: none;
+  outline: none;
+  transition: border-color 0.15s;
+  max-height: 100px;
+  line-height: 1.45;
+}
+#hd-chat-input:focus { border-color: var(--orange); }
+#hd-chat-input::placeholder { color: var(--muted); }
+#hd-chat-send {
+  width: 36px; height: 36px;
+  background: var(--orange);
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+#hd-chat-send:hover { background: #b84208; }
+#hd-chat-send svg { width: 16px; height: 16px; color: #fff; }
+#hd-chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+</style>
+
+<div id="hd-chat-bubble">
+  <div id="hd-chat-nudge" onclick="hdOpenChat()">Tell us about your business →</div>
+  <button id="hd-chat-btn" onclick="hdToggleChat()" aria-label="Chat with us">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+</div>
+
+<div id="hd-chat-panel">
+  <div id="hd-chat-header">
+    <div id="hd-chat-header-left">
+      <div id="hd-chat-avatar">⚡</div>
+      <div>
+        <div id="hd-chat-header-text">Handled</div>
+        <div id="hd-chat-header-sub">Custom plan intake</div>
+      </div>
+    </div>
+    <button id="hd-chat-close" onclick="hdCloseChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div id="hd-chat-messages"></div>
+
+  <div id="hd-chat-done">
+    <div class="hd-done-icon">✅</div>
+    <div class="hd-done-title">You're all set.</div>
+    <div class="hd-done-sub">We'll reach out to <span id="hd-done-email"></span> shortly to scope out your setup.</div>
+  </div>
+
+  <div id="hd-chat-input-row">
+    <textarea id="hd-chat-input" placeholder="Type a message..." rows="1"></textarea>
+    <button id="hd-chat-send" onclick="hdSend()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const PROXY = 'https://duvet-habitant-stimulate.ngrok-free.app/chat';
+  const INTAKE = 'https://duvet-habitant-stimulate.ngrok-free.app/intake';
+
+  let hdMessages = [];
+  let hdOpen = false;
+  let hdStarted = false;
+  let hdDone = false;
+
+  window.hdToggleChat = function() {
+    hdOpen ? hdCloseChat() : hdOpenChat();
+  };
+
+  window.hdOpenChat = function() {
+    hdOpen = true;
+    document.getElementById('hd-chat-panel').classList.add('open');
+    document.getElementById('hd-chat-nudge').style.display = 'none';
+    if (!hdStarted) { hdStarted = true; hdStart(); }
+    setTimeout(() => document.getElementById('hd-chat-input').focus(), 100);
+  };
+
+  window.hdCloseChat = function() {
+    hdOpen = false;
+    document.getElementById('hd-chat-panel').classList.remove('open');
+  };
+
+  function hdStart() {
+    const opening = "Hey! What kind of business do you run?";
+    hdMessages.push({ role: 'assistant', content: opening });
+    hdAppendMsg(opening, 'ai');
+  }
+
+  function hdAppendMsg(text, role) {
+    const el = document.createElement('div');
+    el.className = 'hd-msg hd-msg-' + role;
+    el.textContent = text;
+    document.getElementById('hd-chat-messages').appendChild(el);
+    hdScrollBottom();
+  }
+
+  function hdShowTyping() {
+    const el = document.createElement('div');
+    el.className = 'hd-msg hd-msg-typing';
+    el.id = 'hd-typing';
+    el.innerHTML = '<div class="hd-dots"><span></span><span></span><span></span></div>';
+    document.getElementById('hd-chat-messages').appendChild(el);
+    hdScrollBottom();
+  }
+
+  function hdRemoveTyping() {
+    const t = document.getElementById('hd-typing');
+    if (t) t.remove();
+  }
+
+  function hdScrollBottom() {
+    const msgs = document.getElementById('hd-chat-messages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  async function hdCallProxy(messages) {
+    const r = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages }),
+    });
+    if (!r.ok) throw new Error('proxy error');
+    const d = await r.json();
+    if (d.error) throw new Error(d.error);
+    return d.reply;
+  }
+
+  function hdCheckDone(reply) {
+    const trimmed = reply.trim();
+    if (!trimmed.startsWith('{')) return false;
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (parsed.done && parsed.email && parsed.name) {
+        hdFinish(parsed);
+        return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  function hdFinish(data) {
+    hdDone = true;
+    data.ts = new Date().toISOString();
+
+    fetch(INTAKE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch(() => {});
+
+    document.getElementById('hd-chat-messages').style.display = 'none';
+    document.getElementById('hd-chat-input-row').style.display = 'none';
+    const done = document.getElementById('hd-chat-done');
+    done.style.display = 'flex';
+    document.getElementById('hd-done-email').textContent = data.email;
+  }
+
+  window.hdSend = function() {
+    if (hdDone) return;
+    const input = document.getElementById('hd-chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    input.style.height = 'auto';
+    document.getElementById('hd-chat-send').disabled = true;
+
+    hdMessages.push({ role: 'user', content: text });
+    hdAppendMsg(text, 'user');
+    hdShowTyping();
+
+    hdCallProxy(hdMessages).then(reply => {
+      hdRemoveTyping();
+      document.getElementById('hd-chat-send').disabled = false;
+      if (!hdCheckDone(reply)) {
+        hdMessages.push({ role: 'assistant', content: reply });
+        hdAppendMsg(reply, 'ai');
+      }
+    }).catch(() => {
+      hdRemoveTyping();
+      document.getElementById('hd-chat-send').disabled = false;
+      hdAppendMsg("Something went wrong on our end — please try again in a moment.", 'ai');
+    });
+  };
+
+  document.getElementById('hd-chat-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      hdSend();
+    }
+  });
+
+  document.getElementById('hd-chat-input').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+
+  setTimeout(() => {
+    const n = document.getElementById('hd-chat-nudge');
+    if (n && !hdOpen) {
+      n.style.transition = 'opacity 0.4s';
+      n.style.opacity = '0';
+      setTimeout(() => n.style.display = 'none', 400);
+    }
+  }, 6000);
+})();
+</script>
+<!-- End Handled Chat Widget -->
+
 </body>
 </html>
 
