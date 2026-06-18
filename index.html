@@ -261,49 +261,6 @@ footer {
 
 
 
-/* Time-loss tiles embedded in page */
-.timetile {
-  position: absolute;
-  width: 150px;
-  height: 168px;
-  z-index: 6;
-  pointer-events: none;
-  will-change: transform;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.timetile svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
-.timetile .tt-num {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 40px;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  color: var(--orange);
-}
-.timetile .tt-hours {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--orange);
-  margin-top: 2px;
-  opacity: 0.85;
-}
-.timetile .tt-task {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 1.4;
-  color: var(--text-dim);
-  margin-top: 8px;
-  width: 108px;
-}
-
 /* The scale / weigh-down finale */
 #weigh-section {
   background: var(--text);
@@ -437,12 +394,7 @@ footer {
 
 <!-- How it works -->
 <section style="position:relative;">
-  <div class="timetile" id="tt1" style="top:40px;right:40px;">
-    <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
-      <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
-    </svg>
-    <div class="tt-num">3</div>
-    <div class="tt-hours">Hours</div>
+<div class="tt-hours">Hours</div>
     <div class="tt-task">responding to reviews</div>
   </div>
 
@@ -474,12 +426,7 @@ footer {
 
 <!-- Included -->
 <section style="position:relative;">
-  <div class="timetile" id="tt2" style="top:60px;left:-130px;">
-    <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
-      <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
-    </svg>
-    <div class="tt-num">4</div>
-    <div class="tt-hours">Hours</div>
+<div class="tt-hours">Hours</div>
     <div class="tt-task">chasing leads that went cold</div>
   </div>
 
@@ -535,12 +482,7 @@ footer {
 
 <!-- Pricing -->
 <section style="position:relative;">
-  <div class="timetile" id="tt3" style="top:30px;right:50px;">
-    <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
-      <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
-    </svg>
-    <div class="tt-num">5</div>
-    <div class="tt-hours">Hours</div>
+<div class="tt-hours">Hours</div>
     <div class="tt-task">booking back-and-forth</div>
   </div>
 
@@ -657,138 +599,7 @@ footer {
 
 
 
-<script>
-(function(){
-  // ---- Embedded tiles drop when scrolled to ----
-  const tiles = ['tt1','tt2','tt3'].map(id=>{
-    const el=document.getElementById(id);
-    return el?{el,fired:false,start:0,
-      rot:(Math.random()>.5?1:-1)*(12+Math.random()*16),
-      dx:(Math.random()-.5)*50,
-      dur:650+Math.random()*150}:null;
-  }).filter(Boolean);
 
-  function easeIn(t){return t*t*t;}
-
-  let dropping=false;
-  function dropTick(now){
-    let any=false;
-    tiles.forEach(t=>{
-      if(!t.fired)return;
-      if(!t.start)t.start=now;
-      const p=Math.min(1,(now-t.start)/t.dur);
-      const e=easeIn(p);
-      const ty=e*(window.innerHeight*0.75+200);
-      t.el.style.transform=`translateY(${ty}px) translateX(${t.dx*e}px) rotate(${t.rot*e}deg)`;
-      if(p<1)any=true; else t.el.style.visibility='hidden';
-    });
-    if(any)requestAnimationFrame(dropTick);
-    else dropping=false;
-  }
-
-  // Trigger when the tile's center scrolls up to ~22% from the top of the viewport.
-  // This keeps the tile fully readable on screen for a while before it drops.
-  function checkDrop(){
-    const triggerLine = window.innerHeight * 0.22;
-    tiles.forEach(t=>{
-      if(t.fired) return;
-      const rect = t.el.getBoundingClientRect();
-      const center = rect.top + rect.height/2;
-      // fire only once the tile has risen to near the top of the screen
-      if(center <= triggerLine){
-        t.fired = true;
-        if(!dropping){dropping=true;requestAnimationFrame(dropTick);}
-        else requestAnimationFrame(dropTick);
-      }
-    });
-  }
-  window.addEventListener('scroll', checkDrop, {passive:true});
-  checkDrop();
-
-  // ---- Scale physics finale ----
-  const canvas=document.getElementById('scale-canvas');
-  const wrap=document.getElementById('scale-wrap');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  function fit(){canvas.width=wrap.offsetWidth;canvas.height=wrap.offsetHeight;}
-  fit();window.addEventListener('resize',fit);
-
-  // Tiles that rest on the scale pan - uneven, random angles
-  const restTiles=[
-    {n:'3',a:-0.18},{n:'4',a:0.12},{n:'5',a:-0.06}
-  ];
-
-  let scaleStarted=false;
-  let animStart=0;
-
-
-
-  function drawScale(progress){
-    const W=canvas.width,H=canvas.height;
-    ctx.clearRect(0,0,W,H);
-    const cx=W/2;
-    // Tilt of the beam based on weight (settles with slight overshoot)
-    const settle=Math.min(1,progress);
-    const tilt=Math.sin(settle*Math.PI*1.5)*Math.exp(-settle*3)*0.18+0.14*settle;
-
-    // Fulcrum
-    const fy=H*0.42;
-    ctx.strokeStyle='rgba(255,255,255,0.25)';
-    ctx.lineWidth=2;
-    // base post
-    ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx,H-30);ctx.stroke();
-    // base foot
-    ctx.beginPath();ctx.moveTo(cx-50,H-30);ctx.lineTo(cx+50,H-30);ctx.stroke();
-    // fulcrum triangle
-    ctx.fillStyle='rgba(255,255,255,0.2)';
-    ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx-14,fy+18);ctx.lineTo(cx+14,fy+18);ctx.closePath();ctx.fill();
-
-    // Beam (tilts down on the loaded side - left)
-    const beamLen=W*0.36;
-    const lx=cx-Math.cos(tilt)*beamLen, ly=fy+Math.sin(tilt)*beamLen;
-    const rx=cx+Math.cos(tilt)*beamLen, ry=fy-Math.sin(tilt)*beamLen;
-    ctx.strokeStyle='rgba(255,255,255,0.5)';
-    ctx.lineWidth=4;ctx.lineCap='round';
-    ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(rx,ry);ctx.stroke();
-
-    // Left pan (loaded) - hanging chains + platform
-    const panY=ly+46;
-    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(lx-30,ly);ctx.lineTo(lx-18,panY);ctx.moveTo(lx+30,ly);ctx.lineTo(lx+18,panY);ctx.stroke();
-    ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(lx-40,panY);ctx.lineTo(lx+40,panY);ctx.stroke();
-
-    // Right pan (empty) - floats up
-    const rPanY=ry+46;
-    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(rx-30,ry);ctx.lineTo(rx-18,rPanY);ctx.moveTo(rx+30,ry);ctx.lineTo(rx+18,rPanY);ctx.stroke();
-    ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(rx-40,rPanY);ctx.lineTo(rx+40,rPanY);ctx.stroke();
-
-    // Stack the fallen tiles on the left pan, resting at uneven angles
-    // tiles removed
-  }
-
-  function scaleTick(now){
-    if(!animStart)animStart=now;
-    const p=(now-animStart)/1800;
-    drawScale(Math.min(1.2,p));
-    if(p<1.2)requestAnimationFrame(scaleTick);
-  }
-
-  const scaleObs=new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting&&!scaleStarted){
-        scaleStarted=true;
-        animStart=0;
-        requestAnimationFrame(scaleTick);
-      }
-    });
-  },{threshold:0.4});
-  scaleObs.observe(wrap);
-  drawScale(0);
-})();
-</script>
 
 
 <!-- Handled Chat Widget -->
