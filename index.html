@@ -352,9 +352,60 @@ footer {
   section { padding:56px 20px; }
   .pain-grid,.steps,.included-grid,.plans-grid { grid-template-columns:1fr; }
 }
+
+/* Blob background */
+.blob-container {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.13;
+  animation: blobFloat linear infinite;
+}
+.blob-1 {
+  width: 600px; height: 600px;
+  background: var(--orange);
+  top: -100px; left: -150px;
+  animation-duration: 28s;
+  animation-delay: 0s;
+}
+.blob-2 {
+  width: 500px; height: 500px;
+  background: #e8936a;
+  top: 40%; right: -100px;
+  animation-duration: 34s;
+  animation-delay: -10s;
+}
+.blob-3 {
+  width: 400px; height: 400px;
+  background: var(--orange-light);
+  bottom: 10%; left: 20%;
+  animation-duration: 22s;
+  animation-delay: -6s;
+}
+@keyframes blobFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(40px, -30px) scale(1.05); }
+  50%  { transform: translate(-20px, 50px) scale(0.97); }
+  75%  { transform: translate(30px, 20px) scale(1.03); }
+  100% { transform: translate(0, 0) scale(1); }
+}
 </style>
 </head>
 <body>
+  <div class="blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
 
 <nav>
   <div class="nav-brand">Handled</div>
@@ -363,7 +414,13 @@ footer {
 
 <!-- Hero -->
 
-<div class="hero">
+<div class="hero" style="position:relative;">
+  <div class="blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  
   <div class="hero-tag">Guaranteed Setup in 3 Days</div>
   <h1>Stop doing it <span class="glow">manually.</span><br><em>We handle <span class="glow">everything.</span></em></h1>
   <p class="hero-sub">
