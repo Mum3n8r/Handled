@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -743,23 +743,6 @@ footer {
 .reveal-delay-2 { transition-delay:0.16s; }
 .reveal-delay-3 { transition-delay:0.24s; }
 
-/* ── TIMETILES ── */
-.timetile {
-  position:absolute;
-  width:148px; height:166px;
-  z-index:6;
-  pointer-events:none;
-  will-change:transform;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
-.timetile svg { position:absolute; inset:0; width:100%; height:100%; z-index:-1; }
-.timetile .tt-num { font-family:'Inter',sans-serif; font-weight:800; font-size:38px; letter-spacing:-0.04em; line-height:1; color:var(--orange); }
-.timetile .tt-hours { font-family:'Inter',sans-serif; font-weight:800; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--orange); margin-top:2px; opacity:0.8; }
-.timetile .tt-task { font-family:'DM Sans',sans-serif; font-weight:500; font-size:10px; line-height:1.4; color:var(--text-dim); margin-top:8px; width:106px; }
 
 /* ── WEIGH / SCALE ── */
 #scale-wrap { position:relative; width:100%; max-width:620px; height:280px; margin:0 auto; }
@@ -793,7 +776,7 @@ footer {
     <a href="#how" class="nav-link">How it works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
     <a href="#custom" class="nav-link">Custom</a>
-    <a href="https://buy.stripe.com/test_5kQ5kCewsa9yfVA8Bnb3q01" class="nav-cta">Get Started</a>
+    <a href="#pricing" class="nav-cta">Get Started</a>
   </div>
 </nav>
 
@@ -819,7 +802,7 @@ footer {
       <strong><span class="glow-sm">Zero technical work.</span> <span class="glow-sm">Guaranteed.</span></strong>
     </p>
     <div class="hero-actions">
-      <a href="https://buy.stripe.com/test_5kQ5kCewsa9yfVA8Bnb3q01" class="btn-primary">Start for $150 &rarr;</a>
+      <a href="#pricing" class="btn-primary">See Plans &rarr;</a>
       <a href="#custom" class="btn-ghost">Custom work</a>
     </div>
     <div class="hero-stats">
@@ -848,14 +831,6 @@ footer {
     <div class="steps-wrap reveal">
       <div class="steps">
         <div class="step" style="position:relative;">
-          <div class="timetile" id="tt1" style="top:-20px;right:-60px;">
-            <svg viewBox="0 0 150 168" xmlns="http://www.w3.org/2000/svg">
-              <path d="M112 4L146 86L112 164H38L4 86L38 4H112Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
-            </svg>
-            <div class="tt-num">3</div>
-            <div class="tt-hours">Hours</div>
-            <div class="tt-task">responding to reviews</div>
-          </div>
           <div class="step-num-wrap">01</div>
           <h3>Tell us what's costing you time</h3>
           <p>After payment, fill out a <strong>5-minute form</strong>. Tell us what's eating your week. That's the last time you'll think about it.</p>
@@ -954,7 +929,7 @@ footer {
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
           <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>No ongoing maintenance</li>
         </ul>
-        <a href="https://buy.stripe.com/test_fZu9AS740a9y24K8Bnb3q00" class="plan-btn">Get Started</a>
+        <a href="intake.html?plan=starter" class="plan-btn">Get Started</a>
       </div>
       <div class="plan plan-featured reveal reveal-delay-1">
         <div class="plan-badge">Most Popular</div>
@@ -971,7 +946,7 @@ footer {
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
         </ul>
         <div class="plan-guarantee">Same Price. Every Time. No Exceptions.</div>
-        <a href="https://buy.stripe.com/test_5kQ5kCewsa9yfVA8Bnb3q01" class="plan-btn plan-btn-dark">Pay Now and Get Started</a>
+        <a href="intake.html?plan=full" class="plan-btn plan-btn-dark">Pay Now and Get Started</a>
       </div>
       <div class="plan reveal reveal-delay-2">
         <div class="plan-name">Custom</div>
@@ -985,7 +960,7 @@ footer {
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Priority turnaround</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
         </ul>
-        <a href="#custom" class="plan-btn">Talk to Us</a>
+        <a href="intake.html?plan=custom" class="plan-btn">Talk to Us</a>
       </div>
     </div>
   </div>
@@ -1029,7 +1004,7 @@ footer {
     <canvas id="scale-canvas"></canvas>
   </div>
   <div class="weigh-cta">
-    <a href="https://buy.stripe.com/test_5kQ5kCewsa9yfVA8Bnb3q01" class="btn-primary">Get it Handled &mdash; $150</a>
+    <a href="intake.html?plan=full" class="btn-primary">Get it Handled &mdash; $150</a>
   </div>
 </div>
 
@@ -1176,32 +1151,6 @@ function toggleFaq(qEl) {
   if(!isOpen) item.classList.add('open');
 }
 
-// ── TIMETILE DROP ──
-(function(){
-  const tile = document.getElementById('tt1');
-  if(!tile) return;
-  let fired = false, animStart = 0;
-  const rot = -14, dx = 30, dur = 680;
-  function easeIn(t){return t*t*t;}
-  function dropTick(now){
-    if(!animStart) animStart = now;
-    const p = Math.min(1,(now-animStart)/dur);
-    const e = easeIn(p);
-    tile.style.transform = `translateY(${e*(window.innerHeight*0.7+200)}px) translateX(${dx*e}px) rotate(${rot*e}deg)`;
-    if(p<1) requestAnimationFrame(dropTick);
-    else tile.style.visibility='hidden';
-  }
-  function check(){
-    if(fired) return;
-    const rect = tile.getBoundingClientRect();
-    if(rect.top + rect.height/2 <= window.innerHeight * 0.22){
-      fired = true;
-      requestAnimationFrame(dropTick);
-    }
-  }
-  window.addEventListener('scroll',check,{passive:true});
-  check();
-})();
 
 // ── SCALE ANIMATION ──
 (function(){
@@ -1290,8 +1239,8 @@ function toggleFaq(qEl) {
 
 // ── INLINE CHAT ──
 (function(){
-  const PROXY = 'https://duvet-habitant-stimulate.ngrok-free.app/chat';
-  const INTAKE = 'https://duvet-habitant-stimulate.ngrok-free.app/intake';
+  const PROXY = 'https://duvet-habitant-stimulate.ngrok-free.dev/chat';
+  const INTAKE = 'https://duvet-habitant-stimulate.ngrok-free.dev/intake';
   let msgs=[], started=false, done=false;
 
   const messagesEl = document.getElementById('custom-chat-messages');
