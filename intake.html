@@ -732,9 +732,9 @@ document.getElementById('chat-input').addEventListener('input', function() {
   if (emailContext && emailContext.business_name) {
     const hook = emailContext.pain_hook;
     if (hook) {
-      opening = `Hey! I noticed ${emailContext.business_name} earlier — ${hook.charAt(0).toLowerCase() + hook.slice(1)} Which part of that is eating the most time?`;
+      opening = `Hey! Thanks for checking out Handled. To build the right setup for ${emailContext.business_name}, what is the most repetitive thing eating your time day to day?`;
     } else {
-      opening = `Hey, ${emailContext.business_name}! Quick questions before checkout so we build exactly what you need. What is the biggest thing eating your time right now?`;
+      opening = `Hey! Thanks for checking out Handled. To build the right setup for ${emailContext.business_name}, what is the most repetitive thing eating your time day to day?`;
     }
   } else {
     opening = planKey === 'custom'
