@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/order/:id", "destination": "/order.html" },
     { "source": "/order", "destination": "/order.html" },
-    { "source": "/success", "destination": "/success.html" }
+    { "source": "/success", "destination": "/success.html" },
+    { "source": "/onboard", "destination": "/onboard.html" }
   ]
 }

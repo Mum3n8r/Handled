@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One quick thing — Handled</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#d4500a;--bg:#f5f0ea;--surface:#fdfaf6;--border:#e0d6cc;--text:#1e1612;--dim:#6b5d52;--ok:#15803d}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;max-width:500px;width:100%}
+.logo{color:var(--orange);font-family:'Inter',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.4px;display:block;margin-bottom:28px}
+.check-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.check-icon{width:36px;height:36px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.check-label{font-size:14px;font-weight:600;color:var(--ok)}
+.check-sub{font-size:12px;color:var(--dim)}
+h1{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.3px;margin-bottom:6px}
+.sub{color:var(--dim);font-size:14px;line-height:1.6;margin-bottom:28px}
+.field{margin-bottom:18px}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text)}
+input,textarea,select{width:100%;padding:11px 14px;background:#fff;border:1px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--orange)}
+textarea{resize:vertical;min-height:80px;line-height:1.5}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b5d52' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.hint{font-size:12px;color:var(--dim);margin-top:5px}
+.submit-btn{width:100%;padding:14px;background:var(--orange);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;transition:background .15s}
+.submit-btn:hover{background:#b8430a}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.error{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;font-size:13px;color:#dc2626;margin-bottom:16px;display:none}
+.done{text-align:center;display:none;padding:20px 0}
+.done .big{font-size:48px;margin-bottom:16px}
+.done h2{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;margin-bottom:8px}
+.done p{color:var(--dim);font-size:14px;line-height:1.65}
+</style>
+</head>
+<body>
+<div class="card">
+  <span class="logo">Handled</span>
+
+  <!-- Payment confirmed indicator -->
+  <div class="check-row">
+    <div class="check-icon">✓</div>
+    <div>
+      <div class="check-label">Payment confirmed</div>
+      <div class="check-sub">One last thing and we're ready to build</div>
+    </div>
+  </div>
+
+  <h1>Tell us about your business.</h1>
+  <p class="sub">This is how we know what to automate. Takes 60 seconds — then you're done and we take it from here.</p>
+
+  <div id="error" class="error"></div>
+
+  <div id="form-area">
+    <div class="field">
+      <label for="email">Your email <span style="color:var(--dim);font-weight:400">(so we can send your order tracking link)</span></label>
+      <input type="email" id="email" placeholder="you@yourbusiness.com" required autocomplete="email">
+    </div>
+    <div class="field">
+      <label for="name">Your name</label>
+      <input type="text" id="name" placeholder="First name is fine" autocomplete="name">
+    </div>
+    <div class="field">
+      <label for="biz_name">Business name</label>
+      <input type="text" id="biz_name" placeholder="e.g. Bella Hair Studio">
+    </div>
+    <div class="field">
+      <label for="biz_type">What kind of business?</label>
+      <select id="biz_type">
+        <option value="">Select one</option>
+        <option value="hair salon">Hair salon</option>
+        <option value="nail salon">Nail salon</option>
+        <option value="spa or medspa">Spa / medspa</option>
+        <option value="dental office">Dental office</option>
+        <option value="chiropractic">Chiropractic</option>
+        <option value="physical therapy">Physical therapy</option>
+        <option value="gym or fitness">Gym / fitness studio</option>
+        <option value="HVAC company">HVAC company</option>
+        <option value="plumbing company">Plumbing company</option>
+        <option value="electrical company">Electrical company</option>
+        <option value="roofing company">Roofing company</option>
+        <option value="landscaping company">Landscaping company</option>
+        <option value="cleaning company">Cleaning company</option>
+        <option value="auto repair shop">Auto repair shop</option>
+        <option value="real estate">Real estate</option>
+        <option value="law firm">Law firm</option>
+        <option value="accounting firm">Accounting firm</option>
+        <option value="insurance agency">Insurance agency</option>
+        <option value="restaurant or cafe">Restaurant / cafe</option>
+        <option value="veterinary clinic">Veterinary clinic</option>
+        <option value="photography">Photography</option>
+        <option value="moving company">Moving company</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="pain">What's the most repetitive thing eating your time? <span style="color:var(--dim);font-weight:400">(be specific)</span></label>
+      <textarea id="pain" placeholder="e.g. I spend 3 hours every week responding to Google reviews and chasing clients who haven't rebooked in months"></textarea>
+      <div class="hint">The more specific, the better we can tailor the automation to your actual business.</div>
+    </div>
+    <div class="field">
+      <label for="tools">What tools do you already use? <span style="color:var(--dim);font-weight:400">(optional)</span></label>
+      <input type="text" id="tools" placeholder="e.g. Google Business, Vagaro, QuickBooks">
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitIntake()">Send me my order details →</button>
+  </div>
+
+  <div id="done" class="done">
+    <div class="big">🎉</div>
+    <h2>You're all set.</h2>
+    <p>We just sent your order tracking link to <strong id="done-email"></strong>.<br><br>
+    We'll have your automation live within 3 business days. You don't need to do anything else.</p>
+  </div>
+</div>
+
+<script>
+// Pull order_id from URL if present (passed from Stripe redirect)
+const params = new URLSearchParams(window.location.search);
+const orderId = params.get('order_id') || params.get('id') || '';
+
+// Pre-fill email from URL if Stripe passes it
+const emailParam = params.get('prefill_email') || '';
+if (emailParam) document.getElementById('email').value = emailParam;
+
+async function submitIntake() {
+  const email   = document.getElementById('email').value.trim();
+  const name    = document.getElementById('name').value.trim();
+  const bizName = document.getElementById('biz_name').value.trim();
+  const bizType = document.getElementById('biz_type').value;
+  const pain    = document.getElementById('pain').value.trim();
+  const tools   = document.getElementById('tools').value.trim();
+  const errEl   = document.getElementById('error');
+
+  errEl.style.display = 'none';
+
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    errEl.textContent = 'Please enter a valid email address.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!pain) {
+    errEl.textContent = 'Please describe what\'s eating your time — that\'s what we automate.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  const payload = {
+    email,
+    name,
+    business_name: bizName,
+    business_type: bizType,
+    biggest_pain: pain,
+    tools_used: tools,
+    order_id: orderId,
+    plan_interest: 'full',
+    scope_confirmed: true,
+    source: 'post_payment_intake',
+  };
+
+  try {
+    const r = await fetch('https://duvet-habitant-stimulate.ngrok-free.dev/intake', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error('server error');
+
+    // Show done state
+    document.getElementById('form-area').style.display = 'none';
+    document.getElementById('done-email').textContent = email;
+    document.getElementById('done').style.display = 'block';
+
+  } catch (e) {
+    errEl.textContent = 'Something went wrong. Please email us directly at hello@justhandled.net with your order details.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Send me my order details →';
+  }
+}
+
+document.getElementById('pain').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitIntake(); }
+});
+</script>
+</body>
+</html>
