@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Order — Handled</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#d4500a;--orange-light:#f4874a;--bg:#f5f0ea;--surface:#fdfaf6;--border:#e0d6cc;--text:#1e1612;--dim:#6b5d52;--ok:#1a7f37}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;padding:32px 20px 80px}
+header{display:flex;align-items:center;gap:10px;margin-bottom:36px}
+header .logo{color:var(--orange);font-family:'Inter',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.4px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:20px}
+h1{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;margin-bottom:6px}
+.sub{color:var(--dim);font-size:14px;margin-bottom:4px}
+.status-badge{display:inline-block;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-top:14px}
+.status-badge.active{background:#fff1e5;color:var(--orange)}
+.status-badge.done{background:#dafbe1;color:var(--ok)}
+.steps{margin-top:28px}
+.step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step .dot{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.step.done .dot{background:var(--ok);color:#fff}
+.step.active .dot{background:var(--orange);color:#fff}
+.step.pending .dot{background:var(--border);color:var(--dim)}
+.step .label{font-weight:600;font-size:15px}
+.step .desc{font-size:13px;color:var(--dim);margin-top:2px}
+.step.pending .label{color:var(--dim)}
+.connectors{margin-top:8px}
+.connector-btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 18px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--text);transition:.15s;text-decoration:none}
+.connector-btn:hover{border-color:var(--orange);transform:translateY(-1px)}
+.connector-btn .arrow{color:var(--orange);font-weight:700}
+.connector-btn.done{background:#dafbe1;border-color:var(--ok);color:var(--ok);cursor:default}
+.loading,.error{text-align:center;padding:60px 20px;color:var(--dim)}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.help{font-size:13px;color:var(--dim);margin-top:24px;line-height:1.6}
+.help a{color:var(--orange)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><span class="logo">Handled</span></header>
+<div id="content">
+  <div class="loading"><div class="spinner"></div>Loading your order...</div>
+</div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://vjwrsucmfqiathgcemzh.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqd3JzdWNtZnFpYXRoZ2NlbXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzIwMTIsImV4cCI6MjA5NzgwODAxMn0.g_9brBnhdLgWAfFedjlMX_m9tfImdYcajIH4QTpo-F8';
+
+const STAGES = [
+  { key: 'submitted',  label: 'Order received',       desc: 'Payment confirmed, we have your details' },
+  { key: 'reviewing',  label: 'Scoping your build',   desc: 'Our AI is mapping out exactly what to automate' },
+  { key: 'in_progress',label: 'Building your automation', desc: 'Setting up your workflows and connections' },
+  { key: 'complete',   label: 'Live and ready',       desc: 'Your automation is running' },
+];
+const STAGE_ORDER = ['submitted','reviewing','in_progress','complete'];
+
+function getOrderId(){
+  // supports /order/<id> path or ?id=<id>
+  const path = window.location.pathname.split('/').filter(Boolean);
+  const fromPath = path.length >= 2 && path[path.length-2] === 'order' ? path[path.length-1] : null;
+  const fromQuery = new URLSearchParams(window.location.search).get('id');
+  return fromPath || fromQuery || (path[path.length-1] !== 'order' ? path[path.length-1] : null);
+}
+
+async function loadOrder(){
+  const orderId = getOrderId();
+  const content = document.getElementById('content');
+  if(!orderId){
+    content.innerHTML = '<div class="error">No order ID found. Check the link in your confirmation email.</div>';
+    return;
+  }
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/orders?order_id=eq.${encodeURIComponent(orderId)}&select=*`, {
+      headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` }
+    });
+    const data = await r.json();
+    if(!data || !data.length){
+      content.innerHTML = '<div class="error">Order not found. If you just paid, give it a minute and refresh.</div>';
+      return;
+    }
+    render(data[0]);
+  } catch(e){
+    content.innerHTML = '<div class="error">Could not load order. Please refresh.</div>';
+  }
+}
+
+function render(order){
+  const status = order.status || 'submitted';
+  const curIdx = Math.max(0, STAGE_ORDER.indexOf(status));
+  const isDone = status === 'complete';
+  const firstName = (order.customer_name||'').split(' ')[0] || 'there';
+
+  let stepsHtml = STAGES.map((st, i) => {
+    let cls = 'pending', mark = i+1;
+    if(i < curIdx || isDone){ cls = 'done'; mark = '✓'; }
+    else if(i === curIdx){ cls = 'active'; }
+    return `<div class="step ${cls}"><div class="dot">${mark}</div>
+      <div><div class="label">${st.label}</div><div class="desc">${st.desc}</div></div></div>`;
+  }).join('');
+
+  // Connector buttons (if any needed)
+  let connectorsHtml = '';
+  const needed = order.connectors_needed || [];
+  const done = order.connectors_done || [];
+  if(needed.length){
+    connectorsHtml = '<div class="card"><h1 style="font-size:18px">Connect your accounts</h1>' +
+      '<div class="sub">Link these so your automation can run. One tap each.</div><div class="connectors" style="margin-top:18px">' +
+      needed.map(c => {
+        const isDone = done.includes(c);
+        const label = ({google:'Google Business',gmail:'Gmail',calendar:'Google Calendar',sheets:'Google Sheets'})[c] || c;
+        if(isDone) return `<div class="connector-btn done">${label}<span>✓ Connected</span></div>`;
+        return `<a class="connector-btn" href="#" onclick="alert('Connection setup will be sent to your email with step-by-step instructions.');return false;">${label}<span class="arrow">Connect →</span></a>`;
+      }).join('') + '</div></div>';
+  }
+
+  document.getElementById('content').innerHTML = `
+    <div class="card">
+      <h1>Hey ${firstName}, your order is ${isDone ? 'live' : 'in progress'}</h1>
+      <div class="sub">${order.business_name || ''} ${order.plan ? '· '+order.plan+' plan' : ''}</div>
+      <span class="status-badge ${isDone?'done':'active'}">${isDone ? 'Complete' : STAGES[curIdx].label}</span>
+      <div class="steps">${stepsHtml}</div>
+    </div>
+    ${connectorsHtml}
+    <div class="help">Questions? Just reply to your confirmation email and we'll help. <br>
+    This page updates automatically as your build progresses.</div>`;
+}
+
+loadOrder();
+setInterval(loadOrder, 20000); // refresh every 20s
+</script>
+</body>
+</html>
