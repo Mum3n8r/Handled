@@ -7,61 +7,100 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--orange:#d4500a;--orange-light:#f4874a;--bg:#f5f0ea;--surface:#fdfaf6;--border:#e0d6cc;--text:#1e1612;--dim:#6b5d52;--ok:#1a7f37}
+:root{--orange:#d4500a;--orange-dk:#b8430a;--orange-light:#f4874a;--bg:#f5f0ea;--surface:#fdfaf6;--border:#e0d6cc;--text:#1e1612;--dim:#6b5d52;--ok:#1a7f37;--ok-bg:#dafbe1;--ok-border:#9fe1cb}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
-.wrap{max-width:680px;margin:0 auto;padding:32px 20px 80px}
-header{display:flex;align-items:center;gap:10px;margin-bottom:36px}
+.wrap{max-width:560px;margin:0 auto;padding:40px 20px 80px}
+header{display:flex;align-items:center;gap:10px;margin-bottom:32px}
 header .logo{color:var(--orange);font-family:'Inter',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.4px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:20px}
-h1{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;margin-bottom:6px}
-.sub{color:var(--dim);font-size:14px;margin-bottom:4px}
-.status-badge{display:inline-block;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-top:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:18px}
+h1{font-family:'Inter',sans-serif;font-size:23px;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
+.sub{color:var(--dim);font-size:14px}
+.status-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-top:16px}
 .status-badge.active{background:#fff1e5;color:var(--orange)}
-.status-badge.done{background:#dafbe1;color:var(--ok)}
-.steps{margin-top:28px}
-.step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.status-badge.done{background:var(--ok-bg);color:var(--ok)}
+.pulse{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.steps{margin-top:26px}
+.step{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid var(--border);position:relative}
 .step:last-child{border-bottom:none}
-.step .dot{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.step .dot{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;transition:.3s}
 .step.done .dot{background:var(--ok);color:#fff}
-.step.active .dot{background:var(--orange);color:#fff}
+.step.active .dot{background:var(--orange);color:#fff;box-shadow:0 0 0 4px #fff1e5}
 .step.pending .dot{background:var(--border);color:var(--dim)}
 .step .label{font-weight:600;font-size:15px}
-.step .desc{font-size:13px;color:var(--dim);margin-top:2px}
+.step .desc{font-size:13px;color:var(--dim);margin-top:2px;line-height:1.5}
 .step.pending .label{color:var(--dim)}
-.connectors{margin-top:8px}
-.connector-btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 18px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--text);transition:.15s;text-decoration:none}
-.connector-btn:hover{border-color:var(--orange);transform:translateY(-1px)}
-.connector-btn .arrow{color:var(--orange);font-weight:700}
-.connector-btn.done{background:#dafbe1;border-color:var(--ok);color:var(--ok);cursor:default}
-.loading,.error{text-align:center;padding:60px 20px;color:var(--dim)}
+.connect-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:18px}
+.connect-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:6px}
+.connect-icon{width:42px;height:42px;border-radius:11px;background:#fff1e5;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:11px;padding:13px 16px;background:#fff;border:1px solid #dadce0;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:#3c4043;transition:background .15s;margin-top:18px}
+.gbtn:hover{background:#f8f9fa}
+.gbtn.done{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok);cursor:default}
+.reassure{display:flex;align-items:center;gap:8px;margin-top:13px;font-size:12px;color:var(--dim)}
+.overlay{position:fixed;inset:0;background:rgba(30,22,18,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.show{opacity:1;pointer-events:auto}
+.modal{width:100%;max-width:440px;background:var(--surface);border-radius:16px;overflow:hidden;transform:translateY(8px);transition:transform .2s;max-height:90vh;overflow-y:auto}
+.overlay.show .modal{transform:translateY(0)}
+.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-head span{font-weight:700;font-size:15px;font-family:'Inter',sans-serif}
+.modal-close{border:none;background:none;cursor:pointer;font-size:22px;color:var(--dim);line-height:1;padding:0}
+.modal-body{padding:24px}
+.mstep{display:flex;gap:13px;margin-bottom:22px}
+.mstep:last-of-type{margin-bottom:0}
+.mnum{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:#fff1e5;color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.mstep .mt{font-size:14px;font-weight:600;margin-bottom:3px}
+.mstep .md{font-size:13px;color:var(--dim);line-height:1.55}
+.mlink{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:var(--orange);color:#fff;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;margin-top:10px}
+.mlink:hover{background:var(--orange-dk)}
+.code{position:relative;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--text);white-space:pre;overflow-x:auto;margin-top:10px;line-height:1.5}
+.copy{margin-top:9px;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;border-radius:8px;color:var(--text)}
+.copy:hover{border-color:var(--orange)}
+.modal-foot{padding:18px 24px;border-top:1px solid var(--border)}
+.done-btn{width:100%;padding:12px;background:var(--orange);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.done-btn:hover{background:var(--orange-dk)}
+.next{margin-top:6px}
+.next h2{font-size:15px;font-family:'Inter',sans-serif;font-weight:700;margin-bottom:14px}
+.next-item{display:flex;gap:11px;align-items:flex-start;margin-bottom:13px;font-size:13px;color:var(--dim);line-height:1.5}
+.next-item .ni{color:var(--orange);flex-shrink:0;margin-top:1px}
+.loading,.error{text-align:center;padding:70px 20px;color:var(--dim)}
 .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.help{font-size:13px;color:var(--dim);margin-top:24px;line-height:1.6}
-.help a{color:var(--orange)}
+.help{font-size:13px;color:var(--dim);margin-top:22px;line-height:1.6;text-align:center}
+.help a{color:var(--orange);text-decoration:none}
+.confetti{position:fixed;width:9px;height:9px;top:-10px;z-index:40;pointer-events:none}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header><span class="logo">Handled</span></header>
 <div id="content">
-  <div class="loading"><div class="spinner"></div>Loading your order...</div>
+  <div class="loading"><div class="spinner"></div>Loading your order…</div>
 </div>
 </div>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
 
 <script>
 const SUPABASE_URL = 'https://vjwrsucmfqiathgcemzh.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqd3JzdWNtZnFpYXRoZ2NlbXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzIwMTIsImV4cCI6MjA5NzgwODAxMn0.g_9brBnhdLgWAfFedjlMX_m9tfImdYcajIH4QTpo-F8';
+const MAKE_HOOK_BASE = 'https://hook.us2.make.com/';
 
 const STAGES = [
-  { key: 'submitted',  label: 'Order received',       desc: 'Payment confirmed, we have your details' },
-  { key: 'reviewing',  label: 'Scoping your build',   desc: 'Our AI is mapping out exactly what to automate' },
-  { key: 'in_progress',label: 'Building your automation', desc: 'Setting up your workflows and connections' },
-  { key: 'complete',   label: 'Live and ready',       desc: 'Your automation is running' },
+  { key:'submitted',   label:'Order received',        desc:'Payment confirmed — we have everything we need to start' },
+  { key:'reviewing',   label:'Scoping your build',    desc:'Our AI is mapping out exactly what to automate for you' },
+  { key:'in_progress', label:'Building your automation', desc:'Setting up your workflows behind the scenes' },
+  { key:'complete',    label:'Live and running',      desc:'Your automation is active and working for you' },
 ];
 const STAGE_ORDER = ['submitted','reviewing','in_progress','complete'];
+const CONNECTOR_META = {
+  google:   { label:'Google Business Profile', desc:'so we can read and reply to your reviews', icon:'reviews' },
+  gmail:    { label:'Gmail',                    desc:'so we can send emails on your behalf',     icon:'mail' },
+  calendar: { label:'Google Calendar',         desc:'so we can manage your bookings',           icon:'cal' },
+  sheets:   { label:'Google Sheets',           desc:'so we can sync your data',                 icon:'sheet' },
+};
+
+let currentOrder = null;
 
 function getOrderId(){
-  // supports /order/<id> path or ?id=<id>
   const path = window.location.pathname.split('/').filter(Boolean);
   const fromPath = path.length >= 2 && path[path.length-2] === 'order' ? path[path.length-1] : null;
   const fromQuery = new URLSearchParams(window.location.search).get('id');
@@ -71,23 +110,22 @@ function getOrderId(){
 async function loadOrder(){
   const orderId = getOrderId();
   const content = document.getElementById('content');
-  if(!orderId){
-    content.innerHTML = '<div class="error">No order ID found. Check the link in your confirmation email.</div>';
-    return;
-  }
-  try {
+  if(!orderId){ content.innerHTML = '<div class="error">No order ID found. Check the link in your confirmation email.</div>'; return; }
+  try{
     const r = await fetch(`${SUPABASE_URL}/rest/v1/orders?order_id=eq.${encodeURIComponent(orderId)}&select=*`, {
-      headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` }
+      headers:{ apikey:SUPABASE_ANON, Authorization:`Bearer ${SUPABASE_ANON}` }
     });
     const data = await r.json();
-    if(!data || !data.length){
-      content.innerHTML = '<div class="error">Order not found. If you just paid, give it a minute and refresh.</div>';
-      return;
-    }
-    render(data[0]);
-  } catch(e){
-    content.innerHTML = '<div class="error">Could not load order. Please refresh.</div>';
-  }
+    if(!data || !data.length){ content.innerHTML = '<div class="error">Order not found. If you just paid, give it a minute and refresh.</div>'; return; }
+    const prevComplete = currentOrder && currentOrder.status === 'complete';
+    currentOrder = data[0];
+    render(currentOrder);
+    if(currentOrder.status === 'complete' && !prevComplete) celebrate();
+  }catch(e){ content.innerHTML = '<div class="error">Could not load your order. Please refresh.</div>'; }
+}
+
+function gIcon(){
+  return '<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92a8.78 8.78 0 0 0 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.02-3.7H.96v2.34A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.98 10.72a5.4 5.4 0 0 1 0-3.44V4.94H.96a9 9 0 0 0 0 8.12l3.02-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.46 3.44 1.35l2.58-2.59A9 9 0 0 0 9 0 9 9 0 0 0 .96 4.94L3.98 7.3C4.68 5.18 6.66 3.58 9 3.58z"/></svg>';
 }
 
 function render(order){
@@ -95,44 +133,128 @@ function render(order){
   const curIdx = Math.max(0, STAGE_ORDER.indexOf(status));
   const isDone = status === 'complete';
   const firstName = (order.customer_name||'').split(' ')[0] || 'there';
-
-  let stepsHtml = STAGES.map((st, i) => {
-    let cls = 'pending', mark = i+1;
-    if(i < curIdx || isDone){ cls = 'done'; mark = '✓'; }
-    else if(i === curIdx){ cls = 'active'; }
-    return `<div class="step ${cls}"><div class="dot">${mark}</div>
-      <div><div class="label">${st.label}</div><div class="desc">${st.desc}</div></div></div>`;
-  }).join('');
-
-  // Connector buttons (if any needed)
-  let connectorsHtml = '';
   const needed = order.connectors_needed || [];
   const done = order.connectors_done || [];
-  if(needed.length){
-    connectorsHtml = '<div class="card"><h1 style="font-size:18px">Connect your accounts</h1>' +
-      '<div class="sub">Link these so your automation can run. One tap each.</div><div class="connectors" style="margin-top:18px">' +
-      needed.map(c => {
-        const isDone = done.includes(c);
-        const label = ({google:'Google Business',gmail:'Gmail',calendar:'Google Calendar',sheets:'Google Sheets'})[c] || c;
-        if(isDone) return `<div class="connector-btn done">${label}<span>✓ Connected</span></div>`;
-        return `<a class="connector-btn" href="#" onclick="alert('Connection setup will be sent to your email with step-by-step instructions.');return false;">${label}<span class="arrow">Connect →</span></a>`;
-      }).join('') + '</div></div>';
+  const allConnected = needed.length > 0 && needed.every(c => done.includes(c));
+
+  let stepsHtml = STAGES.map((st,i)=>{
+    let cls='pending', mark=i+1;
+    if(i<curIdx||isDone){ cls='done'; mark='✓'; } else if(i===curIdx){ cls='active'; }
+    return `<div class="step ${cls}"><div class="dot">${mark}</div><div><div class="label">${st.label}</div><div class="desc">${st.desc}</div></div></div>`;
+  }).join('');
+
+  let connectHtml = '';
+  if(needed.length && !allConnected){
+    const primary = needed.find(c => !done.includes(c));
+    const meta = CONNECTOR_META[primary] || { label:primary, desc:'' };
+    connectHtml = `
+      <div class="connect-card">
+        <div class="connect-head">
+          <div class="connect-icon">${gIcon()}</div>
+          <div><div style="font-size:16px;font-weight:700;font-family:'Inter',sans-serif">One quick connection</div>
+          <div class="sub" style="margin-top:2px">Link ${meta.label} ${meta.desc}. Takes about 20 seconds.</div></div>
+        </div>
+        <button class="gbtn" onclick="openConnect('${primary}')">${gIcon()} Connect ${meta.label}</button>
+        <div class="reassure"><span style="font-size:14px">🔒</span> Read-only access. We never post or change anything without you.</div>
+      </div>`;
+  } else if(allConnected){
+    connectHtml = `<div class="connect-card"><div class="gbtn done">✓ All accounts connected</div>
+      <div class="reassure" style="justify-content:center;margin-top:14px">You're all set — nothing else needed from you.</div></div>`;
   }
+
+  const nextHtml = isDone ? `
+    <div class="card next">
+      <h2>What happens now</h2>
+      <div class="next-item"><span class="ni">→</span><div>Your automation is live and running 24/7. You don't need to do anything.</div></div>
+      <div class="next-item"><span class="ni">→</span><div>We monitor it for you. If anything needs attention, we'll reach out first.</div></div>
+      <div class="next-item"><span class="ni">→</span><div>We'll check in after your first week to make sure everything feels right.</div></div>
+    </div>` : `
+    <div class="card next">
+      <h2>While you wait</h2>
+      <div class="next-item"><span class="ni">→</span><div>You don't need to stay on this page — we'll email you the moment it's live.</div></div>
+      <div class="next-item"><span class="ni">→</span><div>Most builds finish within 5 business days, often much sooner.</div></div>
+    </div>`;
 
   document.getElementById('content').innerHTML = `
     <div class="card">
-      <h1>Hey ${firstName}, your order is ${isDone ? 'live' : 'in progress'}</h1>
-      <div class="sub">${order.business_name || ''} ${order.plan ? '· '+order.plan+' plan' : ''}</div>
-      <span class="status-badge ${isDone?'done':'active'}">${isDone ? 'Complete' : STAGES[curIdx].label}</span>
+      <h1>${isDone ? `You're all set, ${firstName} 🎉` : `Hey ${firstName}, we're on it`}</h1>
+      <div class="sub">${order.business_name||''}${order.plan ? ' · '+order.plan+' plan' : ''}</div>
+      <span class="status-badge ${isDone?'done':'active'}">${isDone ? '✓ Complete' : `<span class="pulse"></span>${STAGES[curIdx].label}`}</span>
       <div class="steps">${stepsHtml}</div>
     </div>
-    ${connectorsHtml}
-    <div class="help">Questions? Just reply to your confirmation email and we'll help. <br>
-    This page updates automatically as your build progresses.</div>`;
+    ${connectHtml}
+    ${nextHtml}
+    <div class="help">Questions? Just reply to your confirmation email — a real person answers.<br>This page updates on its own as your build moves forward.</div>`;
 }
 
+function openConnect(connector){
+  const order = currentOrder || {};
+  const hook = MAKE_HOOK_BASE + (order.make_scenario_id ? order.make_scenario_id : 'your-connector');
+  const biz = order.business_name || 'your business';
+  const owner = order.customer_name || '';
+  const email = order.customer_email || '';
+  const code = `const CONFIG = {\n  WEBHOOK_URL:   '${hook}',\n  BUSINESS_NAME: '${biz}',\n  OWNER_NAME:    '${owner}',\n  OWNER_EMAIL:   '${email}',\n};`;
+  const meta = CONNECTOR_META[connector] || { label:connector };
+
+  document.getElementById('modal').innerHTML = `
+    <div class="modal-head"><span>Connect ${meta.label}</span><button class="modal-close" onclick="closeConnect()">×</button></div>
+    <div class="modal-body">
+      <div class="mstep"><div class="mnum">1</div><div>
+        <div class="mt">Open the secure connector</div>
+        <div class="md">This opens a Google page pre-loaded for ${biz}. Sign in with the Google account that manages your business.</div>
+        <a class="mlink" href="https://script.google.com/home/projects/create" target="_blank" rel="noopener">Open connector ↗</a>
+      </div></div>
+      <div class="mstep"><div class="mnum">2</div><div>
+        <div class="mt">Paste your setup code</div>
+        <div class="md">It's already filled in with your details. Copy it, paste it into the editor, and save.</div>
+        <div class="code" id="codeblock">${code.replace(/</g,'&lt;')}</div>
+        <button class="copy" id="copyBtn" onclick="copyCode()">⧉ Copy code</button>
+      </div></div>
+      <div class="mstep"><div class="mnum">3</div><div>
+        <div class="mt">Click Run, then Allow</div>
+        <div class="md">Google will ask permission to read your reviews. Click allow — that's it. We handle everything from there, automatically.</div>
+      </div></div>
+    </div>
+    <div class="modal-foot"><button class="done-btn" onclick="markConnected('${connector}')">I've connected it</button></div>`;
+  window._codeToCopy = code;
+  document.getElementById('overlay').classList.add('show');
+}
+function closeConnect(){ document.getElementById('overlay').classList.remove('show'); }
+function copyCode(){
+  if(navigator.clipboard) navigator.clipboard.writeText(window._codeToCopy||'');
+  const b = document.getElementById('copyBtn'); b.innerHTML = '✓ Copied'; setTimeout(()=>{ b.innerHTML='⧉ Copy code'; }, 1800);
+}
+async function markConnected(connector){
+  closeConnect();
+  // Optimistically update UI; backend reconciles when the first webhook payload arrives
+  const order = currentOrder;
+  if(order){
+    order.connectors_done = Array.from(new Set([...(order.connectors_done||[]), connector]));
+    render(order);
+  }
+}
+
+function celebrate(){
+  const colors = ['#d4500a','#f4874a','#1a7f37','#f5c518','#3c7fd4'];
+  for(let i=0;i<60;i++){
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left = Math.random()*100+'vw';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.borderRadius = Math.random()>.5 ? '50%' : '2px';
+    const dur = 2.5+Math.random()*2;
+    c.style.animation = `fall ${dur}s linear forwards`;
+    c.style.animationDelay = Math.random()*0.6+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), (dur+1)*1000);
+  }
+}
+const st = document.createElement('style');
+st.textContent = '@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.2}}';
+document.head.appendChild(st);
+
 loadOrder();
-setInterval(loadOrder, 20000); // refresh every 20s
+setInterval(loadOrder, 15000);
 </script>
 </body>
 </html>
