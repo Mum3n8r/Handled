@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're in — Handled</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#d4500a;--bg:#f5f0ea;--surface:#fdfaf6;--border:#e0d6cc;--text:#1e1612;--dim:#6b5d52}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;max-width:480px;width:100%;text-align:center}
+.logo{color:var(--orange);font-family:'Inter',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.4px;margin-bottom:32px;display:block}
+.check{width:64px;height:64px;border-radius:50%;background:#fff1e5;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:28px}
+h1{font-family:'Inter',sans-serif;font-size:26px;font-weight:700;letter-spacing:-.3px;margin-bottom:10px}
+.sub{color:var(--dim);font-size:16px;line-height:1.6;margin-bottom:32px}
+.steps{text-align:left;margin-bottom:32px}
+.step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step .num{width:24px;height:24px;border-radius:50%;background:#fff1e5;color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}
+.step .label{font-size:14px;font-weight:600;margin-bottom:2px}
+.step .desc{font-size:13px;color:var(--dim)}
+.order-btn{display:block;width:100%;padding:14px;background:var(--orange);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;font-family:'DM Sans',sans-serif;margin-bottom:12px;transition:background .15s}
+.order-btn:hover{background:#b8430a}
+.help{font-size:13px;color:var(--dim)}
+.help a{color:var(--orange);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <span class="logo">Handled</span>
+  <div class="check">🎉</div>
+  <h1>You're in.</h1>
+  <p class="sub">Payment confirmed. We're already on it — check your email for a confirmation with everything you need.</p>
+
+  <div class="steps">
+    <div class="step"><div class="num">1</div><div><div class="label">We scope your build</div><div class="desc">Our AI maps out exactly what to automate for your business</div></div></div>
+    <div class="step"><div class="num">2</div><div><div class="label">We build it</div><div class="desc">Your automation is set up and tested — usually within a day or two</div></div></div>
+    <div class="step"><div class="num">3</div><div><div class="label">You go live</div><div class="desc">One click to activate. We stay on to make sure everything runs right</div></div></div>
+  </div>
+
+  <a href="https://justhandled.net" class="order-btn" id="order-link">Check your order status →</a>
+  <p class="help">Questions? Reply to your confirmation email or reach us at <a href="mailto:hello@justhandled.net">hello@justhandled.net</a></p>
+</div>
+
+<script>
+// Try to get order ID from URL or localStorage and build the order link
+const params = new URLSearchParams(window.location.search);
+const orderId = params.get('order_id') || localStorage.getItem('handled_last_order_id');
+if (orderId) {
+  document.getElementById('order-link').href = 'https://justhandled.net/order/' + orderId;
+}
+
+// Confetti
+function confetti() {
+  const colors = ['#d4500a','#f4874a','#1a1a1a','#f5c518'];
+  for (let i = 0; i < 50; i++) {
+    const c = document.createElement('div');
+    c.style.cssText = `position:fixed;width:8px;height:8px;top:-10px;left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};pointer-events:none;animation:fall ${2+Math.random()*2}s linear ${Math.random()*.5}s forwards;z-index:999`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+const st = document.createElement('style');
+st.textContent = '@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:0}}';
+document.head.appendChild(st);
+confetti();
+</script>
+</body>
+</html>
