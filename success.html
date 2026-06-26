@@ -3,70 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You're in — Handled</title>
+<title>Payment confirmed — Handled</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--orange:#d4500a;--bg:#f5f0ea;--surface:#fdfaf6;--border:#e0d6cc;--text:#1e1612;--dim:#6b5d52}
+:root{--orange:#d4500a;--bg:#f5f0ea;--surface:#fdfaf6;--border:#e0d6cc;--text:#1e1612;--dim:#6b5d52;--ok:#15803d;--ok-bg:#dcfce7}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;max-width:480px;width:100%;text-align:center}
-.logo{color:var(--orange);font-family:'Inter',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.4px;display:block;margin-bottom:32px}
-.icon{font-size:52px;margin-bottom:22px}
-h1{font-family:'Inter',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.4px;margin-bottom:10px}
-.sub{color:var(--dim);font-size:15px;line-height:1.65;margin-bottom:32px;max-width:360px;margin-left:auto;margin-right:auto}
-.email-note{background:#fff7ed;border:1px solid rgba(212,80,10,.2);border-radius:12px;padding:16px;font-size:14px;color:var(--text);margin-bottom:28px;line-height:1.6}
-.email-note strong{color:var(--orange)}
-.steps{text-align:left;margin-bottom:32px;display:flex;flex-direction:column;gap:0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;max-width:500px;width:100%}
+.logo{color:var(--orange);font-family:'Inter',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.4px;display:block;margin-bottom:28px;text-align:center}
+.success-icon{width:72px;height:72px;border-radius:50%;background:var(--ok-bg);display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--ok);margin:0 auto 22px}
+h1{font-family:'Inter',sans-serif;font-size:26px;font-weight:800;letter-spacing:-.4px;text-align:center;margin-bottom:8px}
+.sub{color:var(--dim);font-size:15px;line-height:1.6;text-align:center;margin-bottom:28px;max-width:380px;margin-left:auto;margin-right:auto}
+.email-banner{background:#fff7ed;border:1px solid rgba(212,80,10,.2);border-radius:12px;padding:16px;font-size:14px;color:var(--text);margin-bottom:28px;line-height:1.55;display:flex;gap:12px;align-items:flex-start}
+.email-banner .icon{flex-shrink:0;font-size:20px}
+.email-banner strong{color:var(--orange)}
+.steps{margin-bottom:28px}
 .step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
 .step:last-child{border-bottom:none}
-.step-num{width:26px;height:26px;border-radius:50%;background:#fff7ed;color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}
-.step-label{font-size:14px;font-weight:600;margin-bottom:2px}
-.step-desc{font-size:13px;color:var(--dim)}
-.help{font-size:13px;color:var(--dim)}
+.step-icon{width:28px;height:28px;border-radius:50%;background:#fff7ed;color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-top:1px}
+.step-icon.done{background:var(--ok-bg);color:var(--ok)}
+.step-label{font-size:14px;font-weight:700;margin-bottom:3px}
+.step-desc{font-size:13px;color:var(--dim);line-height:1.5}
+.track-btn{display:block;width:100%;padding:14px;background:var(--orange);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;font-family:'DM Sans',sans-serif;margin-bottom:12px;transition:background .15s}
+.track-btn:hover{background:#b8430a}
+.track-btn[aria-disabled="true"]{opacity:.5;cursor:not-allowed;pointer-events:none}
+.help{font-size:13px;color:var(--dim);text-align:center;line-height:1.6}
 .help a{color:var(--orange);text-decoration:none}
+.detail-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:13px;color:var(--dim);border-bottom:1px solid var(--border)}
+.detail-row:last-child{border-bottom:none}
+.detail-row strong{color:var(--text);font-weight:600}
+.confetti{position:fixed;width:8px;height:8px;top:-10px;z-index:999;pointer-events:none}
 </style>
 </head>
 <body>
 <div class="card">
   <span class="logo">Handled</span>
-  <div class="icon">🎉</div>
-  <h1>You're in.</h1>
-  <p class="sub">Payment confirmed. We're already on it.</p>
+  <div class="success-icon">✓</div>
+  <h1>Payment confirmed.</h1>
+  <p class="sub" id="sub">We're on it. Your build starts immediately and will be live within 3 business days.</p>
 
-  <div class="email-note">
-    <strong>Check your email.</strong> We just sent you a confirmation with a link to track your order step by step — similar to a FedEx tracking page. Every update goes there in real time.
+  <div id="order-details"></div>
+
+  <div class="email-banner">
+    <span class="icon">📬</span>
+    <div><strong>Check your email.</strong> We just sent a confirmation with a direct link to track your build in real time, FedEx-style.</div>
   </div>
 
   <div class="steps">
     <div class="step">
-      <div class="step-num">1</div>
-      <div><div class="step-label">We scope your build</div><div class="step-desc">Our AI maps out exactly what to automate for your business</div></div>
+      <div class="step-icon done">✓</div>
+      <div><div class="step-label">Order received</div><div class="step-desc">Payment confirmed, intake data captured</div></div>
     </div>
     <div class="step">
-      <div class="step-num">2</div>
-      <div><div class="step-label">We build it</div><div class="step-desc">Your automation is set up and tested — usually within a business day or two</div></div>
+      <div class="step-icon">2</div>
+      <div><div class="step-label">Scoping your build</div><div class="step-desc">Our AI is mapping out exactly what to automate for your business</div></div>
     </div>
     <div class="step">
-      <div class="step-num">3</div>
-      <div><div class="step-label">You go live</div><div class="step-desc">One click to activate. We stay on to make sure everything runs right</div></div>
+      <div class="step-icon">3</div>
+      <div><div class="step-label">Building your automation</div><div class="step-desc">Setting up your workflows behind the scenes</div></div>
+    </div>
+    <div class="step">
+      <div class="step-icon">4</div>
+      <div><div class="step-label">Live and running</div><div class="step-desc">Your automation is active and working for you</div></div>
     </div>
   </div>
 
-  <p class="help">Questions? Reach us at <a href="mailto:hello@justhandled.net">hello@justhandled.net</a></p>
+  <a id="track-btn" href="#" aria-disabled="true" class="track-btn">Loading your tracking link...</a>
+  <p class="help">Questions? Reply to your confirmation email or reach us at <a href="mailto:hello@justhandled.net">hello@justhandled.net</a></p>
 </div>
 
 <script>
+const SB_URL  = 'https://vjwrsucmfqiathgcemzh.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqd3JzdWNtZnFpYXRoZ2NlbXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzIwMTIsImV4cCI6MjA5NzgwODAxMn0.g_9brBnhdLgWAfFedjlMX_m9tfImdYcajIH4QTpo-F8';
+
+const params = new URLSearchParams(window.location.search);
+const sessionId = params.get('session_id') || '';
+
+// Poll Supabase to find the order created from this checkout session
+async function findOrder() {
+  if (!sessionId) {
+    document.getElementById('track-btn').textContent = 'Open your order page →';
+    document.getElementById('track-btn').href = 'https://justhandled.net';
+    document.getElementById('track-btn').removeAttribute('aria-disabled');
+    return;
+  }
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/orders?stripe_session=eq.${encodeURIComponent(sessionId)}&select=order_id,customer_name,business_name,plan,amount`, {
+      headers: { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}` }
+    });
+    const data = await r.json();
+    if (data && data.length) {
+      const order = data[0];
+      const orderUrl = `https://justhandled.net/order/${order.order_id}`;
+      document.getElementById('track-btn').href = orderUrl;
+      document.getElementById('track-btn').textContent = 'Track your order →';
+      document.getElementById('track-btn').removeAttribute('aria-disabled');
+
+      // Show order details
+      let html = '';
+      if (order.business_name) html += `<div class="detail-row"><span>Business</span><strong>${order.business_name}</strong></div>`;
+      if (order.plan) html += `<div class="detail-row"><span>Plan</span><strong>${order.plan}</strong></div>`;
+      if (order.amount) html += `<div class="detail-row"><span>Total</span><strong>$${(order.amount/100).toFixed(2)}</strong></div>`;
+      if (order.order_id) html += `<div class="detail-row"><span>Order ID</span><strong style="font-family:ui-monospace,Menlo,monospace;font-size:11px">${order.order_id}</strong></div>`;
+      if (html) document.getElementById('order-details').innerHTML = `<div style="background:var(--bg);border-radius:10px;padding:14px 18px;margin-bottom:22px">${html}</div>`;
+
+      // Personalize subtitle
+      const firstName = (order.customer_name || '').split(' ')[0];
+      if (firstName) document.getElementById('sub').textContent = `Thanks ${firstName}, we're on it. Your build starts immediately and will be live within 3 business days.`;
+      return;
+    }
+  } catch (e) { console.error(e); }
+  // Retry up to 5 times since webhook may not have fired yet
+  attempts++;
+  if (attempts < 5) setTimeout(findOrder, 2000);
+  else {
+    document.getElementById('track-btn').textContent = 'Open your order page →';
+    document.getElementById('track-btn').href = 'https://justhandled.net';
+    document.getElementById('track-btn').removeAttribute('aria-disabled');
+  }
+}
+let attempts = 0;
+findOrder();
+
 // Confetti
-const colors = ['#d4500a','#f4874a','#1e1612','#f5c518'];
-for (let i = 0; i < 50; i++) {
+const colors = ['#d4500a','#f4874a','#15803d','#f5c518'];
+for (let i = 0; i < 60; i++) {
   const c = document.createElement('div');
-  const dur = 2 + Math.random() * 2;
-  c.style.cssText = `position:fixed;width:8px;height:8px;top:-10px;left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};pointer-events:none;animation:fall ${dur}s linear ${Math.random()*.4}s forwards;z-index:999`;
+  c.className = 'confetti';
+  c.style.left = Math.random()*100 + 'vw';
+  c.style.background = colors[Math.floor(Math.random()*colors.length)];
+  c.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+  const dur = 2.5 + Math.random()*2;
+  c.style.animation = `fall ${dur}s linear ${Math.random()*0.6}s forwards`;
   document.body.appendChild(c);
   setTimeout(() => c.remove(), (dur+1)*1000);
 }
 const st = document.createElement('style');
-st.textContent='@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:0}}';
+st.textContent = '@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:0}}';
 document.head.appendChild(st);
 </script>
 </body>

@@ -138,21 +138,22 @@ nav {
   display:inline-block;
   position:relative;
   height:1.1em;
-  vertical-align:middle;
+  vertical-align:baseline;
   overflow:hidden;
-  min-width:clamp(180px, 28vw, 340px);
+  min-width:clamp(160px, 22vw, 280px);
+  text-align:left;
 }
 .hero-h1-line1 {
-  display:block;
-  white-space:nowrap;
+  display:inline;
 }
 .hero-rotate-word {
   position:absolute;
   left:0; right:0;
-  text-align:center;
+  text-align:left;
   font-style:italic;
   color:var(--text-dim);
   font-weight:700;
+  white-space:nowrap;
   transition:transform 0.42s cubic-bezier(.77,0,.18,1), opacity 0.42s ease;
   will-change:transform,opacity;
 }
@@ -772,10 +773,17 @@ footer {
 }
 
 /* hero h1 responsive - prevent word breaking */
-@media (max-width: 600px) {
-  .hero h1 { font-size: clamp(32px, 9vw, 48px); }
-  .hero-rotate-wrap { min-width: clamp(140px, 60vw, 260px); }
+@media (max-width: 760px) {
+  .hero h1 { font-size: clamp(30px, 7vw, 48px); }
+  .hero-rotate-wrap { min-width: clamp(140px, 32vw, 220px); }
 }
+@media (max-width: 480px) {
+  .hero h1 { font-size: clamp(26px, 8vw, 36px); }
+  .hero-rotate-wrap { min-width: 130px; }
+}
+  .hero-rotate-wrap { min-width: 150px; max-width: 150px; }
+}
+
 </style>
 </head>
 <body>
@@ -796,7 +804,7 @@ footer {
   <div class="hero-glow"></div>
   <div class="hero">
     <div class="hero-tag"><span class="hero-tag-dot"></span>Guaranteed Setup in 3 Days</div>
-    <h1><span class="hero-h1-line1">Stop running <span class="hero-rotate-wrap" id="heroRotate"><span class="hero-rotate-word active">your salon</span><span class="hero-rotate-word below">your restaurant</span><span class="hero-rotate-word below">your HVAC company</span><span class="hero-rotate-word below">your law firm</span><span class="hero-rotate-word below">your gym</span><span class="hero-rotate-word below">your business</span></span></span><br>on <span class="glow">manual</span> <em>everything.</em></h1>
+    <h1><span class="hero-h1-line1">Stop running <span class="hero-rotate-wrap" id="heroRotate"><span class="hero-rotate-word active">your salon</span><span class="hero-rotate-word below">your shop</span><span class="hero-rotate-word below">your studio</span><span class="hero-rotate-word below">your firm</span><span class="hero-rotate-word below">your gym</span><span class="hero-rotate-word below">your office</span><span class="hero-rotate-word below">your business</span></span></span><br>on <span class="glow">manual</span> <em>everything.</em></h1>
     <p class="hero-sub">
       AI automation built and maintained for you.<br>
       <strong><span class="glow-sm">Zero technical work.</span> <span class="glow-sm">Guaranteed.</span></strong>

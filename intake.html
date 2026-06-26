@@ -613,16 +613,56 @@ function finish(intakeData) {
     cta.href = '/';
     cta.className = 'done-btn done-btn-custom';
   } else {
-    document.getElementById('done-sub').textContent = "All set. Taking you to secure checkout — your setup will be live within 3 business days.";
-    document.getElementById('done-redirect').textContent = 'Redirecting in 5 seconds...';
-    document.getElementById('done-cta').href = plan.stripeUrl;
-    document.getElementById('done-cta').textContent = 'Go to checkout →';
-    let t = 5;
-    const timer = setInterval(() => {
-      t--;
-      if (t <= 0) { clearInterval(timer); window.location.href = plan.stripeUrl; }
-      else { document.getElementById('done-redirect').textContent = 'Redirecting in ' + t + ' seconds...'; }
-    }, 1000);
+    document.getElementById('done-sub').textContent = "Generating your secure checkout link...";
+    document.getElementById('done-cta').textContent = 'Preparing checkout...';
+    document.getElementById('done-cta').href = '#';
+    document.getElementById('done-cta').setAttribute('aria-disabled', 'true');
+
+    // Generate a Stripe Checkout Session with full intake metadata
+    fetch(PROXY_BASE + '/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        plan: planKey,
+        email: intakeData.email || '',
+        name: intakeData.name || '',
+        business_name: intakeData.business_name || '',
+        business_type: intakeData.business_type || '',
+        biggest_pain: intakeData.biggest_pain || '',
+        tools_used: intakeData.tools_used || '',
+        source: 'chatbot',
+      }),
+    })
+    .then(r => r.json())
+    .then(d => {
+      if (d.checkout_url) {
+        document.getElementById('done-sub').textContent = "All set. Taking you to secure checkout — your setup will be live within 3 business days.";
+        document.getElementById('done-cta').href = d.checkout_url;
+        document.getElementById('done-cta').textContent = 'Go to checkout →';
+        document.getElementById('done-cta').removeAttribute('aria-disabled');
+        document.getElementById('done-redirect').textContent = 'Redirecting in 4 seconds...';
+        let t = 4;
+        const timer = setInterval(() => {
+          t--;
+          if (t <= 0) { clearInterval(timer); window.location.href = d.checkout_url; }
+          else { document.getElementById('done-redirect').textContent = 'Redirecting in ' + t + ' seconds...'; }
+        }, 1000);
+      } else {
+        // Fallback to static link if checkout creation failed
+        document.getElementById('done-sub').textContent = "All set. Click below to continue to checkout.";
+        document.getElementById('done-cta').href = plan.stripeUrl || 'https://justhandled.net';
+        document.getElementById('done-cta').textContent = 'Go to checkout →';
+        document.getElementById('done-cta').removeAttribute('aria-disabled');
+        document.getElementById('done-redirect').textContent = '';
+      }
+    })
+    .catch(err => {
+      document.getElementById('done-sub').textContent = "All set. Click below to continue to checkout.";
+      document.getElementById('done-cta').href = plan.stripeUrl || 'https://justhandled.net';
+      document.getElementById('done-cta').textContent = 'Go to checkout →';
+      document.getElementById('done-cta').removeAttribute('aria-disabled');
+      document.getElementById('done-redirect').textContent = '';
+    });
   }
 }
 
