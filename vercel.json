@@ -3,6 +3,10 @@
     { "source": "/order/:id", "destination": "/order.html" },
     { "source": "/order", "destination": "/order.html" },
     { "source": "/success", "destination": "/success.html" },
-    { "source": "/onboard", "destination": "/onboard.html" }
+    { "source": "/onboard", "destination": "/onboard.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/pricing", "destination": "/pricing.html" },
+    { "source": "/about", "destination": "/about.html" }
   ]
 }
