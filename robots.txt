@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /onboard
+Disallow: /success
+Disallow: /order/
+
+Sitemap: https://justhandled.net/sitemap.xml
