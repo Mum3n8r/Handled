@@ -421,8 +421,39 @@ nav {
     </div>
   </div>
 
+  <!-- Fallback form (shown when HP proxy is unreachable) -->
+  <div class="chat-area" id="fallback-area" style="display:none;overflow-y:auto;padding:40px;">
+    <div style="max-width:520px;margin:0 auto;">
+      <p style="font-size:15px;color:var(--text-dim);margin-bottom:28px;line-height:1.6;">Fill in a few quick details and we'll build exactly what you need. Checkout is right after.</p>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div>
+          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Your name</label>
+          <input id="fb-name" type="text" placeholder="Jane Smith" style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Email address</label>
+          <input id="fb-email" type="email" placeholder="jane@yourbiz.com" style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Type of business</label>
+          <input id="fb-biz" type="text" placeholder="e.g. HVAC, salon, cleaning service..." style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Biggest time drain</label>
+          <textarea id="fb-pain" rows="3" placeholder="e.g. Following up on leads, scheduling, responding to reviews..." style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;resize:vertical;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Tools you use (if any)</label>
+          <input id="fb-tools" type="text" placeholder="e.g. Google Sheets, QuickBooks, nothing yet..." style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div id="fb-error" style="display:none;color:#c0392b;font-size:13px;padding:10px 14px;background:rgba(192,57,43,0.08);border-radius:8px;border:1px solid rgba(192,57,43,0.2);"></div>
+        <button id="fb-submit" onclick="submitFallback()" style="background:var(--orange);color:#fff;border:none;padding:14px 24px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;box-shadow:0 2px 14px rgba(212,80,10,0.3);">Continue to checkout →</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Chat -->
-  <div class="chat-area">
+  <div class="chat-area" id="chat-area">
     <div class="chat-messages" id="chat-messages"></div>
 
     <div class="chat-done" id="chat-done">
@@ -444,8 +475,9 @@ nav {
 </div>
 
 <script>
-const PROXY = 'https://duvet-habitant-stimulate.ngrok-free.dev/chat';
-const INTAKE = 'https://duvet-habitant-stimulate.ngrok-free.dev/intake';
+const PROXY_BASE = 'https://duvet-habitant-stimulate.ngrok-free.dev';
+const PROXY  = PROXY_BASE + '/chat';
+const INTAKE = PROXY_BASE + '/intake';
 
 const PLANS = {
   starter: {
@@ -751,15 +783,84 @@ document.getElementById('chat-input').addEventListener('input', function() {
   this.style.height = Math.min(this.scrollHeight, 120) + 'px';
 });
 
+// ── Fallback form submit ──
+const SB_URL  = 'https://vjwrsucmfqiathgcemzh.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqd3JzdWNtZnFpYXRoZ2NlbXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzIwMTIsImV4cCI6MjA5NzgwODAxMn0.g_9brBnhdLgWAfFedjlMX_m9tfImdYcajIH4QTpo-F8';
+
+window.submitFallback = async function() {
+  const name  = document.getElementById('fb-name').value.trim();
+  const email = document.getElementById('fb-email').value.trim();
+  const biz   = document.getElementById('fb-biz').value.trim();
+  const pain  = document.getElementById('fb-pain').value.trim();
+  const tools = document.getElementById('fb-tools').value.trim();
+  const errEl = document.getElementById('fb-error');
+  errEl.style.display = 'none';
+
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    errEl.textContent = 'Please enter a valid email address.';
+    errEl.style.display = 'block'; return;
+  }
+  if (!pain) {
+    errEl.textContent = "Please describe what's eating your time — that's what we automate.";
+    errEl.style.display = 'block'; return;
+  }
+
+  const btn = document.getElementById('fb-submit');
+  btn.disabled = true; btn.textContent = 'Saving...';
+
+  try {
+    await fetch(`${SB_URL}/rest/v1/onboarding`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SB_ANON,
+        'Authorization': `Bearer ${SB_ANON}`,
+        'Prefer': 'return=minimal',
+      },
+      body: JSON.stringify({
+        email, name,
+        business_name: biz,
+        business_type: biz,
+        biggest_pain: pain,
+        tools_used: tools,
+        plan_interest: planKey,
+        scope_confirmed: false,
+        source: 'fallback_form',
+        ts: new Date().toISOString(),
+      }),
+    });
+  } catch(e) { /* best effort — still proceed to checkout */ }
+
+  btn.textContent = 'Done! Redirecting...';
+  setTimeout(() => { window.location.href = plan.stripeUrl || 'https://justhandled.net/#pricing'; }, 800);
+};
+
 // ── Start conversation ──
 (async function start() {
   setActive('business');
+
+  // Health-check the HP proxy with a short timeout
+  let proxyAlive = false;
+  try {
+    const hc = await Promise.race([
+      fetch(PROXY_BASE + '/health', { method: 'GET' }),
+      new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 4000)),
+    ]);
+    proxyAlive = hc.ok;
+  } catch(e) { proxyAlive = false; }
+
+  if (!proxyAlive) {
+    // Switch to fallback static form
+    document.getElementById('chat-area').style.display = 'none';
+    document.getElementById('fallback-area').style.display = 'flex';
+    return;
+  }
 
   // Load email context if ?email param present (from outreach CTA link)
   const incomingEmail = params.get('email') || '';
   if (incomingEmail) {
     try {
-      const ctxRes = await fetch('https://duvet-habitant-stimulate.ngrok-free.dev/context?email=' + encodeURIComponent(incomingEmail));
+      const ctxRes = await fetch(PROXY_BASE + '/context?email=' + encodeURIComponent(incomingEmail));
       if (ctxRes.ok) {
         const ctx = await ctxRes.json();
         if (ctx && ctx.business_name) emailContext = ctx;
@@ -769,12 +870,7 @@ document.getElementById('chat-input').addEventListener('input', function() {
 
   let opening;
   if (emailContext && emailContext.business_name) {
-    const hook = emailContext.pain_hook;
-    if (hook) {
-      opening = `Hey! Thanks for checking out Handled. To build the right setup for ${emailContext.business_name}, what is the most repetitive thing eating your time day to day?`;
-    } else {
-      opening = `Hey! Thanks for checking out Handled. To build the right setup for ${emailContext.business_name}, what is the most repetitive thing eating your time day to day?`;
-    }
+    opening = `Hey! Thanks for checking out Handled. To build the right setup for ${emailContext.business_name}, what is the most repetitive thing eating your time day to day?`;
   } else {
     opening = planKey === 'custom'
       ? "Hey! Happy to help figure out the right setup for you. What kind of business do you run?"

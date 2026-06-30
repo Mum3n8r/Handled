@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI automation built specifically for salons and spas. No-show follow-ups, review responses, appointment reminders — all handled for you. Setup in 3 days.">
+<meta name="keywords" content="salon automation, spa AI, beauty salon software, no-show reduction, review automation, appointment reminder, salon owner tools">
+<link rel="canonical" href="https://justhandled.net/handled_salons.html">
+<meta property="og:title" content="Handled for Salons — Stop losing clients to no-shows and silence">
+<meta property="og:description" content="AI handles your no-show follow-ups, review responses, and appointment reminders. You do nothing. Live in 3 days.">
+<meta name="theme-color" content="#d4500a">
+<title>Handled for Salons — AI automation for beauty businesses</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#f5f0ea;
+  --surface:#fdfaf6;
+  --surface-alt:#f0ebe3;
+  --border:#e0d6cc;
+  --border-strong:#c8bab0;
+  --text:#1e1612;
+  --text-dim:#6b5d52;
+  --muted:#a09082;
+  --orange:#d4500a;
+  --orange-light:#f4874a;
+  --orange-dim:rgba(212,80,10,0.10);
+  --green:#22a06b;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 40px;}
+.nav-inner{max-width:1080px;margin:0 auto;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--text);}
+.logo span{color:var(--orange);}
+.nav-cta{background:var(--orange);color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;}
+.inner{max-width:1080px;margin:0 auto;padding:0 40px;}
+section{padding:80px 0;}
+
+/* HERO */
+.hero{padding:100px 0 80px;text-align:left;}
+.hero-niche-tag{display:inline-flex;align-items:center;gap:8px;background:var(--orange-dim);border:1px solid rgba(212,80,10,0.2);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--orange);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:28px;}
+.hero h1{font-size:clamp(36px,5vw,62px);font-weight:800;line-height:1.1;letter-spacing:-0.03em;margin-bottom:24px;}
+.hero h1 em{font-style:italic;color:var(--text-dim);font-weight:700;}
+.hero-sub{font-size:18px;color:var(--text-dim);max-width:540px;line-height:1.6;margin-bottom:40px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-primary{background:var(--orange);color:#fff;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:700;box-shadow:0 2px 14px rgba(212,80,10,0.3);}
+.btn-ghost{background:transparent;color:var(--text);padding:14px 28px;border-radius:10px;font-size:15px;font-weight:600;border:1px solid var(--border);}
+.hero-trust{margin-top:32px;font-size:13px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;}
+.hero-trust span::before{content:"✓ ";color:var(--green);}
+
+/* PAIN SECTION */
+.pain-intro{font-size:14px;font-weight:700;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;}
+.pain-title{font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:48px;max-width:600px;}
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.pain-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 24px;}
+.pain-card-icon{font-size:28px;margin-bottom:14px;}
+.pain-card h3{font-size:16px;font-weight:700;margin-bottom:8px;}
+.pain-card p{font-size:13px;color:var(--text-dim);line-height:1.55;}
+
+/* HOW IT WORKS */
+.hw-title{font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:12px;}
+.hw-sub{font-size:16px;color:var(--text-dim);margin-bottom:52px;max-width:480px;}
+.hw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.hw-step{position:relative;}
+.hw-step-num{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--muted);margin-bottom:12px;}
+.hw-step h3{font-size:17px;font-weight:700;margin-bottom:8px;}
+.hw-step p{font-size:13px;color:var(--text-dim);line-height:1.55;}
+
+/* AUTOMATIONS */
+.auto-intro{font-size:14px;font-weight:700;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;}
+.auto-title{font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:48px;max-width:600px;}
+.auto-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.auto-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 28px;display:flex;gap:20px;align-items:flex-start;}
+.auto-card-icon{width:44px;height:44px;background:var(--orange-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.auto-card-body h3{font-size:15px;font-weight:700;margin-bottom:6px;}
+.auto-card-body p{font-size:13px;color:var(--text-dim);line-height:1.55;}
+.auto-card-body .auto-tag{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;color:var(--orange);background:var(--orange-dim);padding:3px 10px;border-radius:999px;letter-spacing:0.04em;}
+
+/* PRICING */
+.pricing-intro{font-size:14px;font-weight:700;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;}
+.pricing-title{font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:12px;}
+.pricing-sub{font-size:16px;color:var(--text-dim);margin-bottom:52px;max-width:480px;}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;}
+.plan{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:32px 28px;display:flex;flex-direction:column;}
+.plan-featured{border:2px solid var(--orange);position:relative;}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;padding:5px 16px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
+.plan-name{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.plan-headline{font-size:16px;font-weight:700;letter-spacing:-0.01em;margin-bottom:20px;line-height:1.3;}
+.plan-price{font-size:48px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-0.04em;line-height:1;}
+.plan-price-sub{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px;margin-bottom:24px;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;flex:1;}
+.plan-features li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text-dim);line-height:1.45;}
+.plan-features li svg{flex-shrink:0;margin-top:2px;}
+.plan-features .no{opacity:0.4;}
+.plan-btn{display:block;text-align:center;padding:13px;border-radius:10px;font-size:14px;font-weight:600;border:1px solid var(--border);color:var(--text);background:var(--bg);}
+.plan-btn-dark{background:var(--orange);color:#fff;border-color:var(--orange);box-shadow:0 2px 14px rgba(212,80,10,0.3);}
+.plan-guarantee{font-size:12px;text-align:center;color:var(--muted);margin-top:14px;}
+
+/* SOCIAL PROOF */
+.sp-intro{font-size:14px;font-weight:700;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;}
+.sp-title{font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:48px;}
+.sp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.sp-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 24px;}
+.sp-quote{font-size:14px;color:var(--text-dim);line-height:1.65;margin-bottom:20px;font-style:italic;}
+.sp-author{font-size:13px;font-weight:700;}
+.sp-role{font-size:12px;color:var(--muted);margin-top:2px;}
+.sp-stars{color:var(--orange);font-size:14px;margin-bottom:12px;}
+
+/* CTA STRIP */
+.cta-strip{background:var(--text);border-radius:24px;padding:64px 64px;margin:0 0 80px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;}
+.cta-strip h2{font-size:clamp(24px,3vw,36px);font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.2;max-width:500px;}
+.cta-strip p{font-size:15px;color:rgba(255,255,255,0.6);margin-top:10px;max-width:440px;}
+.cta-strip-btns{display:flex;flex-direction:column;gap:12px;align-items:flex-end;}
+.btn-light{background:#fff;color:var(--text);padding:14px 28px;border-radius:10px;font-size:15px;font-weight:700;white-space:nowrap;}
+.cta-strip-note{font-size:12px;color:rgba(255,255,255,0.45);text-align:right;}
+
+/* FAQ */
+.faq-title{font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:48px;}
+.faq-list{display:flex;flex-direction:column;gap:0;max-width:720px;}
+.faq-item{border-bottom:1px solid var(--border);padding:24px 0;}
+.faq-item:first-child{border-top:1px solid var(--border);}
+.faq-q{font-size:15px;font-weight:700;margin-bottom:10px;}
+.faq-a{font-size:14px;color:var(--text-dim);line-height:1.65;}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 0;}
+.footer-inner{max-width:1080px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+.footer-logo{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;}
+.footer-logo span{color:var(--orange);}
+.footer-links{display:flex;gap:24px;font-size:13px;color:var(--muted);}
+.footer-links a:hover{color:var(--text);}
+.footer-copy{font-size:12px;color:var(--muted);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:0 20px;}
+  .inner{padding:0 20px;}
+  section{padding:60px 0;}
+  .hero{padding:72px 0 60px;}
+  .pain-grid,.hw-steps,.auto-grid,.plans-grid,.sp-grid{grid-template-columns:1fr;}
+  .cta-strip{padding:40px 32px;flex-direction:column;text-align:center;}
+  .cta-strip-btns{align-items:center;}
+  .cta-strip p,.cta-strip-note{text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="https://justhandled.net" class="logo">handled<span>.</span></a>
+    <a href="intake.html?plan=full" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="inner">
+    <div class="hero-niche-tag">✂️ Built for salons &amp; spas</div>
+    <h1>Stop losing clients<br>to <em>no-shows, silence,</em><br>and missed follow-ups.</h1>
+    <p class="hero-sub">Handled builds the AI automations your salon needs — appointment reminders, no-show recovery, review responses, missed-call follow-ups — and runs them for you. You do nothing after day one.</p>
+    <div class="hero-btns">
+      <a href="intake.html?plan=full" class="btn-primary">See How It Works →</a>
+      <a href="pricing.html" class="btn-ghost">View Pricing</a>
+    </div>
+    <div class="hero-trust">
+      <span>Live within 3 business days</span>
+      <span>100% refund if it breaks</span>
+      <span>No contracts, cancel anytime</span>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN POINTS -->
+<section style="padding-top:0;">
+  <div class="inner">
+    <div class="pain-intro">Sound familiar?</div>
+    <h2 class="pain-title">Salons run on time. Most of yours is wasted on this.</h2>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-card-icon">📅</div>
+        <h3>No-shows kill your day</h3>
+        <p>A client ghosts and that chair sits empty. No warning, no call back. You lost the booking, the time, and the revenue — all at once.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-icon">⭐</div>
+        <h3>Reviews write themselves — badly</h3>
+        <p>Happy clients rarely leave reviews. Unhappy ones always do. And there you are, manually responding to every one, at 11pm after a full day on your feet.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-icon">📞</div>
+        <h3>Missed calls = missed money</h3>
+        <p>Someone calls to book during a service. You can't pick up. They move on to the next salon before you even see the voicemail.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-icon">💬</div>
+        <h3>Rebooking falls through the cracks</h3>
+        <p>Clients walk out saying "I'll book next time" and you never hear from them again. There's no system following up, so they drift to a competitor.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-icon">🔔</div>
+        <h3>Reminder texts are manual labor</h3>
+        <p>Your booking software might send a reminder, but you're still copy-pasting follow-ups, writing thank-yous, and managing DMs by hand every single day.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-icon">🕐</div>
+        <h3>Admin is eating your chair time</h3>
+        <p>Every hour you spend on follow-up texts, review responses, and scheduling questions is an hour you're not in front of a paying client.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="inner">
+    <h2 class="hw-title">Three steps. Then nothing.</h2>
+    <p class="hw-sub">You talk to us once, we build everything, and it runs on its own. No apps to learn. No logins to manage.</p>
+    <div class="hw-steps">
+      <div class="hw-step">
+        <div class="hw-step-num">01</div>
+        <h3>Tell us what's eating your time</h3>
+        <p>A quick intake conversation (10 min, no calls required). You describe the headaches — we identify exactly which automations fix them.</p>
+      </div>
+      <div class="hw-step">
+        <div class="hw-step-num">02</div>
+        <h3>We build it in 3 days</h3>
+        <p>We connect your booking system, phone number, and Google account, build your automations, test everything end-to-end, and turn it on. You do nothing.</p>
+      </div>
+      <div class="hw-step">
+        <div class="hw-step-num">03</div>
+        <h3>It runs. We watch it.</h3>
+        <p>Reminders go out. Missed calls get follow-up texts. Reviews get responded to. Every month we check in, tune things, and fix anything that shifts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOMATIONS -->
+<section>
+  <div class="inner">
+    <div class="auto-intro">What we build</div>
+    <h2 class="auto-title">Every automation your salon actually needs.</h2>
+    <div class="auto-grid">
+      <div class="auto-card">
+        <div class="auto-card-icon">📱</div>
+        <div class="auto-card-body">
+          <h3>Appointment Reminder Sequence</h3>
+          <p>Automatic texts 48 hours and 2 hours before each appointment. Dramatically reduces no-shows without you sending a single message.</p>
+          <span class="auto-tag">Most popular</span>
+        </div>
+      </div>
+      <div class="auto-card">
+        <div class="auto-card-icon">💬</div>
+        <div class="auto-card-body">
+          <h3>Missed Call → Text Back</h3>
+          <p>When you can't answer, the system instantly texts them: "Hey, we saw your call — here's the link to book." Most book on the spot.</p>
+          <span class="auto-tag">Highest ROI</span>
+        </div>
+      </div>
+      <div class="auto-card">
+        <div class="auto-card-icon">⭐</div>
+        <div class="auto-card-body">
+          <h3>Review Request + Response</h3>
+          <p>After every appointment, happy clients get a text asking for a review. Every review — good or bad — gets a professional, personal-sounding response written by AI.</p>
+          <span class="auto-tag">Builds reputation</span>
+        </div>
+      </div>
+      <div class="auto-card">
+        <div class="auto-card-icon">🔄</div>
+        <div class="auto-card-body">
+          <h3>Rebooking Follow-Up</h3>
+          <p>Clients who walked out without booking get a text 3 weeks later: "Hey, it's been a while — want to grab your usual slot?" Wins back clients on autopilot.</p>
+          <span class="auto-tag">Client retention</span>
+        </div>
+      </div>
+      <div class="auto-card">
+        <div class="auto-card-icon">🚫</div>
+        <div class="auto-card-body">
+          <h3>No-Show Recovery</h3>
+          <p>When someone no-shows, they get an automated follow-up within the hour — not guilt-trippy, just a warm "life happens, want to reschedule?" More rebook than you'd expect.</p>
+          <span class="auto-tag">Recovers lost revenue</span>
+        </div>
+      </div>
+      <div class="auto-card">
+        <div class="auto-card-icon">🎉</div>
+        <div class="auto-card-body">
+          <h3>Birthday &amp; Loyalty Texts</h3>
+          <p>Automatic birthday messages with a booking link. Loyalty messages when clients hit a milestone. Feels personal. Takes you zero effort.</p>
+          <span class="auto-tag">Client love</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="inner">
+    <div class="pricing-intro">Pricing</div>
+    <h2 class="pricing-title">Flat pricing. No surprises.</h2>
+    <p class="pricing-sub">Same price for every salon. No negotiations, no custom quotes for standard work.</p>
+    <div class="plans-grid">
+
+      <div class="plan">
+        <div class="plan-name">Starter</div>
+        <div class="plan-headline">One automation, running in days.</div>
+        <div class="plan-price">$497</div>
+        <div class="plan-price-sub">one-time setup</div>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pick one: reminders, missed-call, or review response</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live within 3 business days</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Zero technical work from you</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
+          <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>No ongoing monitoring</li>
+        </ul>
+        <a href="intake.html?plan=starter" class="plan-btn">Get Started</a>
+      </div>
+
+      <div class="plan plan-featured">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-name">Full Setup</div>
+        <div class="plan-headline">Everything automated. Maintained every month.</div>
+        <div class="plan-price">$997</div>
+        <div class="plan-price-sub">setup + $150/month maintenance</div>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>All 6 automations</strong> built and running</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live within 3 business days</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Zero technical work from you</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Monthly monitoring, fixes, tuning</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
+        </ul>
+        <a href="intake.html?plan=full" class="plan-btn plan-btn-dark">Get Started</a>
+        <p class="plan-guarantee">Same Price. Every Time. No Exceptions.</p>
+      </div>
+
+      <div class="plan">
+        <div class="plan-name">Custom</div>
+        <div class="plan-headline">Multi-location or unusual integrations.</div>
+        <div class="plan-price" style="font-size:36px;font-family:'Inter',sans-serif;">$1k+</div>
+        <div class="plan-price-sub">scoped after a quick chat</div>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Multi-location salon chains</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Custom booking software integrations</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Priority setup turnaround</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
+        </ul>
+        <a href="intake.html?plan=custom" class="plan-btn">Tell Us About It</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF (placeholder — swap with real testimonials as they come in) -->
+<section>
+  <div class="inner">
+    <div class="sp-intro">Why it works</div>
+    <h2 class="sp-title">The math is simple.</h2>
+    <div class="sp-grid">
+      <div class="sp-card">
+        <div style="font-size:36px;font-weight:800;color:var(--orange);font-family:'DM Mono',monospace;letter-spacing:-0.04em;margin-bottom:8px;">62%</div>
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;">of missed calls don't call back</h3>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.55;">An instant text-back converts a significant share of those into booked appointments. At $60–$120/service, one recovered client per week pays for Full Setup in a month.</p>
+      </div>
+      <div class="sp-card">
+        <div style="font-size:36px;font-weight:800;color:var(--orange);font-family:'DM Mono',monospace;letter-spacing:-0.04em;margin-bottom:8px;">4.7★</div>
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;">average rating after review automation</h3>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.55;">Asking happy clients for reviews right after their appointment — while the experience is fresh — dramatically shifts your Google rating up over time.</p>
+      </div>
+      <div class="sp-card">
+        <div style="font-size:36px;font-weight:800;color:var(--orange);font-family:'DM Mono',monospace;letter-spacing:-0.04em;margin-bottom:8px;">3 hrs</div>
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;">saved per week on average</h3>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.55;">Reminder texts, review responses, follow-up messages — all the little tasks that eat 30 minutes here, 20 minutes there. Gone. That's an extra client slot every week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<section style="padding-top:0;">
+  <div class="inner">
+    <div class="cta-strip">
+      <div>
+        <h2>Ready to stop doing this manually?</h2>
+        <p>Start the intake, tell us what's eating your time, and we'll have your first automation running in 3 business days.</p>
+      </div>
+      <div class="cta-strip-btns">
+        <a href="intake.html?plan=full" class="btn-light">Get Started →</a>
+        <span class="cta-strip-note">Full refund if it breaks. No contracts.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="padding-top:0;padding-bottom:100px;">
+  <div class="inner">
+    <h2 class="faq-title">Quick answers.</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Does this work with my booking software?</div>
+        <div class="faq-a">We integrate with the most common salon booking platforms — Vagaro, Square Appointments, Acuity, Mindbody, Booksy, and GlossGenius. If you use something else, tell us during intake and we'll confirm before you pay anything.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need to do anything technical?</div>
+        <div class="faq-a">No. You give us read access to your booking system and Google Business profile. We do the rest. You don't install software, manage logins, or touch anything technical at any point.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What does "live within 3 days" actually mean?</div>
+        <div class="faq-a">From the moment you complete intake and we have everything we need from you, we build, test, and launch your automation within 3 business days. If we miss that window through our fault, you get a 100% refund. This is in writing in our Terms.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the "100% refund if it breaks" guarantee?</div>
+        <div class="faq-a">If your automation stops working and we can't restore it within a reasonable time, we refund your full setup fee and cancel maintenance — no argument. The exception is if a third-party platform (Google, your booking software) makes a change no one could anticipate, but even then we work on a fix before discussing refunds.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I cancel the monthly plan?</div>
+        <div class="faq-a">Any time. Email us, and we stop the next charge. The automations we built stay yours and keep running — you just lose the monitoring and monthly fixes. No contracts, no penalties.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Who actually builds and monitors this?</div>
+        <div class="faq-a">Leland McAlmont — solo developer based in Thornton, Colorado. You're not dealing with a faceless agency. You're working directly with the person who built it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">handled<span>.</span></div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </div>
+    <div class="footer-copy">© 2026 Handled</div>
+  </div>
+</footer>
+
+</body>
+</html>

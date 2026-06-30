@@ -163,10 +163,18 @@ async function submitIntake() {
     source: 'post_payment_intake',
   };
 
+  const SB_URL  = 'https://vjwrsucmfqiathgcemzh.supabase.co';
+  const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqd3JzdWNtZnFpYXRoZ2NlbXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzIwMTIsImV4cCI6MjA5NzgwODAxMn0.g_9brBnhdLgWAfFedjlMX_m9tfImdYcajIH4QTpo-F8';
+
   try {
-    const r = await fetch('https://duvet-habitant-stimulate.ngrok-free.dev/intake', {
+    const r = await fetch(`${SB_URL}/rest/v1/onboarding`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SB_ANON,
+        'Authorization': `Bearer ${SB_ANON}`,
+        'Prefer': 'return=minimal',
+      },
       body: JSON.stringify(payload),
     });
     if (!r.ok) throw new Error('server error');
