@@ -649,22 +649,30 @@ function finish(intakeData) {
     document.getElementById('done-cta').href = '#';
     document.getElementById('done-cta').setAttribute('aria-disabled', 'true');
 
-    // Generate a Stripe Checkout Session with full intake metadata
-    fetch(PROXY_BASE + '/create-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        plan: planKey,
-        email: intakeData.email || '',
-        name: intakeData.name || '',
-        business_name: intakeData.business_name || '',
-        business_type: intakeData.business_type || '',
-        biggest_pain: intakeData.biggest_pain || '',
-        tools_used: intakeData.tools_used || '',
-        source: 'chatbot',
-      }),
-    })
-    .then(r => r.json())
+    // Try to generate a Stripe Checkout Session via HP backend
+    const checkoutPayload = {
+      plan: planKey,
+      email: intakeData.email || '',
+      name: intakeData.name || '',
+      business_name: intakeData.business_name || '',
+      business_type: intakeData.business_type || '',
+      biggest_pain: intakeData.biggest_pain || '',
+      tools_used: intakeData.tools_used || '',
+      source: 'chatbot',
+    };
+
+    const checkoutAttempt = proxyAlive
+      ? Promise.race([
+          fetch(PROXY_BASE + '/create-checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(checkoutPayload),
+          }).then(r => r.json()),
+          new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 6000)),
+        ])
+      : Promise.reject(new Error('proxy offline'));
+
+    checkoutAttempt
     .then(d => {
       if (d.checkout_url) {
         document.getElementById('done-sub').textContent = "All set. Taking you to secure checkout — your setup will be live within 3 business days.";
@@ -678,21 +686,25 @@ function finish(intakeData) {
           if (t <= 0) { clearInterval(timer); window.location.href = d.checkout_url; }
           else { document.getElementById('done-redirect').textContent = 'Redirecting in ' + t + ' seconds...'; }
         }, 1000);
-      } else {
-        // Fallback to static link if checkout creation failed
-        document.getElementById('done-sub').textContent = "All set. Click below to continue to checkout.";
-        document.getElementById('done-cta').href = plan.stripeUrl || 'https://justhandled.net';
-        document.getElementById('done-cta').textContent = 'Go to checkout →';
-        document.getElementById('done-cta').removeAttribute('aria-disabled');
-        document.getElementById('done-redirect').textContent = '';
-      }
+      } else { throw new Error('no url'); }
     })
-    .catch(err => {
-      document.getElementById('done-sub').textContent = "All set. Click below to continue to checkout.";
-      document.getElementById('done-cta').href = plan.stripeUrl || 'https://justhandled.net';
-      document.getElementById('done-cta').textContent = 'Go to checkout →';
+    .catch(() => {
+      // HP is offline or checkout failed — save lead to Supabase and show manual payment screen
+      fetch(`${SB_URL}/rest/v1/onboarding`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_ANON, 'Authorization': `Bearer ${SB_ANON}`, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ ...intakeData, source: 'intake_chat_no_checkout', scope_confirmed: false }),
+      }).catch(() => {});
+
+      const firstName = (intakeData.name || '').split(' ')[0] || 'there';
+      const price = planKey === 'starter' ? '$497' : '$997';
+      document.getElementById('done-sub').textContent =
+        `Thanks ${firstName}! We saved your info. We'll email a secure payment link to ${intakeData.email} within the hour — no action needed from you.`;
+      document.getElementById('done-cta').textContent = 'Back to home';
+      document.getElementById('done-cta').href = '/';
       document.getElementById('done-cta').removeAttribute('aria-disabled');
-      document.getElementById('done-redirect').textContent = '';
+      document.getElementById('done-cta').className = 'done-btn done-btn-custom';
+      document.getElementById('done-redirect').textContent = `${plan.label} · ${price}`;
     });
   }
 }

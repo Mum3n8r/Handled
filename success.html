@@ -117,9 +117,12 @@ async function findOrder() {
   attempts++;
   if (attempts < 5) setTimeout(findOrder, 2000);
   else {
-    document.getElementById('track-btn').textContent = 'Open your order page →';
-    document.getElementById('track-btn').href = 'https://justhandled.net';
+    // Order not found — payment still went through, just show clean confirmation
+    document.getElementById('sub').textContent = "Your payment went through. We're on it — your build starts immediately and will be live within 3 business days.";
+    document.getElementById('track-btn').textContent = 'Check your email for your tracking link';
+    document.getElementById('track-btn').href = 'mailto:';
     document.getElementById('track-btn').removeAttribute('aria-disabled');
+    document.getElementById('track-btn').style.background = 'var(--text)';
   }
 }
 let attempts = 0;

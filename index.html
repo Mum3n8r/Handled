@@ -1261,13 +1261,15 @@ function toggleFaq(qEl) {
 
 // ── INLINE CHAT ──
 (function(){
-  const PROXY = 'https://duvet-habitant-stimulate.ngrok-free.dev/chat';
-  const INTAKE = 'https://duvet-habitant-stimulate.ngrok-free.dev/intake';
-  let msgs=[], started=false, done=false;
+  const PROXY_BASE = 'https://duvet-habitant-stimulate.ngrok-free.dev';
+  const PROXY  = PROXY_BASE + '/chat';
+  const INTAKE = PROXY_BASE + '/intake';
+  let msgs=[], started=false, done=false, proxyAlive=false;
 
   const messagesEl = document.getElementById('custom-chat-messages');
   const inputEl = document.getElementById('custom-chat-input');
   const sendBtn = document.getElementById('custom-chat-send');
+  const chatPanel = document.getElementById('custom-chat-panel');
 
   function appendMsg(text, role){
     const el=document.createElement('div');
@@ -1276,7 +1278,6 @@ function toggleFaq(qEl) {
     messagesEl.appendChild(el);
     messagesEl.scrollTop=messagesEl.scrollHeight;
   }
-
   function showTyping(){
     const el=document.createElement('div');
     el.className='hd-msg hd-msg-typing'; el.id='hd-typing';
@@ -1286,20 +1287,17 @@ function toggleFaq(qEl) {
   }
   function removeTyping(){ const t=document.getElementById('hd-typing'); if(t)t.remove(); }
 
-  // Auto-start chat when section comes into view
-  const chatPanel = document.getElementById('custom-chat-panel');
-  new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting&&!started){
-        started=true;
-        setTimeout(()=>{
-          const opening="Hey! What kind of business do you run?";
-          msgs.push({role:'assistant',content:opening});
-          appendMsg(opening,'ai');
-        },400);
-      }
-    });
-  },{threshold:0.3}).observe(chatPanel);
+  function showFallback(){
+    // Replace the chat panel with a clean CTA when HP is offline
+    chatPanel.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;padding:32px;text-align:center;">
+        <div style="font-size:36px;">⚡</div>
+        <div style="font-size:18px;font-weight:700;letter-spacing:-0.02em;">Ready to get started?</div>
+        <div style="font-size:14px;color:var(--text-dim);line-height:1.6;max-width:280px;">Tell us about your business and we'll build the right automation for you.</div>
+        <a href="/intake.html?plan=full" style="background:var(--orange);color:#fff;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 2px 14px rgba(212,80,10,0.3);transition:all 0.15s;">Get started →</a>
+        <a href="/intake.html?plan=starter" style="font-size:13px;color:var(--text-dim);text-decoration:none;border-bottom:1px solid var(--border);">Starter plan ($497) →</a>
+      </div>`;
+  }
 
   async function callProxy(messages){
     const r=await fetch(PROXY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages})});
@@ -1330,7 +1328,7 @@ function toggleFaq(qEl) {
   }
 
   window.hdSend=function(){
-    if(done)return;
+    if(done||!proxyAlive)return;
     if(!started){
       started=true;
       const opening="Hey! What kind of business do you run?";
@@ -1355,6 +1353,26 @@ function toggleFaq(qEl) {
 
   inputEl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();hdSend();}});
   inputEl.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';});
+
+  // Health check — run on load, show fallback immediately if proxy is down
+  Promise.race([
+    fetch(PROXY_BASE + '/health', {method:'GET'}),
+    new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),4000)),
+  ]).then(r=>{ proxyAlive=r.ok; if(!r.ok) showFallback(); }).catch(()=>{ showFallback(); });
+
+  // Auto-start chat when section scrolls into view (only if proxy is alive)
+  new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting&&!started&&proxyAlive){
+        started=true;
+        setTimeout(()=>{
+          const opening="Hey! What kind of business do you run?";
+          msgs.push({role:'assistant',content:opening});
+          appendMsg(opening,'ai');
+        },400);
+      }
+    });
+  },{threshold:0.3}).observe(chatPanel);
 })();
 </script>
 </body>
