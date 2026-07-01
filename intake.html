@@ -81,7 +81,7 @@ nav {
 .main {
   flex:1;
   display:grid;
-  grid-template-columns:340px 1fr;
+  grid-template-columns:1fr;
   min-height:0;
 }
 
@@ -374,53 +374,6 @@ nav {
 
 <div class="main">
 
-  <!-- Sidebar checklist -->
-  <div class="sidebar">
-    <div class="sidebar-title">What we need to know</div>
-
-    <div class="checklist-item active" id="ci-business">
-      <div class="ci-icon">🏢</div>
-      <div class="ci-text">
-        <div class="ci-label">Your business</div>
-        <div class="ci-value" id="cv-business"></div>
-      </div>
-    </div>
-
-    <div class="checklist-item" id="ci-pain">
-      <div class="ci-icon">⏱</div>
-      <div class="ci-text">
-        <div class="ci-label">Biggest time drain</div>
-        <div class="ci-value" id="cv-pain"></div>
-      </div>
-    </div>
-
-    <div class="checklist-item" id="ci-tools">
-      <div class="ci-icon">🔧</div>
-      <div class="ci-text">
-        <div class="ci-label">Tools you use</div>
-        <div class="ci-value" id="cv-tools"></div>
-      </div>
-    </div>
-
-    <div class="checklist-item" id="ci-contact">
-      <div class="ci-icon">📬</div>
-      <div class="ci-text">
-        <div class="ci-label">Your contact info</div>
-        <div class="ci-value" id="cv-contact"></div>
-      </div>
-    </div>
-
-    <div class="sidebar-progress">
-      <div class="progress-label">
-        <span>Progress</span>
-        <span id="progress-pct">0 / 4</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
-    </div>
-  </div>
-
   <!-- Fallback form (shown when HP proxy is unreachable) -->
   <div class="chat-area" id="fallback-area" style="display:none;overflow-y:auto;padding:40px;">
     <div style="max-width:520px;margin:0 auto;">
@@ -539,7 +492,7 @@ const checkItems = ['business','pain','tools','contact'];
 function setActive(key) {
   checkItems.forEach(k => {
     const el = document.getElementById('ci-' + k);
-    if (!collected[k]) {
+    if (el && !collected[k]) {
       el.classList.toggle('active', k === key);
     }
   });
@@ -548,10 +501,14 @@ function markDone(key, value) {
   if (collected[key]) return;
   collected[key] = value;
   const el = document.getElementById('ci-' + key);
-  el.classList.remove('active');
-  el.classList.add('done');
-  el.querySelector('.ci-icon').textContent = '✓';
-  document.getElementById('cv-' + key).textContent = value;
+  if (el) {
+    el.classList.remove('active');
+    el.classList.add('done');
+    const icon = el.querySelector('.ci-icon');
+    if (icon) icon.textContent = '✓';
+    const cv = document.getElementById('cv-' + key);
+    if (cv) cv.textContent = value;
+  }
   updateProgress();
   // set next active
   const idx = checkItems.indexOf(key);
@@ -561,8 +518,10 @@ function markDone(key, value) {
 }
 function updateProgress() {
   const n = Object.values(collected).filter(Boolean).length;
-  document.getElementById('progress-pct').textContent = n + ' / 4';
-  document.getElementById('progress-fill').style.width = (n / 4 * 100) + '%';
+  const pct = document.getElementById('progress-pct');
+  if (pct) pct.textContent = n + ' / 4';
+  const fill = document.getElementById('progress-fill');
+  if (fill) fill.style.width = (n / 4 * 100) + '%';
 }
 
 // ── Parse AI reply for checklist signals ──

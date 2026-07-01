@@ -154,8 +154,15 @@ nav {
   height:1.1em;
   vertical-align:baseline;
   overflow:hidden;
-  min-width:clamp(160px, 22vw, 280px);
   text-align:left;
+}
+/* invisible sizer keeps the wrap exactly as wide as the longest word at every screen size */
+.hero-rotate-sizer {
+  visibility:hidden;
+  display:inline-block;
+  font-style:italic;
+  font-weight:700;
+  white-space:nowrap;
 }
 .hero-h1-line1 {
   display:inline;
@@ -789,11 +796,9 @@ footer {
 /* hero h1 responsive - prevent word breaking */
 @media (max-width: 760px) {
   .hero h1 { font-size: clamp(30px, 7vw, 48px); }
-  .hero-rotate-wrap { min-width: clamp(140px, 32vw, 220px); }
 }
 @media (max-width: 480px) {
   .hero h1 { font-size: clamp(26px, 8vw, 36px); }
-  .hero-rotate-wrap { min-width: 130px; }
 }
 
 </style>
@@ -816,7 +821,7 @@ footer {
   <div class="hero-glow"></div>
   <div class="hero">
     <div class="hero-tag"><span class="hero-tag-dot"></span>Guaranteed Setup in 3 Days</div>
-    <h1><span class="hero-h1-line1">Stop running <span class="hero-rotate-wrap" id="heroRotate"><span class="hero-rotate-word active">your salon</span><span class="hero-rotate-word below">your shop</span><span class="hero-rotate-word below">your studio</span><span class="hero-rotate-word below">your firm</span><span class="hero-rotate-word below">your gym</span><span class="hero-rotate-word below">your office</span><span class="hero-rotate-word below">your business</span></span></span><br>on <span class="glow">manual</span> <em>everything.</em></h1>
+    <h1><span class="hero-h1-line1">Stop running <span class="hero-rotate-wrap" id="heroRotate"><span class="hero-rotate-sizer" aria-hidden="true">your business</span><span class="hero-rotate-word active">your salon</span><span class="hero-rotate-word below">your shop</span><span class="hero-rotate-word below">your studio</span><span class="hero-rotate-word below">your firm</span><span class="hero-rotate-word below">your gym</span><span class="hero-rotate-word below">your office</span><span class="hero-rotate-word below">your business</span></span></span><br>on <span class="glow">manual</span> <em>everything.</em></h1>
     <p class="hero-sub">
       AI automation built and maintained for you.<br>
       <strong><span class="glow-sm">Zero technical work.</span> <span class="glow-sm">Guaranteed.</span></strong>
@@ -963,6 +968,7 @@ footer {
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Zero technical work from you</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>Monthly security + monitoring</strong></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>2 adjustments or additions per month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Cancel maintenance anytime</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
         </ul>
         <div class="plan-guarantee">Same Price. Every Time. No Exceptions.</div>
@@ -972,11 +978,11 @@ footer {
         <div class="plan-name">Custom</div>
         <div class="plan-headline">Larger scope or unique requirements.</div>
         <div class="plan-price" style="font-size:36px;font-family:'Inter',sans-serif;">Let's Talk</div>
-        <div class="plan-price-sub">scoped to your needs</div>
+        <div class="plan-price-sub">typically $1k+ &middot; scoped after a quick call</div>
         <ul class="plan-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Multi-location or multi-system</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Integrations with existing software</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Custom maintenance plan</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Optional $200/mo maintenance</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Priority turnaround</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
         </ul>
@@ -1024,7 +1030,7 @@ footer {
     <canvas id="scale-canvas"></canvas>
   </div>
   <div class="weigh-cta">
-    <a href="intake.html?plan=full" class="btn-primary">Get it Handled &mdash; $150</a>
+    <a href="intake.html?plan=full" class="btn-primary">Get it Handled &rarr;</a>
   </div>
 </div>
 
@@ -1062,7 +1068,7 @@ footer {
         <div id="custom-chat-done">
           <div class="hd-done-icon">✅</div>
           <div class="hd-done-title">You're all set.</div>
-          <div class="hd-done-sub">We'll reach out to <span id="hd-done-email"></span> shortly to scope out your setup.</div>
+          <div class="hd-done-sub">We'll reach out to <span id="hd-done-email">you</span> shortly to scope out your setup.</div>
         </div>
         <div id="custom-chat-input-row">
           <textarea id="custom-chat-input" placeholder="What kind of business do you run?" rows="1"></textarea>
