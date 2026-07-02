@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -33,6 +33,7 @@ body {
   flex-direction:column;
   min-height:100vh;
 }
+a { color:inherit; }
 
 /* ── NAV ── */
 nav {
@@ -77,708 +78,394 @@ nav {
 .plan-desc { font-size:13px; color:var(--text-dim); }
 .plan-desc strong { color:var(--text); }
 
-/* ── MAIN LAYOUT ── */
-.main {
+/* ── SMART FORM ── */
+.sf-main {
   flex:1;
-  display:grid;
-  grid-template-columns:1fr;
-  min-height:0;
-}
-
-/* ── SIDEBAR ── */
-.sidebar {
-  background:var(--surface);
-  border-right:1px solid var(--border);
-  padding:32px 28px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  overflow-y:auto;
-}
-.sidebar-title {
-  font-size:11px;
-  font-family:'DM Mono',monospace;
-  color:var(--muted);
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  margin-bottom:8px;
-}
-.checklist-item {
   display:flex;
   align-items:flex-start;
-  gap:12px;
-  padding:14px 16px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:var(--bg);
-  transition:all 0.3s ease;
+  justify-content:center;
+  padding:9vh 24px 48px;
 }
-.checklist-item.done {
-  background:var(--green-dim);
-  border-color:rgba(21,128,61,0.25);
+.sf-card {
+  width:100%;
+  max-width:620px;
 }
-.checklist-item.active {
-  background:var(--surface);
-  border-color:var(--orange);
-  box-shadow:0 0 0 3px var(--orange-dim);
-}
-.ci-icon {
-  width:28px; height:28px;
-  border-radius:8px;
-  background:var(--surface-alt);
-  border:1px solid var(--border);
+.sf-progress {
   display:flex;
   align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  font-size:13px;
-  transition:all 0.3s ease;
+  gap:10px;
+  margin-bottom:36px;
 }
-.checklist-item.done .ci-icon {
-  background:var(--green-dim);
-  border-color:rgba(21,128,61,0.3);
-}
-.checklist-item.active .ci-icon {
-  background:var(--orange-dim);
-  border-color:rgba(212,80,10,0.3);
-}
-.ci-text { flex:1; min-width:0; }
-.ci-label { font-size:13px; font-weight:700; margin-bottom:2px; transition:color 0.3s; }
-.checklist-item.done .ci-label { color:var(--green); }
-.checklist-item.active .ci-label { color:var(--orange); }
-.ci-value {
-  font-size:12px;
-  color:var(--text-dim);
-  line-height:1.4;
-  font-style:italic;
-  opacity:0;
-  max-height:0;
-  overflow:hidden;
-  transition:opacity 0.3s ease, max-height 0.3s ease;
-}
-.checklist-item.done .ci-value { opacity:1; max-height:60px; }
-
-.sidebar-progress {
-  margin-top:auto;
-  padding-top:20px;
-  border-top:1px solid var(--border);
-}
-.progress-label {
-  display:flex;
-  justify-content:space-between;
-  font-size:11px;
-  font-family:'DM Mono',monospace;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:0.1em;
-  margin-bottom:8px;
-}
-.progress-bar {
+.sf-progress-bar {
+  flex:1;
   height:4px;
-  background:var(--border);
-  border-radius:2px;
+  background:var(--surface-alt);
+  border-radius:4px;
   overflow:hidden;
 }
-.progress-fill {
+.sf-progress-fill {
   height:100%;
-  background:linear-gradient(90deg, var(--orange), var(--orange-light));
-  border-radius:2px;
-  transition:width 0.5s ease;
   width:0%;
+  background:var(--orange);
+  border-radius:4px;
+  transition:width 0.45s cubic-bezier(.77,0,.18,1);
 }
-
-/* ── CHAT AREA ── */
-.chat-area {
-  display:flex;
-  flex-direction:column;
-  min-height:0;
-  position:relative;
+.sf-progress-label {
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+  white-space:nowrap;
 }
-
-.chat-messages {
-  flex:1;
-  overflow-y:auto;
-  padding:32px 40px;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-  scroll-behavior:smooth;
+.sf-question {
+  font-family:'Inter',sans-serif;
+  font-size:clamp(22px, 3.4vw, 30px);
+  font-weight:700;
+  letter-spacing:-0.02em;
+  line-height:1.3;
+  margin-bottom:26px;
+  min-height:1.3em;
 }
-.chat-messages::-webkit-scrollbar { width:4px; }
-.chat-messages::-webkit-scrollbar-track { background:transparent; }
-.chat-messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
-
-.msg {
-  display:flex;
-  gap:12px;
-  align-items:flex-end;
-  animation:msgIn 0.22s ease;
-  max-width:680px;
+.sf-step { animation:sfIn 0.35s ease both; }
+@keyframes sfIn {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
 }
-@keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-.msg-ai { align-self:flex-start; }
-.msg-user { align-self:flex-end; flex-direction:row-reverse; }
-
-.msg-avatar {
-  width:32px; height:32px;
-  border-radius:50%;
-  background:var(--orange-dim);
-  border:1px solid rgba(212,80,10,0.2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:14px;
-  flex-shrink:0;
-}
-.msg-bubble {
-  padding:12px 16px;
-  border-radius:16px;
-  font-size:14px;
-  line-height:1.65;
-  max-width:520px;
-}
-.msg-ai .msg-bubble {
+.sf-input {
+  width:100%;
+  padding:16px 18px;
+  border:1px solid var(--border-strong);
+  border-radius:12px;
+  font-size:16px;
+  font-family:'DM Sans',sans-serif;
   background:var(--surface);
-  border:1px solid var(--border);
   color:var(--text);
-  border-bottom-left-radius:4px;
+  outline:none;
+  resize:none;
+  transition:border-color 0.15s, box-shadow 0.15s;
 }
-.msg-user .msg-bubble {
-  background:var(--orange);
-  color:#fff;
-  border-bottom-right-radius:4px;
-}
-.msg-typing {
-  background:var(--surface);
-  border:1px solid var(--border);
-  padding:14px 18px;
-  border-radius:16px;
-  border-bottom-left-radius:4px;
-}
-.dots { display:flex; gap:4px; align-items:center; }
-.dots span {
-  width:6px; height:6px;
-  background:var(--muted);
-  border-radius:50%;
-  animation:dot 1.2s infinite;
-}
-.dots span:nth-child(2) { animation-delay:0.2s; }
-.dots span:nth-child(3) { animation-delay:0.4s; }
-@keyframes dot { 0%,80%,100%{transform:scale(0.8);opacity:0.4} 40%{transform:scale(1.1);opacity:1} }
-
-/* done state */
-.chat-done {
+.sf-input:focus { border-color:var(--orange); box-shadow:0 0 0 3px var(--orange-dim); }
+.sf-hint { font-size:13px; color:var(--muted); margin-top:10px; min-height:1.2em; }
+.sf-error {
   display:none;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  flex:1;
-  padding:48px 40px;
-  text-align:center;
-  gap:16px;
+  color:#c0392b;
+  font-size:13px;
+  padding:10px 14px;
+  margin-top:12px;
+  background:rgba(192,57,43,0.08);
+  border:1px solid rgba(192,57,43,0.2);
+  border-radius:8px;
 }
-.done-icon { font-size:48px; }
-.done-title { font-family:'Inter',sans-serif; font-size:26px; font-weight:800; letter-spacing:-0.03em; }
-.done-sub { font-size:16px; color:var(--text-dim); line-height:1.6; max-width:420px; }
-.done-redirect { font-size:13px; color:var(--muted); font-family:'DM Mono',monospace; margin-top:8px; }
-.done-btn {
-  display:inline-block;
+.sf-actions {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-top:22px;
+}
+.sf-next {
   background:var(--orange);
   color:#fff;
-  padding:14px 32px;
+  border:none;
+  padding:14px 30px;
   border-radius:10px;
   font-size:15px;
   font-weight:700;
-  margin-top:8px;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer;
   transition:all 0.15s;
   box-shadow:0 2px 14px rgba(212,80,10,0.3);
-  text-decoration:none;
 }
-.done-btn:hover { background:#b84208; transform:translateY(-1px); }
-.done-btn-custom {
-  background:transparent;
+.sf-next:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 4px 18px rgba(212,80,10,0.38); }
+.sf-next:disabled { opacity:0.6; cursor:default; }
+.sf-enter-tip { font-size:12px; color:var(--muted); }
+.sf-enter-tip kbd {
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:1px 5px;
+  background:var(--surface);
+}
+.sf-trust {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:44px;
+  font-size:12px;
+  color:var(--muted);
+}
+.sf-trust svg { flex-shrink:0; }
+
+/* ── DONE CARD ── */
+.sf-done {
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:14px;
+  padding-top:4vh;
+  animation:sfIn 0.35s ease both;
+}
+.done-icon { font-size:40px; }
+.done-title { font-family:'Inter',sans-serif; font-size:26px; font-weight:800; letter-spacing:-0.02em; }
+.done-sub { font-size:15px; color:var(--text-dim); line-height:1.6; max-width:440px; }
+.done-redirect { font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); min-height:1.2em; }
+.done-btn {
+  display:inline-block;
+  margin-top:8px;
+  background:var(--orange);
+  color:#fff;
+  padding:14px 30px;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:700;
+  text-decoration:none;
+  transition:all 0.15s;
+  box-shadow:0 2px 14px rgba(212,80,10,0.3);
+}
+.done-btn:hover { transform:translateY(-1px); }
+.done-btn[aria-disabled="true"] { opacity:0.6; pointer-events:none; }
+.done-btn-quiet {
+  background:var(--surface);
   color:var(--text);
   border:1px solid var(--border-strong);
   box-shadow:none;
 }
-.done-btn-custom:hover { background:var(--border); transform:translateY(-1px); }
+.done-btn-quiet:hover { background:var(--surface-alt); }
 
-/* ── INPUT BAR ── */
-.chat-input-bar {
-  padding:20px 40px;
-  border-top:1px solid var(--border);
-  background:var(--surface);
-  display:flex;
-  gap:10px;
-  align-items:flex-end;
-  flex-shrink:0;
-}
-#chat-input {
-  flex:1;
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:12px 16px;
-  font-size:14px;
-  font-family:'DM Sans',sans-serif;
-  color:var(--text);
-  resize:none;
-  outline:none;
-  transition:border-color 0.15s;
-  max-height:120px;
-  line-height:1.5;
-}
-#chat-input:focus { border-color:var(--orange); }
-#chat-input::placeholder { color:var(--muted); }
-#send-btn {
-  width:44px; height:44px;
-  background:var(--orange);
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:all 0.15s;
-  flex-shrink:0;
-}
-#send-btn:hover { background:#b84208; transform:translateY(-1px); }
-#send-btn:disabled { opacity:0.38; cursor:not-allowed; transform:none; }
-#send-btn svg { width:18px; height:18px; color:#fff; }
-
-/* ── RESPONSIVE ── */
-@media (max-width:760px) {
-  nav, .plan-header { padding:0 16px; }
-  .main { grid-template-columns:1fr; }
-  .sidebar { display:none; }
-  .chat-messages { padding:20px 16px; }
-  .chat-input-bar { padding:14px 16px; }
-  .msg-bubble { max-width:90vw; }
+@media (max-width:600px) {
+  nav, .plan-header { padding-left:20px; padding-right:20px; }
+  .sf-main { padding-top:5vh; }
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="nav-brand">Handled</a>
-  <a href="/" class="nav-back">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-    Back
-  </a>
+  <a class="nav-brand" href="/">Handled</a>
+  <a class="nav-back" href="/">&larr; Back</a>
 </nav>
 
-<div class="plan-header" id="planHeader">
+<div class="plan-header">
   <div class="plan-badge" id="planBadge">Loading...</div>
   <div class="plan-desc" id="planDesc"></div>
 </div>
 
-<div class="main">
+<div class="sf-main">
+  <div class="sf-card">
 
-  <!-- Fallback form (shown when HP proxy is unreachable) -->
-  <div class="chat-area" id="fallback-area" style="display:none;overflow-y:auto;padding:40px;">
-    <div style="max-width:520px;margin:0 auto;">
-      <p style="font-size:15px;color:var(--text-dim);margin-bottom:28px;line-height:1.6;">Fill in a few quick details and we'll build exactly what you need. Checkout is right after.</p>
-      <div style="display:flex;flex-direction:column;gap:16px;">
-        <div>
-          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Your name</label>
-          <input id="fb-name" type="text" placeholder="Jane Smith" style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
+    <div id="sf-form">
+      <div class="sf-progress">
+        <div class="sf-progress-bar"><div class="sf-progress-fill" id="sf-fill"></div></div>
+        <div class="sf-progress-label" id="sf-count">1 of 5</div>
+      </div>
+
+      <div class="sf-step" id="sf-step">
+        <div class="sf-question" id="sf-question"></div>
+        <textarea class="sf-input" id="sf-input" rows="2" placeholder=""></textarea>
+        <div class="sf-hint" id="sf-hint"></div>
+        <div class="sf-error" id="sf-error"></div>
+        <div class="sf-actions">
+          <button class="sf-next" id="sf-next" onclick="submitAnswer()">Continue &rarr;</button>
+          <span class="sf-enter-tip">press <kbd>Enter</kbd></span>
         </div>
-        <div>
-          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Email address</label>
-          <input id="fb-email" type="email" placeholder="jane@yourbiz.com" style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
-        </div>
-        <div>
-          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Type of business</label>
-          <input id="fb-biz" type="text" placeholder="e.g. HVAC, salon, cleaning service..." style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
-        </div>
-        <div>
-          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Biggest time drain</label>
-          <textarea id="fb-pain" rows="3" placeholder="e.g. Following up on leads, scheduling, responding to reviews..." style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;resize:vertical;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-        </div>
-        <div>
-          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:6px;">Tools you use (if any)</label>
-          <input id="fb-tools" type="text" placeholder="e.g. Google Sheets, QuickBooks, nothing yet..." style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
-        </div>
-        <div id="fb-error" style="display:none;color:#c0392b;font-size:13px;padding:10px 14px;background:rgba(192,57,43,0.08);border-radius:8px;border:1px solid rgba(192,57,43,0.2);"></div>
-        <button id="fb-submit" onclick="submitFallback()" style="background:var(--orange);color:#fff;border:none;padding:14px 24px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;box-shadow:0 2px 14px rgba(212,80,10,0.3);">Continue to checkout →</button>
+      </div>
+
+      <div class="sf-trust">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Secure checkout via Stripe &middot; live in 3 business days &middot; full refund guarantee</span>
       </div>
     </div>
-  </div>
 
-  <!-- Chat -->
-  <div class="chat-area" id="chat-area">
-    <div class="chat-messages" id="chat-messages"></div>
-
-    <div class="chat-done" id="chat-done">
-      <div class="done-icon">✅</div>
-      <div class="done-title">You're all set.</div>
-      <div class="done-sub" id="done-sub">Thanks for the info. Taking you to checkout now.</div>
+    <div class="sf-done" id="sf-done">
+      <div class="done-icon">&#9989;</div>
+      <div class="done-title" id="done-title">You're all set.</div>
+      <div class="done-sub" id="done-sub"></div>
       <div class="done-redirect" id="done-redirect"></div>
-      <a href="#" class="done-btn" id="done-cta">Continue to checkout →</a>
+      <a href="#" class="done-btn" id="done-cta">Continue to checkout &rarr;</a>
     </div>
 
-    <div class="chat-input-bar" id="input-bar">
-      <textarea id="chat-input" placeholder="Type your answer..." rows="1"></textarea>
-      <button id="send-btn" onclick="sendMsg()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>
-      </button>
-    </div>
   </div>
-
 </div>
 
 <script>
-const PROXY_BASE = 'https://duvet-habitant-stimulate.ngrok-free.dev';
-const PROXY  = PROXY_BASE + '/chat';
-const INTAKE = PROXY_BASE + '/intake';
+// ── Config ──
+const SB_URL  = 'https://vjwrsucmfqiathgcemzh.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqd3JzdWNtZnFpYXRoZ2NlbXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzIwMTIsImV4cCI6MjA5NzgwODAxMn0.g_9brBnhdLgWAfFedjlMX_m9tfImdYcajIH4QTpo-F8';
+const API = '/api/intake-next';
 
 const PLANS = {
   starter: {
     label: 'Starter Plan',
     desc: '<strong>$497 one-time</strong> — one automation, live in 3 days',
-    stripeUrl: 'https://justhandled.net/#pricing',
-    systemNote: 'The customer has selected the Starter plan ($497 one-time setup, one automation of their choice). Do NOT ask which plan they want — they already chose. Skip plan selection entirely.',
+    stripeUrl: 'https://buy.stripe.com/6oU9ASeEpd5aa0d7Qx8Ra03',
   },
   full: {
     label: 'Full Setup Plan',
     desc: '<strong>$997 setup + $150/month</strong> — full automation suite, maintained monthly',
-    stripeUrl: 'https://justhandled.net/#pricing',
-    systemNote: 'The customer has selected the Full Setup plan ($997 setup + $150/month maintenance, full automation suite). Do NOT ask which plan they want — they already chose. Skip plan selection entirely.',
+    stripeUrl: 'https://buy.stripe.com/3cIcN453P2qwgoBc6N8Ra04',
   },
   custom: {
     label: 'Custom Work',
     desc: '<strong>Custom scope</strong> — larger or more complex requirements',
     stripeUrl: null,
-    systemNote: 'The customer is inquiring about custom work (larger scope, multi-location, or unusual requirements). Do NOT ask which plan they want — they already chose custom. Skip plan selection entirely. At the end, instead of directing them to Stripe, let them know the team will reach out within 24 hours.',
   },
 };
 
-const SYSTEM_PROMPT_BASE = `You are the intake assistant for Handled, a done-for-you AI automation service for local businesses. Your job is to have a short, warm conversation to understand the customer's situation before they check out.
+const params  = new URLSearchParams(location.search);
+const planKey = PLANS[params.get('plan')] ? params.get('plan') : 'full';
+const plan    = PLANS[planKey];
 
-{PLAN_NOTE}
-
-You need to collect exactly these four things, one at a time, in a natural conversational way:
-1. Their business type (e.g. HVAC, cleaning, landscaping, salon, dental office, etc.)
-2. Their biggest operational pain point — what's eating their time most (e.g. following up on leads, scheduling, responding to reviews, data entry)
-3. What tools or software they currently use (e.g. Google Sheets, QuickBooks, Jobber, ServiceTitan — or just "nothing yet")
-4. Their name and email address for setup coordination
-
-Keep responses short — 1 to 3 sentences max. Be warm and direct. Do not ask multiple questions at once. Do not ask about their plan — that is already decided.
-
-As you learn each piece of info, confirm it briefly before moving on.
-
-Once you have all four pieces, give a warm 2-sentence closing that summarizes what you'll be automating for them, then output this exact JSON on its own line with no other text around it:
-INTAKE_DONE:{"name":"...","email":"...","business_type":"...","biggest_pain":"...","tools_used":"...","plan_interest":"..."}
-
-For plan_interest use the plan key: starter, full, or custom.
-Do not output the INTAKE_DONE line until you have all four pieces of information.`;
-
-// ── State ──
-const params = new URLSearchParams(window.location.search);
-const planKey = params.get('plan') || 'full';
-const plan = PLANS[planKey] || PLANS.full;
-
-let messages = [];
-let collected = { business: null, pain: null, tools: null, contact: null };
-let done = false;
-let emailContext = null;  // populated from ?email param on load
-
-// ── Init plan header ──
 document.getElementById('planBadge').textContent = plan.label;
 document.getElementById('planDesc').innerHTML = plan.desc;
 
-// ── Checklist helpers ──
-const checkItems = ['business','pain','tools','contact'];
-function setActive(key) {
-  checkItems.forEach(k => {
-    const el = document.getElementById('ci-' + k);
-    if (el && !collected[k]) {
-      el.classList.toggle('active', k === key);
-    }
-  });
-}
-function markDone(key, value) {
-  if (collected[key]) return;
-  collected[key] = value;
-  const el = document.getElementById('ci-' + key);
-  if (el) {
-    el.classList.remove('active');
-    el.classList.add('done');
-    const icon = el.querySelector('.ci-icon');
-    if (icon) icon.textContent = '✓';
-    const cv = document.getElementById('cv-' + key);
-    if (cv) cv.textContent = value;
-  }
-  updateProgress();
-  // set next active
-  const idx = checkItems.indexOf(key);
-  for (let i = idx + 1; i < checkItems.length; i++) {
-    if (!collected[checkItems[i]]) { setActive(checkItems[i]); break; }
-  }
-}
+// ── State ──
+const FIELD_KEYS = ['business_type','biggest_pain','tools_used','name','email'];
+let fields = { business_type:null, biggest_pain:null, tools_used:null, name:null, email:null };
+let transcript = [];
+let smart = true;          // flips false the first time the API fails
+let questionCount = 0;
+const MAX_QUESTIONS = 8;   // hard cap — after this, force-finish with static questions
+let currentQuestion = '';
+let currentStaticKey = null;
+let busy = false;
+
+// email arriving from outreach links prefills and skips that question
+const incomingEmail = (params.get('email') || '').trim();
+if (incomingEmail && /\S+@\S+\.\S+/.test(incomingEmail)) fields.email = incomingEmail;
+
+const STATIC_QS = [
+  { key:'business_type', q:'What kind of business do you run?', hint:'e.g. HVAC, salon, cleaning service, dental office' },
+  { key:'biggest_pain',  q:"What's eating the most of your time each week?", hint:'e.g. chasing leads, booking back-and-forth, answering the same questions' },
+  { key:'tools_used',    q:'What tools or software do you run things on, if any?', hint:'e.g. Google Sheets, QuickBooks, Jobber — or nothing yet' },
+  { key:'name',          q:"What's your name?", hint:'' },
+  { key:'email',         q:'Best email for setup coordination?', hint:'you@yourbusiness.com' },
+];
+
+// ── UI helpers ──
+const qEl    = document.getElementById('sf-question');
+const inEl   = document.getElementById('sf-input');
+const hintEl = document.getElementById('sf-hint');
+const errEl  = document.getElementById('sf-error');
+const btnEl  = document.getElementById('sf-next');
+const stepEl = document.getElementById('sf-step');
+
+function filledCount() { return FIELD_KEYS.filter(k => fields[k]).length; }
+function firstMissing() { return STATIC_QS.find(s => !fields[s.key]) || null; }
+
 function updateProgress() {
-  const n = Object.values(collected).filter(Boolean).length;
-  const pct = document.getElementById('progress-pct');
-  if (pct) pct.textContent = n + ' / 4';
-  const fill = document.getElementById('progress-fill');
-  if (fill) fill.style.width = (n / 4 * 100) + '%';
+  const n = filledCount();
+  document.getElementById('sf-fill').style.width = (n / 5 * 100) + '%';
+  document.getElementById('sf-count').textContent = Math.min(n + 1, 5) + ' of 5';
 }
 
-// ── Parse AI reply for checklist signals ──
-// The AI is asked to confirm each piece — we scan its reply for patterns
-function parseReplyForChecklist(reply) {
-  const r = reply.toLowerCase();
-  // Business
-  if (!collected.business) {
-    const biz = reply.match(/(?:you(?:'re| run| own| operate)|sounds like you(?:'re| have)|got it[^.]*(?:run|own|operate)|(?:salon|hvac|cleaning|landscaping|dental|restaurant|gym|plumbing|law|medical|retail|spa|barbershop|contractor|electrician|roofer|painting|moving|photography|bakery|food)[^.]*)/i);
-    if (biz) markDone('business', biz[0].slice(0,60).trim());
-  }
-  // Pain
-  if (!collected.pain && collected.business) {
-    const pain = reply.match(/(?:follow.?up|booking|scheduling|review|data entry|manual|repetitive|eating your time|time.?sink|back.?and.?forth)[^.]{0,80}/i);
-    if (pain) markDone('pain', pain[0].slice(0,60).trim());
-  }
-  // Tools
-  if (!collected.tools && collected.pain) {
-    const tools = reply.match(/(?:google sheets|quickbooks|jobber|servicetitan|housecall|square|mindbody|acuity|calendly|salesforce|hubspot|nothing yet|no tools|no software|spreadsheet)[^.]{0,60}/i);
-    if (tools) markDone('tools', tools[0].slice(0,60).trim());
-  }
-  // Contact
-  if (!collected.contact && collected.tools) {
-    const email = reply.match(/\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}\b/);
-    if (email) markDone('contact', email[0]);
-  }
+function showQuestion(q, hint, staticKey) {
+  currentQuestion = q;
+  currentStaticKey = staticKey || null;
+  stepEl.style.animation = 'none';
+  void stepEl.offsetWidth; // restart animation
+  stepEl.style.animation = '';
+  qEl.textContent = q;
+  hintEl.textContent = hint || '';
+  errEl.style.display = 'none';
+  inEl.value = '';
+  inEl.placeholder = '';
+  const isEmailQ = /email/i.test(q);
+  inEl.setAttribute('inputmode', isEmailQ ? 'email' : 'text');
+  updateProgress();
+  setBusy(false);
+  inEl.focus();
 }
 
-// ── Chat UI ──
-function appendMsg(text, role) {
-  const wrap = document.createElement('div');
-  wrap.className = 'msg msg-' + role;
-  if (role === 'ai') {
-    wrap.innerHTML = `<div class="msg-avatar">⚡</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>`;
-  } else {
-    wrap.innerHTML = `<div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+function setBusy(b) {
+  busy = b;
+  btnEl.disabled = b;
+  inEl.disabled = b;
+  btnEl.innerHTML = b ? '&hellip;' : 'Continue &rarr;';
+}
+
+function showError(msg) {
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+}
+
+// ── Flow ──
+window.submitAnswer = async function() {
+  if (busy) return;
+  const answer = inEl.value.trim();
+  if (!answer) { showError('A quick answer here helps us build the right thing.'); return; }
+
+  // validate inline when the answer should contain an email
+  const needEmail = currentStaticKey === 'email' || (/email/i.test(currentQuestion) && !fields.email);
+  const emailMatch = answer.match(/\S+@\S+\.\S+/);
+  if (needEmail && !emailMatch) { showError('Please include a valid email address.'); return; }
+
+  errEl.style.display = 'none';
+  setBusy(true);
+  transcript.push({ q: currentQuestion, a: answer });
+  questionCount++;
+
+  // static mode: assign the answer directly
+  if (!smart || questionCount >= MAX_QUESTIONS) {
+    if (currentStaticKey) fields[currentStaticKey] = answer;
+    if (currentStaticKey === 'email' && emailMatch) fields.email = emailMatch[0];
+    return advanceStatic();
   }
-  document.getElementById('chat-messages').appendChild(wrap);
-  scroll();
-}
-function showTyping() {
-  const el = document.createElement('div');
-  el.className = 'msg msg-ai'; el.id = 'typing-indicator';
-  el.innerHTML = `<div class="msg-avatar">⚡</div><div class="msg-typing"><div class="dots"><span></span><span></span><span></span></div></div>`;
-  document.getElementById('chat-messages').appendChild(el);
-  scroll();
-}
-function removeTyping() { const t=document.getElementById('typing-indicator'); if(t)t.remove(); }
-function scroll() { const m=document.getElementById('chat-messages'); m.scrollTop=m.scrollHeight; }
 
-// ── Finish ──
-function finish(intakeData) {
-  done = true;
-  // Mark all done
-  if (!collected.contact && intakeData.email) markDone('contact', intakeData.email);
-  if (!collected.business && intakeData.business_type) markDone('business', intakeData.business_type);
-  if (!collected.pain && intakeData.biggest_pain) markDone('pain', intakeData.biggest_pain);
-  if (!collected.tools && intakeData.tools_used) markDone('tools', intakeData.tools_used);
-
-  // Send to intake endpoint
-  intakeData.plan_interest = planKey;
-  intakeData.ts = new Date().toISOString();
-  if (planKey === 'custom') { fetch(INTAKE, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(intakeData) }).catch(()=>{}); }
-
-  // Show done state
-  const messagesEl = document.getElementById('chat-messages');
-  const inputBar = document.getElementById('input-bar');
-  const doneEl = document.getElementById('chat-done');
-
-  messagesEl.style.display = 'none';
-  inputBar.style.display = 'none';
-  doneEl.style.display = 'flex';
-
-  if (planKey === 'custom') {
-    document.getElementById('done-sub').textContent = "We have everything we need. Leland will reach out to " + intakeData.email + " within 24 hours to scope out your setup.";
-    document.getElementById('done-redirect').textContent = '';
-    const cta = document.getElementById('done-cta');
-    cta.textContent = 'Back to home';
-    cta.href = '/';
-    cta.className = 'done-btn done-btn-custom';
-  } else {
-    document.getElementById('done-sub').textContent = "Generating your secure checkout link...";
-    document.getElementById('done-cta').textContent = 'Preparing checkout...';
-    document.getElementById('done-cta').href = '#';
-    document.getElementById('done-cta').setAttribute('aria-disabled', 'true');
-
-    // Try to generate a Stripe Checkout Session via HP backend
-    const checkoutPayload = {
-      plan: planKey,
-      email: intakeData.email || '',
-      name: intakeData.name || '',
-      business_name: intakeData.business_name || '',
-      business_type: intakeData.business_type || '',
-      biggest_pain: intakeData.biggest_pain || '',
-      tools_used: intakeData.tools_used || '',
-      source: 'chatbot',
-    };
-
-    const checkoutAttempt = proxyAlive
-      ? Promise.race([
-          fetch(PROXY_BASE + '/create-checkout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(checkoutPayload),
-          }).then(r => r.json()),
-          new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 6000)),
-        ])
-      : Promise.reject(new Error('proxy offline'));
-
-    checkoutAttempt
-    .then(d => {
-      if (d.checkout_url) {
-        document.getElementById('done-sub').textContent = "All set. Taking you to secure checkout — your setup will be live within 3 business days.";
-        document.getElementById('done-cta').href = d.checkout_url;
-        document.getElementById('done-cta').textContent = 'Go to checkout →';
-        document.getElementById('done-cta').removeAttribute('aria-disabled');
-        document.getElementById('done-redirect').textContent = 'Redirecting in 4 seconds...';
-        let t = 4;
-        const timer = setInterval(() => {
-          t--;
-          if (t <= 0) { clearInterval(timer); window.location.href = d.checkout_url; }
-          else { document.getElementById('done-redirect').textContent = 'Redirecting in ' + t + ' seconds...'; }
-        }, 1000);
-      } else { throw new Error('no url'); }
-    })
-    .catch(() => {
-      // HP is offline or checkout failed — save lead to Supabase and show manual payment screen
-      fetch(`${SB_URL}/rest/v1/onboarding`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'apikey': SB_ANON, 'Authorization': `Bearer ${SB_ANON}`, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ ...intakeData, source: 'intake_chat_no_checkout', scope_confirmed: false }),
-      }).catch(() => {});
-
-      const firstName = (intakeData.name || '').split(' ')[0] || 'there';
-      const price = planKey === 'starter' ? '$497' : '$997';
-      document.getElementById('done-sub').textContent =
-        `Thanks ${firstName}! We saved your info. We'll email a secure payment link to ${intakeData.email} within the hour — no action needed from you.`;
-      document.getElementById('done-cta').textContent = 'Back to home';
-      document.getElementById('done-cta').href = '/';
-      document.getElementById('done-cta').removeAttribute('aria-disabled');
-      document.getElementById('done-cta').className = 'done-btn done-btn-custom';
-      document.getElementById('done-redirect').textContent = `${plan.label} · ${price}`;
-    });
-  }
-}
-
-// ── API call ──
-async function callProxy(msgs) {
-  const r = await fetch(PROXY, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages: msgs, plan: planKey, transcript: msgs, email_context: emailContext || null }),
-  });
-  if (!r.ok) throw new Error('proxy ' + r.status);
-  const d = await r.json();
-  if (d.error) throw new Error(d.error);
-  // If server already handled INTAKE_COMPLETE tag
-  if (d.intake_complete) return { reply: d.reply, intakeDone: true, data: null };
-  return { reply: d.reply, intakeDone: false, data: null };
-}
-
-// ── Process reply ──
-function processReply(raw) {
-  // Check for INTAKE_DONE line
-  const doneMatch = raw.match(/INTAKE_DONE:(\{.*?\})/);
-  if (doneMatch) {
-    try {
-      const data = JSON.parse(doneMatch[1]);
-      const cleanReply = raw.replace(/INTAKE_DONE:\{.*?\}/, '').trim();
-      return { text: cleanReply, done: true, data };
-    } catch(e) {}
-  }
-  // Also catch server-side intake_complete signal
-  return { text: raw, done: false, data: null };
-}
-
-// ── Send ──
-window.sendMsg = async function() {
-  if (done) return;
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (!text) return;
-
-  input.value = '';
-  input.style.height = 'auto';
-  document.getElementById('send-btn').disabled = true;
-
-  messages.push({ role: 'user', content: text });
-  appendMsg(text, 'user');
-  showTyping();
-
+  // smart mode: let the brain extract + pick the next question
   try {
-    const { reply, intakeDone } = await callProxy(messages);
-    removeTyping();
-    document.getElementById('send-btn').disabled = false;
-
-    const { text: cleanText, done: isDone, data } = processReply(reply);
-
-    if (cleanText) {
-      messages.push({ role: 'assistant', content: cleanText });
-      appendMsg(cleanText, 'ai');
-      parseReplyForChecklist(cleanText);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 11000);
+    const r = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan: planKey, transcript, fields }),
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    const d = await r.json();
+    if (d && !d.fallback && (d.done || d.next_question)) {
+      FIELD_KEYS.forEach(k => { if (d.fields && d.fields[k]) fields[k] = d.fields[k]; });
+      if (incomingEmail && !fields.email) fields.email = incomingEmail;
+      if (d.done || !firstMissing()) return finish();
+      return showQuestion(d.next_question, d.hint);
     }
-
-    if (isDone && data) {
-      setTimeout(() => finish(data), 600);
-    } else if (intakeDone) {
-      // Server handled it — build data from collected
-      setTimeout(() => finish({
-        name: collected.contact || '',
-        email: collected.contact || '',
-        business_type: collected.business || '',
-        biggest_pain: collected.pain || '',
-        tools_used: collected.tools || '',
-      }), 600);
+    throw new Error('fallback');
+  } catch (e) {
+    // brain unavailable — continue with plain questions, invisibly
+    smart = false;
+    if (currentStaticKey) {
+      fields[currentStaticKey] = answer;
+    } else {
+      // best-effort guess for the answer we just collected via an AI question
+      const guess = firstMissing();
+      if (guess) fields[guess.key] = answer;
     }
-  } catch(e) {
-    removeTyping();
-    document.getElementById('send-btn').disabled = false;
-    appendMsg("Something went wrong on our end — please try again.", 'ai');
+    return advanceStatic();
   }
 };
 
-// ── Input auto-resize + enter key ──
-document.getElementById('chat-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+function advanceStatic() {
+  const next = firstMissing();
+  if (!next) return finish();
+  showQuestion(next.q, next.hint, next.key);
+}
+
+inEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitAnswer(); }
 });
-document.getElementById('chat-input').addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-});
 
-// ── Fallback form submit ──
-const SB_URL  = 'https://vjwrsucmfqiathgcemzh.supabase.co';
-const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqd3JzdWNtZnFpYXRoZ2NlbXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzIwMTIsImV4cCI6MjA5NzgwODAxMn0.g_9brBnhdLgWAfFedjlMX_m9tfImdYcajIH4QTpo-F8';
-
-window.submitFallback = async function() {
-  const name  = document.getElementById('fb-name').value.trim();
-  const email = document.getElementById('fb-email').value.trim();
-  const biz   = document.getElementById('fb-biz').value.trim();
-  const pain  = document.getElementById('fb-pain').value.trim();
-  const tools = document.getElementById('fb-tools').value.trim();
-  const errEl = document.getElementById('fb-error');
-  errEl.style.display = 'none';
-
-  if (!email || !/\S+@\S+\.\S+/.test(email)) {
-    errEl.textContent = 'Please enter a valid email address.';
-    errEl.style.display = 'block'; return;
-  }
-  if (!pain) {
-    errEl.textContent = "Please describe what's eating your time — that's what we automate.";
-    errEl.style.display = 'block'; return;
+// ── Finish: save lead, then checkout (or custom handoff) ──
+async function finish() {
+  // email is non-negotiable — if we somehow got here without one, ask for it
+  if (!fields.email || !/\S+@\S+\.\S+/.test(fields.email)) {
+    smart = false;
+    fields.email = null;
+    return showQuestion('Best email for setup coordination?', 'you@yourbusiness.com', 'email');
   }
 
-  const btn = document.getElementById('fb-submit');
-  btn.disabled = true; btn.textContent = 'Saving...';
+  setBusy(true);
 
+  // save the lead — best effort, never blocks checkout
   try {
     await fetch(`${SB_URL}/rest/v1/onboarding`, {
       method: 'POST',
@@ -789,68 +476,55 @@ window.submitFallback = async function() {
         'Prefer': 'return=minimal',
       },
       body: JSON.stringify({
-        email, name,
-        business_name: biz,
-        business_type: biz,
-        biggest_pain: pain,
-        tools_used: tools,
+        email: fields.email,
+        name: fields.name || '',
+        business_name: fields.business_type || '',
+        business_type: fields.business_type || '',
+        biggest_pain: fields.biggest_pain || '',
+        tools_used: fields.tools_used || '',
         plan_interest: planKey,
         scope_confirmed: false,
-        source: 'fallback_form',
+        source: 'smart_form',
         ts: new Date().toISOString(),
       }),
     });
-  } catch(e) { /* best effort — still proceed to checkout */ }
+  } catch (e) { /* checkout matters more than the lead row */ }
 
-  btn.textContent = 'Done! Redirecting...';
-  setTimeout(() => { window.location.href = plan.stripeUrl || 'https://justhandled.net/#pricing'; }, 800);
-};
+  document.getElementById('sf-form').style.display = 'none';
+  const doneEl = document.getElementById('sf-done');
+  doneEl.style.display = 'flex';
+  const cta = document.getElementById('done-cta');
+  const firstName = (fields.name || '').split(' ')[0];
 
-// ── Start conversation ──
-(async function start() {
-  setActive('business');
-
-  // Health-check the HP proxy with a short timeout
-  let proxyAlive = false;
-  try {
-    const hc = await Promise.race([
-      fetch(PROXY_BASE + '/health', { method: 'GET' }),
-      new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 4000)),
-    ]);
-    proxyAlive = hc.ok;
-  } catch(e) { proxyAlive = false; }
-
-  if (!proxyAlive) {
-    // Switch to fallback static form
-    document.getElementById('chat-area').style.display = 'none';
-    document.getElementById('fallback-area').style.display = 'flex';
+  if (planKey === 'custom') {
+    document.getElementById('done-sub').textContent =
+      `We have everything we need${firstName ? ', ' + firstName : ''}. We'll reach out to ${fields.email} within 24 hours to scope out your setup.`;
+    cta.textContent = 'Back to home';
+    cta.href = '/';
+    cta.className = 'done-btn done-btn-quiet';
     return;
   }
 
-  // Load email context if ?email param present (from outreach CTA link)
-  const incomingEmail = params.get('email') || '';
-  if (incomingEmail) {
-    try {
-      const ctxRes = await fetch(PROXY_BASE + '/context?email=' + encodeURIComponent(incomingEmail));
-      if (ctxRes.ok) {
-        const ctx = await ctxRes.json();
-        if (ctx && ctx.business_name) emailContext = ctx;
-      }
-    } catch(e) { /* context unavailable */ }
-  }
+  const checkoutUrl = plan.stripeUrl + '?prefilled_email=' + encodeURIComponent(fields.email);
+  document.getElementById('done-sub').textContent =
+    `Thanks${firstName ? ' ' + firstName : ''} — taking you to secure checkout. Your setup will be live within 3 business days.`;
+  cta.href = checkoutUrl;
+  cta.textContent = 'Go to checkout →';
 
-  let opening;
-  if (emailContext && emailContext.business_name) {
-    opening = `Hey! Thanks for checking out Handled. To build the right setup for ${emailContext.business_name}, what is the most repetitive thing eating your time day to day?`;
-  } else {
-    opening = planKey === 'custom'
-      ? "Hey! Happy to help figure out the right setup for you. What kind of business do you run?"
-      : "Hey! Quick questions before checkout so we build exactly what you need. What kind of business do you run?";
-  }
+  let t = 3;
+  const redirectEl = document.getElementById('done-redirect');
+  redirectEl.textContent = 'Redirecting in 3…';
+  const timer = setInterval(() => {
+    t--;
+    if (t <= 0) { clearInterval(timer); window.location.href = checkoutUrl; }
+    else { redirectEl.textContent = 'Redirecting in ' + t + '…'; }
+  }, 1000);
+}
 
-  messages.push({ role: 'assistant', content: opening });
-  appendMsg(opening, 'ai');
-  setTimeout(() => document.getElementById('chat-input').focus(), 100);
+// ── Start ──
+(function start() {
+  const first = STATIC_QS[0];
+  showQuestion(first.q, first.hint, first.key);
 })();
 </script>
 </body>
