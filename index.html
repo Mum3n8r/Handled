@@ -1,801 +1,134 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Done-for-you AI automation for local businesses. Set up in 3 days, refund if it breaks, zero technical work from you.">
-<meta name="keywords" content="AI automation, small business automation, done for you, AI agent, missed call text back, review response, local business">
+<meta name="description" content="Handled Chat - AI chatbot for your website. Trained on your site, approved by you, live in 24 hours. $49/month.">
+<meta name="keywords" content="AI chatbot, website chatbot, small business chatbot, faq bot">
 <meta name="author" content="Leland McAlmont">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://justhandled.net/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://justhandled.net/">
-<meta property="og:title" content="Handled — AI automation for local businesses">
-<meta property="og:description" content="Done-for-you AI automation. Live in 3 days. 100% refund if it breaks.">
-<meta property="og:image" content="https://justhandled.net/og-image.png">
+<meta property="og:title" content="Handled Chat - AI chatbot for your website">
+<meta property="og:description" content="Trained on your site, approved by you, live in 24 hours. $49/month.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Handled — AI automation for local businesses">
-<meta name="twitter:description" content="Done-for-you AI automation. Live in 3 days. 100% refund if it breaks.">
+<meta name="twitter:title" content="Handled Chat - AI chatbot for your website">
+<meta name="twitter:description" content="Trained on your site, approved by you, live in 24 hours. $49/month.">
 <meta name="theme-color" content="#d4500a">
-<title>Handled - AI Automation for Local Businesses</title>
+<title>Handled Chat - AI chatbot for your website</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --bg:#f5f0ea;
-  --surface:#fdfaf6;
-  --surface-alt:#f0ebe3;
-  --border:#e0d6cc;
-  --border-strong:#c8bab0;
-  --text:#1e1612;
-  --text-dim:#6b5d52;
-  --muted:#a09082;
-  --green:#15803d;
-  --orange:#d4500a;
-  --orange-light:#f4874a;
+  --bg:#f5f0ea; --surface:#fdfaf6; --surface-alt:#f0ebe3;
+  --border:#e0d6cc; --border-strong:#c8bab0;
+  --text:#1e1612; --text-dim:#6b5d52; --muted:#a09082;
+  --green:#15803d; --orange:#d4500a; --orange-light:#f4874a;
   --orange-dim:rgba(212,80,10,0.10);
 }
-
 body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 a { text-decoration:none; }
-
-/* ── NAV ── */
-nav {
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  padding:0 40px;
-  height:56px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:200;
-  backdrop-filter:blur(8px);
-}
+nav { background:var(--surface); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:200; backdrop-filter:blur(8px); }
 .nav-brand { font-size:17px; font-weight:700; letter-spacing:-0.02em; }
 .nav-links { display:flex; align-items:center; gap:28px; }
 .nav-link { font-size:13px; color:var(--text-dim); font-weight:500; transition:color 0.15s; }
 .nav-link:hover { color:var(--text); }
-.nav-cta {
-  background:var(--orange);
-  color:#fff;
-  padding:8px 20px;
-  border-radius:8px;
-  font-size:13px;
-  font-weight:600;
-  transition:opacity 0.15s;
-}
+.nav-cta { background:var(--orange); color:#fff; padding:8px 20px; border-radius:8px; font-size:13px; font-weight:600; transition:opacity 0.15s; }
 .nav-cta:hover { opacity:0.82; }
-
-/* ── HERO ── */
-.hero-wrap {
-  position:relative;
-  overflow:hidden;
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-}
-.hero-bg-grid {
-  position:absolute;
-  inset:0;
-  background-image:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size:48px 48px;
-  opacity:0.45;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%);
-}
-.hero-glow {
-  position:absolute;
-  top:-120px; left:50%;
-  transform:translateX(-50%);
-  width:700px; height:600px;
-  background:radial-gradient(ellipse at center, rgba(212,80,10,0.13) 0%, transparent 70%);
-  pointer-events:none;
-}
-.hero {
-  position:relative;
-  z-index:2;
-  max-width:800px;
-  margin:0 auto;
-  padding:104px 40px 88px;
-  text-align:center;
-}
-.hero-tag {
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  background:var(--orange-dim);
-  border:1px solid rgba(212,80,10,0.22);
-  color:var(--orange);
-  font-size:11px;
-  padding:5px 14px;
-  border-radius:20px;
-  margin-bottom:32px;
-  font-family:'Inter',sans-serif;
-  font-weight:800;
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-  animation:fadeUp 0.6s ease both;
-}
-.hero-tag-dot {
-  width:6px; height:6px;
-  border-radius:50%;
-  background:var(--orange);
-  animation:pulse 2s ease infinite;
-}
+.hero-wrap { position:relative; overflow:hidden; background:var(--surface); border-bottom:1px solid var(--border); }
+.hero-bg-grid { position:absolute; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; opacity:0.45; mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 30%,transparent 100%); }
+.hero-glow { position:absolute; top:-120px; left:50%; transform:translateX(-50%); width:700px; height:600px; background:radial-gradient(ellipse at center,rgba(212,80,10,0.13) 0%,transparent 70%); pointer-events:none; }
+.hero { position:relative; z-index:2; max-width:800px; margin:0 auto; padding:104px 40px 88px; text-align:center; }
+.hero-tag { display:inline-flex; align-items:center; gap:7px; background:var(--orange-dim); border:1px solid rgba(212,80,10,0.22); color:var(--orange); font-size:11px; padding:5px 14px; border-radius:20px; margin-bottom:32px; font-family:'Inter',sans-serif; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; animation:fadeUp 0.6s ease both; }
+.hero-tag-dot { width:6px; height:6px; border-radius:50%; background:var(--orange); animation:pulse 2s ease infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-
-.hero h1 {
-  font-family:'Inter',sans-serif;
-  font-size:clamp(40px,6vw,68px);
-  font-weight:800;
-  line-height:1.04;
-  letter-spacing:-0.045em;
-  margin-bottom:24px;
-  animation:fadeUp 0.6s 0.1s ease both;
-}
-.hero h1 em { font-style:italic; color:var(--text-dim); font-weight:700; }
-.glow {
-  color:var(--orange);
-  text-shadow:0 0 28px rgba(212,80,10,0.5), 0 0 60px rgba(212,80,10,0.18);
-  font-weight:800;
-}
-.glow-sm {
-  color:var(--orange);
-  text-shadow:0 0 18px rgba(212,80,10,0.38);
-  font-weight:700;
-}
-
-/* rotating business type */
-.hero-rotate-wrap {
-  display:inline-block;
-  position:relative;
-  height:1.1em;
-  vertical-align:baseline;
-  overflow:hidden;
-  min-width:clamp(160px, 22vw, 280px);
-  text-align:left;
-}
-.hero-h1-line1 {
-  display:inline;
-}
-.hero-rotate-word {
-  position:absolute;
-  left:0; right:0;
-  text-align:left;
-  font-style:italic;
-  color:var(--text-dim);
-  font-weight:700;
-  white-space:nowrap;
-  transition:transform 0.42s cubic-bezier(.77,0,.18,1), opacity 0.42s ease;
-  will-change:transform,opacity;
-}
-.hero-rotate-word.active { transform:translateY(0); opacity:1; }
-.hero-rotate-word.above  { transform:translateY(-110%); opacity:0; }
-.hero-rotate-word.below  { transform:translateY(110%); opacity:0; }
-
-.hero-sub {
-  font-size:18px;
-  color:var(--text-dim);
-  line-height:1.65;
-  max-width:500px;
-  margin:0 auto 44px;
-  animation:fadeUp 0.6s 0.2s ease both;
-}
+.hero h1 { font-family:'Inter',sans-serif; font-size:clamp(40px,6vw,68px); font-weight:800; line-height:1.04; letter-spacing:-0.045em; margin-bottom:24px; animation:fadeUp 0.6s 0.1s ease both; }
+.glow { color:var(--orange); text-shadow:0 0 28px rgba(212,80,10,0.5),0 0 60px rgba(212,80,10,0.18); font-weight:800; }
+.hero-sub { font-size:18px; color:var(--text-dim); line-height:1.65; max-width:500px; margin:0 auto 44px; animation:fadeUp 0.6s 0.2s ease both; }
 .hero-sub strong { color:var(--text); font-weight:600; }
-.hero-actions {
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  flex-wrap:wrap;
-  animation:fadeUp 0.6s 0.3s ease both;
-}
-
-/* hero stat strip */
-.hero-stats {
-  display:flex;
-  justify-content:center;
-  gap:0;
-  margin-top:56px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  overflow:hidden;
-  background:var(--bg);
-  animation:fadeUp 0.6s 0.4s ease both;
-}
-.hero-stat {
-  flex:1;
-  padding:18px 20px;
-  text-align:center;
-  border-right:1px solid var(--border);
-  min-width:0;
-}
+.hero-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; animation:fadeUp 0.6s 0.3s ease both; }
+.hero-stats { display:flex; justify-content:center; gap:0; margin-top:56px; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:var(--bg); animation:fadeUp 0.6s 0.4s ease both; }
+.hero-stat { flex:1; padding:18px 20px; text-align:center; border-right:1px solid var(--border); min-width:0; }
 .hero-stat:last-child { border-right:none; }
-.hero-stat-num {
-  font-family:'Inter',sans-serif;
-  font-size:28px;
-  font-weight:800;
-  letter-spacing:-0.04em;
-  color:var(--orange);
-  line-height:1;
-  margin-bottom:4px;
-}
-.hero-stat-label {
-  font-size:11px;
-  color:var(--muted);
-  font-family:'DM Mono',monospace;
-  text-transform:uppercase;
-  letter-spacing:0.1em;
-}
-
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(16px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
-/* ── BUTTONS ── */
-.btn-primary {
-  background:var(--orange);
-  color:#fff;
-  padding:14px 30px;
-  border-radius:10px;
-  font-size:15px;
-  font-weight:700;
-  transition:all 0.15s;
-  display:inline-block;
-  box-shadow:0 2px 14px rgba(212,80,10,0.3);
-}
+.hero-stat-num { font-family:'Inter',sans-serif; font-size:28px; font-weight:800; letter-spacing:-0.04em; color:var(--orange); line-height:1; margin-bottom:4px; }
+.hero-stat-label { font-size:11px; color:var(--muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:0.1em; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+.btn-primary { background:var(--orange); color:#fff; padding:14px 30px; border-radius:10px; font-size:15px; font-weight:700; transition:all 0.15s; display:inline-block; box-shadow:0 2px 14px rgba(212,80,10,0.3); }
 .btn-primary:hover { background:#b84208; box-shadow:0 4px 20px rgba(212,80,10,0.42); transform:translateY(-1px); }
-.btn-ghost {
-  background:transparent;
-  color:var(--text-dim);
-  padding:14px 24px;
-  border-radius:10px;
-  font-size:15px;
-  font-weight:500;
-  border:1px solid var(--border-strong);
-  transition:all 0.15s;
-  display:inline-block;
-}
+.btn-ghost { background:transparent; color:var(--text-dim); padding:14px 24px; border-radius:10px; font-size:15px; font-weight:500; border:1px solid var(--border-strong); transition:all 0.15s; display:inline-block; }
 .btn-ghost:hover { border-color:var(--text-dim); color:var(--text); }
-
-/* ── SECTION BANDS ── */
 .band { padding:80px 0; }
 .band-surface { background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-.band-alt { background:var(--surface-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-.band-dark { background:var(--text); color:#fff; }
 .inner { max-width:960px; margin:0 auto; padding:0 40px; }
-
-.label {
-  font-size:10px;
-  font-family:'DM Mono',monospace;
-  color:var(--muted);
-  letter-spacing:0.14em;
-  text-transform:uppercase;
-  margin-bottom:12px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.label::before {
-  content:'';
-  display:inline-block;
-  width:20px; height:1px;
-  background:var(--muted);
-  flex-shrink:0;
-}
-.label-center { justify-content:center; }
-.label-center::before { display:none; }
-.title {
-  font-size:clamp(28px,3.8vw,42px);
-  font-weight:800;
-  letter-spacing:-0.035em;
-  margin-bottom:16px;
-  line-height:1.08;
-  font-family:'Inter',sans-serif;
-}
+.label { font-size:10px; font-family:'DM Mono',monospace; color:var(--muted); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.label::before { content:''; display:inline-block; width:20px; height:1px; background:var(--muted); flex-shrink:0; }
+.title { font-size:clamp(28px,3.8vw,42px); font-weight:800; letter-spacing:-0.035em; margin-bottom:16px; line-height:1.08; font-family:'Inter',sans-serif; }
 .sub { font-size:17px; color:var(--text-dim); line-height:1.65; max-width:540px; }
-
-/* ── PAIN NUMBERS ── */
-.pain-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:48px; background:var(--border); border-radius:14px; overflow:hidden; }
-.pain-card {
-  background:var(--surface);
-  padding:28px 26px;
-  position:relative;
-  overflow:hidden;
-}
-.pain-card::after {
-  content:'';
-  position:absolute;
-  bottom:0; left:0; right:0;
-  height:3px;
-  background:linear-gradient(90deg, var(--orange) 0%, var(--orange-light) 100%);
-  transform:scaleX(0);
-  transform-origin:left;
-  transition:transform 0.4s ease;
-}
-.pain-card:hover::after { transform:scaleX(1); }
-.pain-card .hours {
-  font-size:56px;
-  font-weight:800;
-  font-family:'Inter',sans-serif;
-  color:var(--orange);
-  letter-spacing:-0.05em;
-  margin-bottom:6px;
-  line-height:1;
-  display:flex;
-  align-items:baseline;
-  gap:4px;
-}
-.pain-card .hours .hrs-label {
-  font-size:16px;
-  letter-spacing:0;
-  font-weight:700;
-  color:var(--orange);
-  opacity:0.7;
-  margin-bottom:2px;
-}
-.pain-card h4 { font-size:14px; font-weight:700; margin-bottom:6px; }
-.pain-card p { font-size:13px; color:var(--text-dim); line-height:1.55; }
-
-/* ── STEPS ── */
 .steps-wrap { position:relative; margin-top:52px; }
 .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative; }
-.steps::before {
-  content:'';
-  position:absolute;
-  top:32px; left:calc(16.67% + 20px); right:calc(16.67% + 20px);
-  height:1px;
-  border-top:2px dashed var(--border-strong);
-  z-index:0;
-}
-.step {
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:28px 26px;
-  position:relative;
-  z-index:1;
-  transition:border-color 0.2s, box-shadow 0.2s;
-  margin:0 8px;
-}
+.steps::before { content:''; position:absolute; top:32px; left:calc(16.67% + 20px); right:calc(16.67% + 20px); height:1px; border-top:2px dashed var(--border-strong); z-index:0; }
+.step { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:28px 26px; position:relative; z-index:1; transition:border-color 0.2s,box-shadow 0.2s; margin:0 8px; }
 .step:hover { border-color:var(--orange); box-shadow:0 4px 24px rgba(212,80,10,0.1); }
-.step-num-wrap {
-  width:40px; height:40px;
-  border-radius:50%;
-  background:var(--bg);
-  border:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:16px;
-  font-family:'DM Mono',monospace;
-  font-size:12px;
-  font-weight:500;
-  color:var(--text-dim);
-  transition:background 0.2s, border-color 0.2s, color 0.2s;
-}
+.step-num-wrap { width:40px; height:40px; border-radius:50%; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--text-dim); transition:background 0.2s,border-color 0.2s,color 0.2s; }
 .step:hover .step-num-wrap { background:var(--orange-dim); border-color:rgba(212,80,10,0.3); color:var(--orange); }
 .step h3 { font-size:15px; font-weight:700; margin-bottom:10px; letter-spacing:-0.01em; }
 .step p { font-size:13px; color:var(--text-dim); line-height:1.65; }
 .step strong { color:var(--text); }
-
-/* ── INCLUDED ── */
 .included-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:44px; }
-.included-item {
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:18px 20px;
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-  transition:border-color 0.2s, background 0.2s;
-}
+.included-item { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px 20px; display:flex; gap:14px; align-items:flex-start; transition:border-color 0.2s,background 0.2s; }
 .included-item:hover { border-color:var(--orange); background:var(--surface); }
-.check-icon {
-  width:28px; height:28px;
-  border-radius:8px;
-  background:rgba(21,128,61,0.1);
-  border:1px solid rgba(21,128,61,0.2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  margin-top:1px;
-}
+.check-icon { width:28px; height:28px; border-radius:8px; background:rgba(21,128,61,0.1); border:1px solid rgba(21,128,61,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
 .included-item h4 { font-size:13px; font-weight:700; margin-bottom:4px; }
 .included-item p { font-size:12px; color:var(--text-dim); line-height:1.55; }
-
-/* ── PLANS ── */
-.plans-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:52px; align-items:start; }
-.plan {
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:30px;
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  text-align:left;
-  transition:box-shadow 0.2s;
-}
+.plan { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:30px; display:flex; flex-direction:column; position:relative; text-align:left; transition:box-shadow 0.2s; }
 .plan:hover { box-shadow:0 8px 40px rgba(0,0,0,0.07); }
 .plan-featured { border:2px solid var(--orange); }
-.plan-badge {
-  position:absolute;
-  top:-13px;
-  left:50%;
-  transform:translateX(-50%);
-  background:var(--orange);
-  color:#fff;
-  font-size:10px;
-  font-weight:700;
-  padding:3px 14px;
-  border-radius:20px;
-  white-space:nowrap;
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-}
+.plan-badge { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--orange); color:#fff; font-size:10px; font-weight:700; padding:3px 14px; border-radius:20px; white-space:nowrap; letter-spacing:0.06em; text-transform:uppercase; }
 .plan-name { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-.plan-headline { font-size:16px; font-weight:700; letter-spacing:-0.01em; margin-bottom:20px; line-height:1.3; }
 .plan-price { font-size:48px; font-weight:800; font-family:'DM Mono',monospace; letter-spacing:-0.04em; line-height:1; }
 .plan-price-sub { font-size:12px; color:var(--muted); font-family:'DM Mono',monospace; margin-top:4px; margin-bottom:24px; }
 .plan-features { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:28px; flex:1; }
 .plan-features li { display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--text-dim); line-height:1.45; }
 .plan-features li svg { flex-shrink:0; margin-top:2px; }
-.plan-features .no { opacity:0.4; }
-.plan-btn {
-  display:block;
-  text-align:center;
-  padding:13px 20px;
-  border-radius:10px;
-  font-size:14px;
-  font-weight:700;
-  border:1px solid var(--border-strong);
-  color:var(--text);
-  background:var(--bg);
-  transition:all 0.15s;
-  margin-top:auto;
-}
+.plan-btn { display:block; text-align:center; padding:13px 20px; border-radius:10px; font-size:14px; font-weight:700; border:1px solid var(--border-strong); color:var(--text); background:var(--bg); transition:all 0.15s; margin-top:auto; }
 .plan-btn:hover { background:var(--border); }
 .plan-btn-dark { background:var(--orange); color:#fff; border-color:var(--orange); box-shadow:0 2px 14px rgba(212,80,10,0.3); }
-.plan-btn-dark:hover { background:#b84208; box-shadow:0 4px 20px rgba(212,80,10,0.42); }
-.plan-guarantee {
-  font-size:12px;
-  color:var(--orange);
-  text-align:center;
-  margin-bottom:16px;
-  font-family:'Inter',sans-serif;
-  font-weight:800;
-  background:var(--orange-dim);
-  padding:10px 14px;
-  border-radius:8px;
-  border:1px solid rgba(212,80,10,0.22);
-  letter-spacing:-0.01em;
-}
-
-/* ── FAQ ── */
+.plan-btn-dark:hover { background:#b84208; }
 .faq-list { margin-top:44px; }
-.faq-item {
-  border-top:1px solid var(--border);
-  padding:0;
-  overflow:hidden;
-}
+.faq-item { border-top:1px solid var(--border); overflow:hidden; }
 .faq-item:last-child { border-bottom:1px solid var(--border); }
-.faq-q {
-  font-size:15px;
-  font-weight:700;
-  padding:22px 0;
-  cursor:pointer;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  user-select:none;
-  transition:color 0.15s;
-}
+.faq-q { font-size:15px; font-weight:700; padding:22px 0; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:20px; user-select:none; transition:color 0.15s; }
 .faq-q:hover { color:var(--orange); }
-.faq-q-icon {
-  width:22px; height:22px;
-  border-radius:50%;
-  border:1.5px solid var(--border-strong);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  transition:background 0.2s, border-color 0.2s, transform 0.3s;
-  color:var(--text-dim);
-  font-size:14px;
-  font-weight:700;
-  line-height:1;
-}
+.faq-q-icon { width:22px; height:22px; border-radius:50%; border:1.5px solid var(--border-strong); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.2s,border-color 0.2s,transform 0.3s; color:var(--text-dim); font-size:14px; font-weight:700; line-height:1; }
 .faq-item.open .faq-q-icon { background:var(--orange); border-color:var(--orange); color:#fff; transform:rotate(45deg); }
-.faq-a {
-  font-size:14px;
-  color:var(--text-dim);
-  line-height:1.75;
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.35s ease, padding 0.35s ease;
-}
+.faq-a { font-size:14px; color:var(--text-dim); line-height:1.75; max-height:0; overflow:hidden; transition:max-height 0.35s ease,padding 0.35s ease; }
 .faq-item.open .faq-a { max-height:300px; padding-bottom:22px; }
-.faq-a strong { color:var(--text); }
-
-/* ── WEIGH SECTION ── */
-.weigh-section {
-  background:var(--text);
-  color:#fff;
-  padding:96px 40px 112px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
-.weigh-section::before {
-  content:'';
-  position:absolute;
-  inset:0;
-  background:radial-gradient(ellipse 60% 50% at 50% 100%, rgba(212,80,10,0.18) 0%, transparent 70%);
-  pointer-events:none;
-}
-.weigh-headline {
-  font-family:'Inter',sans-serif;
-  font-weight:800;
-  font-size:clamp(28px,4.5vw,46px);
-  letter-spacing:-0.035em;
-  line-height:1.12;
-  max-width:700px;
-  margin:0 auto 14px;
-  position:relative;
-}
-.weigh-headline .big { color:var(--orange-light); text-shadow:0 0 40px rgba(244,135,74,0.5); }
-.weigh-sub {
-  font-size:16px;
-  color:rgba(255,255,255,0.5);
-  max-width:480px;
-  margin:0 auto 64px;
-  line-height:1.7;
-  position:relative;
-}
-#scale-wrap { position:relative; width:100%; max-width:620px; height:280px; margin:0 auto; }
-#scale-canvas { width:100%; height:100%; }
-.weigh-cta { margin-top:60px; position:relative; }
-
-/* ── CUSTOM PAGE SECTION ── */
-.custom-section {
-  background:var(--surface-alt);
-  border-top:1px solid var(--border);
-}
-.custom-inner {
-  max-width:960px;
-  margin:0 auto;
-  padding:80px 40px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:64px;
-  align-items:start;
-}
-.custom-left { }
-.custom-left .title { margin-bottom:20px; }
-.custom-left .sub { margin-bottom:32px; }
-.custom-bullet {
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  margin-bottom:16px;
-  font-size:14px;
-  color:var(--text-dim);
-  line-height:1.55;
-}
-.custom-bullet-dot {
-  width:20px; height:20px;
-  border-radius:6px;
-  background:var(--orange-dim);
-  border:1px solid rgba(212,80,10,0.22);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  margin-top:1px;
-}
-.custom-bullet strong { color:var(--text); display:block; margin-bottom:2px; }
-
-/* inline chat panel */
-#custom-chat-panel {
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:18px;
-  box-shadow:0 8px 48px rgba(0,0,0,0.08);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  height:520px;
-  position:sticky;
-  top:72px;
-}
-#custom-chat-header {
-  padding:18px 22px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-#custom-chat-avatar {
-  width:36px; height:36px;
-  background:var(--orange-dim);
-  border:1px solid rgba(212,80,10,0.2);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:16px;
-}
-.custom-chat-htext { font-size:14px; font-weight:700; }
-.custom-chat-hsub { font-size:11px; color:var(--muted); margin-top:1px; }
-.custom-status-dot {
-  width:7px; height:7px;
-  border-radius:50%;
-  background:#15803d;
-  margin-left:auto;
-  flex-shrink:0;
-  box-shadow:0 0 0 2px rgba(21,128,61,0.2);
-  animation:pulse 2s ease infinite;
-}
-
-#custom-chat-messages {
-  flex:1;
-  overflow-y:auto;
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  scroll-behavior:smooth;
-}
-#custom-chat-messages::-webkit-scrollbar { width:4px; }
-#custom-chat-messages::-webkit-scrollbar-track { background:transparent; }
-#custom-chat-messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
-
-.hd-msg {
-  max-width:88%;
-  font-size:13px;
-  line-height:1.6;
-  padding:11px 14px;
-  border-radius:14px;
-  animation:msgIn 0.2s ease;
-}
-@keyframes msgIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
-.hd-msg-ai { background:var(--bg); border:1px solid var(--border); color:var(--text); align-self:flex-start; border-bottom-left-radius:4px; }
-.hd-msg-user { background:var(--orange); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
-.hd-msg-typing { background:var(--bg); border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:4px; padding:14px 16px; }
-.hd-dots { display:flex; gap:4px; align-items:center; }
-.hd-dots span { width:6px; height:6px; background:var(--muted); border-radius:50%; animation:dotBounce 1.2s infinite; }
-.hd-dots span:nth-child(2) { animation-delay:0.2s; }
-.hd-dots span:nth-child(3) { animation-delay:0.4s; }
-@keyframes dotBounce { 0%,80%,100%{transform:scale(0.8);opacity:0.4} 40%{transform:scale(1.1);opacity:1} }
-
-#custom-chat-done {
-  padding:28px 22px;
-  text-align:center;
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
-  flex:1;
-  justify-content:center;
-}
-.hd-done-icon { font-size:32px; }
-.hd-done-title { font-size:16px; font-weight:700; }
-.hd-done-sub { font-size:13px; color:var(--text-dim); line-height:1.6; max-width:260px; }
-
-#custom-chat-input-row {
-  padding:14px 16px;
-  border-top:1px solid var(--border);
-  display:flex;
-  gap:8px;
-  align-items:flex-end;
-  background:var(--surface);
-}
-#custom-chat-input {
-  flex:1;
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:10px 13px;
-  font-size:13px;
-  font-family:'DM Sans',sans-serif;
-  color:var(--text);
-  resize:none;
-  outline:none;
-  transition:border-color 0.15s;
-  max-height:100px;
-  line-height:1.5;
-}
-#custom-chat-input:focus { border-color:var(--orange); }
-#custom-chat-input::placeholder { color:var(--muted); }
-#custom-chat-send {
-  width:38px; height:38px;
-  background:var(--orange);
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:all 0.15s;
-  flex-shrink:0;
-}
-#custom-chat-send:hover { background:#b84208; transform:translateY(-1px); }
-#custom-chat-send:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
-#custom-chat-send svg { width:16px; height:16px; color:#fff; }
-
-/* ── FOOTER ── */
-footer {
-  background:var(--surface);
-  border-top:1px solid var(--border);
-  padding:36px 40px;
-}
-.footer-inner {
-  max-width:960px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:16px;
-}
+footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 40px; }
+.footer-inner { max-width:960px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
 .footer-brand { font-size:15px; font-weight:700; letter-spacing:-0.01em; }
 .footer-tagline { font-size:12px; color:var(--muted); margin-top:3px; }
 .footer-links { display:flex; gap:24px; }
 .footer-links a { font-size:12px; color:var(--muted); transition:color 0.15s; }
 .footer-links a:hover { color:var(--text); }
 .footer-right { font-size:11px; color:var(--muted); font-family:'DM Mono',monospace; }
-
-/* ── SCROLL REVEAL ── */
-.reveal {
-  opacity:0;
-  transform:translateY(24px);
-  transition:opacity 0.55s ease, transform 0.55s ease;
-}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.55s ease,transform 0.55s ease; }
 .reveal.visible { opacity:1; transform:translateY(0); }
 .reveal-delay-1 { transition-delay:0.08s; }
-.reveal-delay-2 { transition-delay:0.16s; }
-.reveal-delay-3 { transition-delay:0.24s; }
-
-
-/* ── WEIGH / SCALE ── */
-#scale-wrap { position:relative; width:100%; max-width:620px; height:280px; margin:0 auto; }
-#scale-canvas { width:100%; height:100%; }
-
-/* ── RESPONSIVE ── */
 @media (max-width:760px) {
   nav { padding:0 20px; }
   .nav-links .nav-link { display:none; }
   .hero { padding:64px 20px 60px; }
-  .inner, .custom-inner, footer { padding-left:20px; padding-right:20px; }
+  .inner, footer { padding-left:20px; padding-right:20px; }
   .band { padding:60px 0; }
-  .pain-grid, .steps, .included-grid, .plans-grid { grid-template-columns:1fr; }
+  .steps, .included-grid { grid-template-columns:1fr; }
   .steps::before { display:none; }
   .step { margin:0; margin-bottom:12px; }
   .hero-stats { flex-direction:column; }
   .hero-stat { border-right:none; border-bottom:1px solid var(--border); }
   .hero-stat:last-child { border-bottom:none; }
-  .custom-inner { grid-template-columns:1fr; gap:40px; }
-  #custom-chat-panel { position:static; height:460px; }
   .footer-inner { flex-direction:column; text-align:center; }
-  .weigh-section { padding:64px 20px 80px; }
 }
-
-/* hero h1 responsive - prevent word breaking */
-@media (max-width: 760px) {
-  .hero h1 { font-size: clamp(30px, 7vw, 48px); }
-  .hero-rotate-wrap { min-width: clamp(140px, 32vw, 220px); }
-}
-@media (max-width: 480px) {
-  .hero h1 { font-size: clamp(26px, 8vw, 36px); }
-  .hero-rotate-wrap { min-width: 130px; }
-}
-
 </style>
 </head>
 <body>
@@ -803,577 +136,209 @@ footer {
 <nav>
   <div class="nav-brand">Handled</div>
   <div class="nav-links">
+    <a href="/chatbot" class="nav-link">Handled Chat</a>
+    <a href="/personalizer" class="nav-link">Personalizer</a>
     <a href="#how" class="nav-link">How it works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
-    <a href="#custom" class="nav-link">Custom</a>
-    <a href="#pricing" class="nav-cta">Get Started</a>
+    <a href="/chatbot" class="nav-cta">Try Chat</a>
   </div>
 </nav>
 
-<!-- ── HERO ── -->
+<!-- -- HERO -- -->
 <div class="hero-wrap">
   <div class="hero-bg-grid"></div>
   <div class="hero-glow"></div>
   <div class="hero">
-    <div class="hero-tag"><span class="hero-tag-dot"></span>Guaranteed Setup in 3 Days</div>
-    <h1><span class="hero-h1-line1">Stop running <span class="hero-rotate-wrap" id="heroRotate"><span class="hero-rotate-word active">your salon</span><span class="hero-rotate-word below">your shop</span><span class="hero-rotate-word below">your studio</span><span class="hero-rotate-word below">your firm</span><span class="hero-rotate-word below">your gym</span><span class="hero-rotate-word below">your office</span><span class="hero-rotate-word below">your business</span></span></span><br>on <span class="glow">manual</span> <em>everything.</em></h1>
+    <div class="hero-tag"><span class="hero-tag-dot"></span>AI Chatbot for Your Website</div>
+    <h1>Your site answers visitors<br>while you <span class="glow">run your business.</span></h1>
     <p class="hero-sub">
-      AI automation built and maintained for you.<br>
-      <strong><span class="glow-sm">Zero technical work.</span> <span class="glow-sm">Guaranteed.</span></strong>
+      Handled Chat trains an AI on your site, you approve what it knows, and you get one line of code.<br>
+      <strong>Live in 24 hours. $49/month.</strong>
     </p>
     <div class="hero-actions">
-      <a href="#pricing" class="btn-primary">See Plans &rarr;</a>
-      <a href="#custom" class="btn-ghost">Custom work</a>
+      <a href="/chatbot" class="btn-primary">See it live &rarr;</a>
+      <a href="#how" class="btn-ghost">How it works</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-num" data-count="12">0</div>
-        <div class="hero-stat-label">hrs saved / week</div>
+        <div class="hero-stat-num">1</div>
+        <div class="hero-stat-label">line of code</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num" data-count="3">0</div>
-        <div class="hero-stat-label">day setup guarantee</div>
+        <div class="hero-stat-num">24</div>
+        <div class="hero-stat-label">hrs to go live</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num" data-count="100" data-suffix="%">0%</div>
-        <div class="hero-stat-label">refund if it breaks</div>
+        <div class="hero-stat-num">$49</div>
+        <div class="hero-stat-label">per month</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── HOW IT WORKS ── -->
-<div class="band band-surface" id="how">
-  <div class="inner">
-    <div class="label reveal">How It Works</div>
-    <div class="title reveal">Three steps. Then nothing.</div>
-    <p class="sub reveal">We built this so you never have to think about it again.</p>
-    <div class="steps-wrap reveal">
-      <div class="steps">
-        <div class="step" style="position:relative;">
-          <div class="step-num-wrap">01</div>
-          <h3>Tell us what's costing you time</h3>
-          <p>After payment, fill out a <strong>5-minute form</strong>. Tell us what's eating your week. That's the last time you'll think about it.</p>
-        </div>
-        <div class="step">
-          <div class="step-num-wrap">02</div>
-          <h3>We build it. You do nothing.</h3>
-          <p>Within <strong>3 business days</strong>, your automation is live. No installs, no logins, no calls. We configure, test, and deploy everything.</p>
-        </div>
-        <div class="step">
-          <div class="step-num-wrap">03</div>
-          <h3>It runs itself. Forever.</h3>
-          <p>Bookings confirmed. Reviews answered. Leads followed up. <strong>Automatically.</strong> We monitor and maintain it every month.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ── WHAT YOU GET ── -->
-<div class="band">
+<!-- -- FEATURE STRIP -- -->
+<div class="band band-surface">
   <div class="inner">
     <div class="label reveal">What You Get</div>
-    <div class="title reveal">Everything automated.<br>Nothing for you to manage.</div>
+    <div class="title reveal">Everything in one script tag.</div>
     <div class="included-grid">
       <div class="included-item reveal">
         <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><h4>Booking Automation</h4><p>Confirms, reschedules, and sends reminders. Zero back-and-forth.</p></div>
+        <div><h4>Trained on your site</h4><p>We scrape your pages so it knows your hours, services, and prices &mdash; not generic answers.</p></div>
       </div>
       <div class="included-item reveal reveal-delay-1">
         <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><h4>Review Responses</h4><p>Google, Yelp, and Facebook answered automatically. In your voice.</p></div>
+        <div><h4>You approve before it goes live</h4><p>We show you the knowledge base. Edit anything wrong. Nothing runs until you say so.</p></div>
       </div>
       <div class="included-item reveal">
         <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><h4>Lead Follow-Up</h4><p>New inquiries get a response in seconds. No lead goes cold.</p></div>
+        <div><h4>Conversation logs</h4><p>Every question your visitors ask is logged. See what people actually want to know.</p></div>
       </div>
       <div class="included-item reveal reveal-delay-1">
         <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><h4>Client Email Sequences</h4><p>Automated follow-ups for quotes, onboarding, and check-ins.</p></div>
+        <div><h4>Works everywhere</h4><p>WordPress, Squarespace, Wix, Webflow, custom sites &mdash; anywhere you can paste a script tag.</p></div>
       </div>
       <div class="included-item reveal">
         <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><h4>Monthly Maintenance</h4><p>Security, uptime monitoring, and up to 2 adjustments per month.</p></div>
+        <div><h4>Update anytime</h4><p>Hours change, prices change? Update the knowledge base. No code changes required.</p></div>
       </div>
       <div class="included-item reveal reveal-delay-1">
         <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><h4>Full Refund Guarantee</h4><p>If it breaks and we cannot fix it, you get every dollar back.</p></div>
+        <div><h4>Cancel anytime</h4><p>No annual contract. No setup fee. Cancel and it stops. No awkward calls.</p></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── TIME COST BAND ── -->
-<div class="band band-alt" style="padding:56px 0;">
+<!-- -- HOW IT WORKS -- -->
+<div class="band" id="how">
   <div class="inner">
-    <div class="label label-center" style="justify-content:center;margin-bottom:32px;">
-      <span>What it's actually costing you</span>
-    </div>
-    <div class="pain-grid reveal">
-      <div class="pain-card">
-        <div class="hours"><span class="pain-count" data-target="3">0</span><span class="hrs-label">hrs</span></div>
-        <h4>Responding to reviews</h4>
-        <p>Every week, manually. Rephrasing the same thank-you for every 5-star review you get.</p>
-      </div>
-      <div class="pain-card">
-        <div class="hours"><span class="pain-count" data-target="4">0</span><span class="hrs-label">hrs</span></div>
-        <h4>Chasing cold leads</h4>
-        <p>Following up on inquiries that went quiet because you were busy doing the actual job.</p>
-      </div>
-      <div class="pain-card">
-        <div class="hours"><span class="pain-count" data-target="5">0</span><span class="hrs-label">hrs</span></div>
-        <h4>Booking back-and-forth</h4>
-        <p>The "does Tuesday work?" "no, how about Thursday?" loop that never ends.</p>
+    <div class="label reveal">How It Works</div>
+    <div class="title reveal">Three steps. Then it just runs.</div>
+    <div class="steps-wrap reveal">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num-wrap">01</div>
+          <h3>Give us your URL</h3>
+          <p>Sign up and drop your site URL. We scrape your public pages and build a draft knowledge base your bot will answer from.</p>
+        </div>
+        <div class="step">
+          <div class="step-num-wrap">02</div>
+          <h3>Approve what it knows</h3>
+          <p>We show you the summary. Edit anything wrong, add anything missing, approve when ready. <strong>Nothing goes live until you say so.</strong></p>
+        </div>
+        <div class="step">
+          <div class="step-num-wrap">03</div>
+          <h3>Paste one line of code</h3>
+          <p>You get a script tag. Add it to your site once and it works. No logins, no dashboards, no maintenance.</p>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── PRICING ── -->
+<!-- -- PRICING -- -->
 <div class="band band-surface" id="pricing">
   <div class="inner">
     <div class="label reveal">Pricing</div>
-    <div class="title reveal">Flat pricing. No surprises.<br>No negotiations.</div>
-    <p class="sub reveal" style="margin:0 auto 0;">Every plan is the same price for everyone. Pick what fits your business today.</p>
-    <div class="plans-grid">
-      <div class="plan reveal">
-        <div class="plan-name">Starter</div>
-        <div class="plan-headline">One automation, running in days.</div>
-        <div class="plan-price">$497</div>
-        <div class="plan-price-sub">one-time setup</div>
+    <div class="title reveal">One plan. No surprises.</div>
+    <p class="sub reveal">No setup fee. No annual contract. Try it for a month and see if it earns its keep.</p>
+    <div style="max-width:420px;margin:44px auto 0;">
+      <div class="plan plan-featured reveal" style="text-align:center;">
+        <div class="plan-badge">Standard</div>
+        <div class="plan-name" style="text-align:center;">Handled Chat</div>
+        <div class="plan-price" style="text-align:center;font-size:56px;">$49<span style="font-size:22px;color:var(--muted);">/mo</span></div>
+        <div class="plan-price-sub" style="text-align:center;">no setup fee &mdash; cancel anytime</div>
         <ul class="plan-features">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>One automation of your choice</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live within 3 business days</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Zero technical work from you</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
-          <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>No ongoing maintenance</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>1 chatbot on your website</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Trained on your site, edited by you</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live in 24 hours from approval</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Up to 1,000 conversations/month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full conversation logs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Update knowledge base anytime</li>
         </ul>
-        <a href="intake.html?plan=starter" class="plan-btn">Get Started</a>
-      </div>
-      <div class="plan plan-featured reveal reveal-delay-1">
-        <div class="plan-badge">Most Popular</div>
-        <div class="plan-name">Full Setup</div>
-        <div class="plan-headline">Everything automated. Maintained every month.</div>
-        <div class="plan-price">$997</div>
-        <div class="plan-price-sub">setup + $150/month maintenance</div>
-        <ul class="plan-features">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>Full automation suite &mdash; all workflows</strong></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live within 3 business days</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Zero technical work from you</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><strong>Monthly security + monitoring</strong></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>2 adjustments or additions per month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
-        </ul>
-        <div class="plan-guarantee">Same Price. Every Time. No Exceptions.</div>
-        <a href="intake.html?plan=full" class="plan-btn plan-btn-dark">Pay Now and Get Started</a>
-      </div>
-      <div class="plan reveal reveal-delay-2">
-        <div class="plan-name">Custom</div>
-        <div class="plan-headline">Larger scope or unique requirements.</div>
-        <div class="plan-price" style="font-size:36px;font-family:'Inter',sans-serif;">Let's Talk</div>
-        <div class="plan-price-sub">scoped to your needs</div>
-        <ul class="plan-features">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Multi-location or multi-system</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Integrations with existing software</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Custom maintenance plan</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Priority turnaround</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full refund guarantee</li>
-        </ul>
-        <a href="intake.html?plan=custom" class="plan-btn">Talk to Us</a>
+        <a href="mailto:hello@justhandled.net?subject=Handled%20Chat%20signup" class="plan-btn plan-btn-dark" style="margin-top:8px;">Get Started</a>
+        <div style="margin-top:16px;font-size:12px;color:var(--muted);">Need multiple sites or higher volume? <a href="mailto:hello@justhandled.net?subject=Handled%20Chat%20custom" style="color:var(--text-dim);border-bottom:1px solid var(--border);">Talk to us.</a></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── FAQ ── -->
+<!-- -- FAQ -- -->
 <div class="band">
   <div class="inner">
     <div class="label reveal">FAQ</div>
     <div class="title reveal">Straight answers.</div>
     <div class="faq-list reveal">
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Do I need any technical knowledge?<span class="faq-q-icon">+</span></div>
-        <div class="faq-a"><strong>None. Zero.</strong> You tell us what is eating your time, we build it, and you walk away. No software to learn, no logins to manage, nothing on your end at any point.</div>
+        <div class="faq-q" onclick="toggleFaq(this)">Do I need technical knowledge to install it?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">You copy one script tag into your site. If you can add a Google Analytics tag, you can install this. We will do it for you if needed.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What if something breaks?<span class="faq-q-icon">+</span></div>
-        <div class="faq-a">We fix it. That is what the monthly plan is for. If we cannot fix it, you get <strong>every dollar back</strong>. No questions, no clauses.</div>
+        <div class="faq-q" onclick="toggleFaq(this)">What if it says something wrong?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">You approve the entire knowledge base before it goes live. The bot is also told to say it does not know and to contact the business when it lacks info. It will not make things up. You can edit or pause anytime.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">How long does setup actually take?<span class="faq-q-icon">+</span></div>
-        <div class="faq-a"><strong>Guaranteed within 3 business days.</strong> Usually faster. You fill out a 5-minute form after payment, and we take it from there.</div>
+        <div class="faq-q" onclick="toggleFaq(this)">How is this different from just using ChatGPT?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">A raw ChatGPT will hallucinate your hours, prices, and services. This one is constrained to only what you approve, so visitors get real answers about your actual business.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What exactly gets automated?<span class="faq-q-icon">+</span></div>
-        <div class="faq-a">Whatever is eating your time. After payment, you tell us the specific tasks. We build exactly that. Common setups include booking confirmation, review responses, lead follow-up, and client email sequences.</div>
+        <div class="faq-q" onclick="toggleFaq(this)">Can I see what people are asking?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">Yes. Every conversation is logged. Review them anytime and update your knowledge base to answer common questions better.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Can I cancel the monthly plan?<span class="faq-q-icon">+</span></div>
-        <div class="faq-a"><strong>Yes, anytime.</strong> No contracts, no cancellation fees, no awkward conversations. Cancel and it stops. Simple.</div>
+        <div class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">Yes. Monthly billing, no annual contract, cancel and it stops. No cancellation fees.</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── WEIGH FINALE ── -->
-<div class="weigh-section">
-  <div class="weigh-headline"><span class="big">12 Hours</span> spent this week<br>on tasks that run themselves.</div>
-  <div class="weigh-sub">Every one of those moments was something Handled does automatically. That is most of a workday, gone, every single week.</div>
-  <div id="scale-wrap">
-    <canvas id="scale-canvas"></canvas>
-  </div>
-  <div class="weigh-cta">
-    <a href="intake.html?plan=full" class="btn-primary">Get it Handled &mdash; $150</a>
-  </div>
-</div>
-
-<!-- ── CUSTOM PAGE ── -->
-<div class="custom-section" id="custom">
-  <div class="custom-inner">
-    <div class="custom-left">
-      <div class="label" style="margin-bottom:14px;">Custom Work</div>
-      <div class="title" style="margin-bottom:20px;">Tell us what you need.</div>
-      <p class="sub" style="margin-bottom:32px;">Not every business fits a standard package. If you have multiple locations, existing software you need to connect, or a workflow we haven't listed, talk to us directly and we'll scope something that fits.</p>
-      <div class="custom-bullet">
-        <div class="custom-bullet-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="12" height="12" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><strong>Multi-location businesses</strong>Franchises, chains, or any business running more than one site.</div>
-      </div>
-      <div class="custom-bullet">
-        <div class="custom-bullet-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="12" height="12" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><strong>Existing software integrations</strong>Connect automations to your current CRM, POS, or scheduling tool.</div>
-      </div>
-      <div class="custom-bullet">
-        <div class="custom-bullet-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" width="12" height="12" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <div><strong>Unusual workflows</strong>If it's repetitive and you're doing it manually, we can probably automate it.</div>
-      </div>
-    </div>
-    <div class="custom-right">
-      <div id="custom-chat-panel">
-        <div id="custom-chat-header">
-          <div id="custom-chat-avatar">⚡</div>
-          <div>
-            <div class="custom-chat-htext">Talk to Handled</div>
-            <div class="custom-chat-hsub">Custom plan intake</div>
-          </div>
-          <div class="custom-status-dot"></div>
-        </div>
-        <div id="custom-chat-messages"></div>
-        <div id="custom-chat-done">
-          <div class="hd-done-icon">✅</div>
-          <div class="hd-done-title">You're all set.</div>
-          <div class="hd-done-sub">We'll reach out to <span id="hd-done-email"></span> shortly to scope out your setup.</div>
-        </div>
-        <div id="custom-chat-input-row">
-          <textarea id="custom-chat-input" placeholder="What kind of business do you run?" rows="1"></textarea>
-          <button id="custom-chat-send" onclick="hdSend()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- -- CTA -- -->
+<div style="background:var(--text);color:#fff;padding:80px 40px;text-align:center;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 100%,rgba(212,80,10,0.2) 0%,transparent 70%);pointer-events:none;"></div>
+  <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(26px,4vw,42px);letter-spacing:-0.035em;line-height:1.14;max-width:560px;margin:0 auto 14px;position:relative;">Your visitors have questions.<br><span style="color:#f4874a;text-shadow:0 0 40px rgba(244,135,74,0.5);">Your site should answer them.</span></div>
+  <div style="font-size:16px;color:rgba(255,255,255,0.5);max-width:400px;margin:0 auto 36px;line-height:1.65;position:relative;">$49/month. Live in 24 hours. Cancel anytime.</div>
+  <a href="/chatbot" class="btn-primary" style="position:relative;">Try a live demo &rarr;</a>
 </div>
 
 <footer>
   <div class="footer-inner">
     <div>
       <div class="footer-brand">Handled</div>
-      <div class="footer-tagline">AI Automation for Local Businesses</div>
+      <div class="footer-tagline">AI chatbot for your website</div>
     </div>
     <div class="footer-links">
+      <a href="/chatbot">Handled Chat</a>
       <a href="#how">How it works</a>
-      <a href="/pricing">Pricing</a>
-      <a href="#custom">Custom</a>
+      <a href="#pricing">Pricing</a>
+      <a href="/personalizer">Personalizer</a>
       <a href="/about">About</a>
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
       <a href="mailto:hello@justhandled.net">Contact</a>
     </div>
-    <div class="footer-right">
-      &copy; 2026 Handled
-    </div>
+    <div class="footer-right">&copy; 2026 Handled</div>
   </div>
 </footer>
 
 <script>
-// ── HERO WORD ROTATOR ──
 (function(){
-  const wrap = document.getElementById('heroRotate');
-  if(!wrap) return;
-  const words = wrap.querySelectorAll('.hero-rotate-word');
-  let cur = 0;
-  setInterval(()=>{
-    words[cur].className = 'hero-rotate-word above';
-    cur = (cur + 1) % words.length;
-    words[cur].className = 'hero-rotate-word active';
-    // pre-position next
-    const next = (cur + 1) % words.length;
-    words[next].className = 'hero-rotate-word below';
-  }, 2200);
-})();
-
-// ── COUNTER ANIMATION ──
-function animateCount(el, target, suffix, duration) {
-  const start = performance.now();
-  function step(now) {
-    const p = Math.min(1, (now - start) / duration);
-    const ease = 1 - Math.pow(1 - p, 3);
-    el.textContent = Math.round(ease * target) + (suffix||'');
-    if(p < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-// ── SCROLL REVEAL + counter triggers ──
-(function(){
-  const revealEls = document.querySelectorAll('.reveal');
-  const painCounts = document.querySelectorAll('.pain-count');
-  const heroStats = document.querySelectorAll('.hero-stat-num[data-count]');
-  let heroStatsFired = false;
-  let painFired = false;
-
-  // Hero stats fire on load after brief delay
-  setTimeout(()=>{
-    if(heroStatsFired) return;
-    heroStatsFired = true;
-    heroStats.forEach(el=>{
-      animateCount(el, parseInt(el.dataset.count), el.dataset.suffix||'', 1200);
-    });
-  }, 700);
-
-  const obs = new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting){
-        en.target.classList.add('visible');
-        obs.unobserve(en.target);
-      }
-    });
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('visible'); obs.unobserve(en.target); } });
   },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
-  revealEls.forEach(el=>obs.observe(el));
-
-  const painObs = new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting && !painFired){
-        painFired = true;
-        painCounts.forEach(el=>{
-          animateCount(el, parseInt(el.dataset.target), '', 900);
-        });
-      }
-    });
-  },{threshold:0.3});
-  if(painCounts.length) painObs.observe(painCounts[0].closest('.pain-grid'));
+  document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
 })();
 
-// ── FAQ ACCORDION ──
 function toggleFaq(qEl) {
-  const item = qEl.closest('.faq-item');
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  var item = qEl.closest('.faq-item');
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(i){ i.classList.remove('open'); });
   if(!isOpen) item.classList.add('open');
 }
-
-
-// ── SCALE ANIMATION ──
-(function(){
-  const canvas = document.getElementById('scale-canvas');
-  const wrap = document.getElementById('scale-wrap');
-  if(!canvas||!wrap) return;
-  const ctx = canvas.getContext('2d');
-  function fit(){canvas.width=wrap.offsetWidth;canvas.height=wrap.offsetHeight;}
-  fit(); window.addEventListener('resize',fit);
-
-  const restTiles=[{n:'3',a:-0.18},{n:'4',a:0.12},{n:'5',a:-0.06}];
-  let started=false,animStart=0;
-
-  function drawHex(cx,cy,r,rot,fillA){
-    ctx.save(); ctx.translate(cx,cy); ctx.rotate(rot);
-    ctx.beginPath();
-    for(let i=0;i<6;i++){const a=Math.PI/180*(60*i-30);i?ctx.lineTo(r*Math.cos(a),r*Math.sin(a)):ctx.moveTo(r*Math.cos(a),r*Math.sin(a));}
-    ctx.closePath();
-    ctx.fillStyle=`rgba(244,135,74,${0.85*fillA})`; ctx.fill();
-    ctx.strokeStyle=`rgba(244,135,74,${fillA})`; ctx.lineWidth=1.5; ctx.stroke();
-    ctx.restore();
-  }
-
-  function draw(progress){
-    const W=canvas.width,H=canvas.height;
-    ctx.clearRect(0,0,W,H);
-    const cx=W/2, fy=H*0.42;
-    const settle=Math.min(1,progress);
-    const tilt=Math.sin(settle*Math.PI*1.5)*Math.exp(-settle*3)*0.18+0.14*settle;
-    const beamLen=W*0.36;
-    const lx=cx-Math.cos(tilt)*beamLen, ly=fy+Math.sin(tilt)*beamLen;
-    const rx=cx+Math.cos(tilt)*beamLen, ry=fy-Math.sin(tilt)*beamLen;
-
-    // fulcrum
-    ctx.strokeStyle='rgba(255,255,255,0.22)'; ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx,H-30);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(cx-50,H-30);ctx.lineTo(cx+50,H-30);ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.18)';
-    ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx-14,fy+18);ctx.lineTo(cx+14,fy+18);ctx.closePath();ctx.fill();
-
-    // beam
-    ctx.strokeStyle='rgba(255,255,255,0.45)'; ctx.lineWidth=4; ctx.lineCap='round';
-    ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(rx,ry);ctx.stroke();
-
-    // left pan
-    const panY=ly+46;
-    ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(lx-30,ly);ctx.lineTo(lx-18,panY);ctx.moveTo(lx+30,ly);ctx.lineTo(lx+18,panY);ctx.stroke();
-    ctx.strokeStyle='rgba(255,255,255,0.38)'; ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(lx-40,panY);ctx.lineTo(lx+40,panY);ctx.stroke();
-
-    // right pan
-    const rPanY=ry+46;
-    ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(rx-30,ry);ctx.lineTo(rx-18,rPanY);ctx.moveTo(rx+30,ry);ctx.lineTo(rx+18,rPanY);ctx.stroke();
-    ctx.strokeStyle='rgba(255,255,255,0.22)'; ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(rx-40,rPanY);ctx.lineTo(rx+40,rPanY);ctx.stroke();
-
-    // stacked tiles
-    restTiles.forEach((t,i)=>{
-      const appear=Math.max(0,Math.min(1,(progress*3)-(i*0.5)));
-      if(appear<=0)return;
-      const sy=panY-22-(i*26)*appear, ox=(i-1)*16;
-      drawHex(lx+ox,sy,22,t.a,appear);
-      ctx.save(); ctx.globalAlpha=appear;
-      ctx.fillStyle='#1e1612'; ctx.font='800 15px Inter,sans-serif';
-      ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(t.n,lx+ox,sy); ctx.restore();
-    });
-  }
-
-  function tick(now){
-    if(!animStart)animStart=now;
-    const p=(now-animStart)/1800;
-    draw(Math.min(1.2,p));
-    if(p<1.2)requestAnimationFrame(tick);
-  }
-
-  new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting&&!started){started=true;animStart=0;requestAnimationFrame(tick);}
-    });
-  },{threshold:0.4}).observe(wrap);
-  draw(0);
-})();
-
-// ── INLINE CHAT ──
-(function(){
-  const PROXY_BASE = 'https://duvet-habitant-stimulate.ngrok-free.dev';
-  const PROXY  = PROXY_BASE + '/chat';
-  const INTAKE = PROXY_BASE + '/intake';
-  let msgs=[], started=false, done=false, proxyAlive=false;
-
-  const messagesEl = document.getElementById('custom-chat-messages');
-  const inputEl = document.getElementById('custom-chat-input');
-  const sendBtn = document.getElementById('custom-chat-send');
-  const chatPanel = document.getElementById('custom-chat-panel');
-
-  function appendMsg(text, role){
-    const el=document.createElement('div');
-    el.className='hd-msg hd-msg-'+role;
-    el.textContent=text;
-    messagesEl.appendChild(el);
-    messagesEl.scrollTop=messagesEl.scrollHeight;
-  }
-  function showTyping(){
-    const el=document.createElement('div');
-    el.className='hd-msg hd-msg-typing'; el.id='hd-typing';
-    el.innerHTML='<div class="hd-dots"><span></span><span></span><span></span></div>';
-    messagesEl.appendChild(el);
-    messagesEl.scrollTop=messagesEl.scrollHeight;
-  }
-  function removeTyping(){ const t=document.getElementById('hd-typing'); if(t)t.remove(); }
-
-  function showFallback(){
-    // Replace the chat panel with a clean CTA when HP is offline
-    chatPanel.innerHTML = `
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;padding:32px;text-align:center;">
-        <div style="font-size:36px;">⚡</div>
-        <div style="font-size:18px;font-weight:700;letter-spacing:-0.02em;">Ready to get started?</div>
-        <div style="font-size:14px;color:var(--text-dim);line-height:1.6;max-width:280px;">Tell us about your business and we'll build the right automation for you.</div>
-        <a href="/intake.html?plan=full" style="background:var(--orange);color:#fff;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 2px 14px rgba(212,80,10,0.3);transition:all 0.15s;">Get started →</a>
-        <a href="/intake.html?plan=starter" style="font-size:13px;color:var(--text-dim);text-decoration:none;border-bottom:1px solid var(--border);">Starter plan ($497) →</a>
-      </div>`;
-  }
-
-  async function callProxy(messages){
-    const r=await fetch(PROXY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages})});
-    if(!r.ok)throw new Error('proxy error');
-    const d=await r.json();
-    if(d.error)throw new Error(d.error);
-    return d.reply;
-  }
-
-  function checkDone(reply){
-    const trimmed=reply.trim();
-    if(!trimmed.startsWith('{'))return false;
-    try{
-      const p=JSON.parse(trimmed);
-      if(p.done&&p.email&&p.name){
-        p.ts=new Date().toISOString();
-        fetch(INTAKE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)}).catch(()=>{});
-        done=true;
-        messagesEl.style.display='none';
-        document.getElementById('custom-chat-input-row').style.display='none';
-        const doneEl=document.getElementById('custom-chat-done');
-        doneEl.style.display='flex';
-        document.getElementById('hd-done-email').textContent=p.email;
-        return true;
-      }
-    }catch(e){}
-    return false;
-  }
-
-  window.hdSend=function(){
-    if(done||!proxyAlive)return;
-    if(!started){
-      started=true;
-      const opening="Hey! What kind of business do you run?";
-      msgs.push({role:'assistant',content:opening});
-      appendMsg(opening,'ai');
-    }
-    const text=inputEl.value.trim();
-    if(!text)return;
-    inputEl.value=''; inputEl.style.height='auto';
-    sendBtn.disabled=true;
-    msgs.push({role:'user',content:text});
-    appendMsg(text,'user');
-    showTyping();
-    callProxy(msgs).then(reply=>{
-      removeTyping(); sendBtn.disabled=false;
-      if(!checkDone(reply)){msgs.push({role:'assistant',content:reply});appendMsg(reply,'ai');}
-    }).catch(()=>{
-      removeTyping(); sendBtn.disabled=false;
-      appendMsg("Something went wrong — please try again in a moment.",'ai');
-    });
-  };
-
-  inputEl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();hdSend();}});
-  inputEl.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';});
-
-  // Health check — run on load, show fallback immediately if proxy is down
-  Promise.race([
-    fetch(PROXY_BASE + '/health', {method:'GET'}),
-    new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),4000)),
-  ]).then(r=>{ proxyAlive=r.ok; if(!r.ok) showFallback(); }).catch(()=>{ showFallback(); });
-
-  // Auto-start chat when section scrolls into view (only if proxy is alive)
-  new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting&&!started&&proxyAlive){
-        started=true;
-        setTimeout(()=>{
-          const opening="Hey! What kind of business do you run?";
-          msgs.push({role:'assistant',content:opening});
-          appendMsg(opening,'ai');
-        },400);
-      }
-    });
-  },{threshold:0.3}).observe(chatPanel);
-})();
 </script>
+
+<script src="/widget.js" data-client="handled_self" data-title="Handled Chat" data-opener="Hi! Have questions about Handled Chat? Ask me anything."></script>
+
 </body>
 </html>

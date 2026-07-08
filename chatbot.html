@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI chatbot for your website in 24 hours. We scrape your site, you approve the answers, we hand you one line of code. $49/month, cancel anytime.">
+<meta name="keywords" content="ai chatbot, website chatbot, small business chatbot, faq bot, chatbot saas">
+<meta name="author" content="Leland McAlmont">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://justhandled.net/chatbot">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://justhandled.net/chatbot">
+<meta property="og:title" content="Handled Chat - AI chatbot for your website in 24 hours">
+<meta property="og:description" content="One line of code. Trained on your site. Answers your visitors in your voice. $49/month.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Handled Chat - AI chatbot for your website">
+<meta name="twitter:description" content="One line of code. Trained on your site. $49/month.">
+<meta name="theme-color" content="#d4500a">
+<title>Handled Chat - AI chatbot for your website in 24 hours</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#f5f0ea;
+  --surface:#fdfaf6;
+  --surface-alt:#f0ebe3;
+  --border:#e0d6cc;
+  --border-strong:#c8bab0;
+  --text:#1e1612;
+  --text-dim:#6b5d52;
+  --muted:#a09082;
+  --green:#15803d;
+  --orange:#d4500a;
+  --orange-light:#f4874a;
+  --orange-dim:rgba(212,80,10,0.10);
+}
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+a { text-decoration:none; color:inherit; }
+
+nav {
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:200;
+}
+.nav-brand { font-size:17px; font-weight:700; letter-spacing:-0.02em; }
+.nav-links { display:flex; align-items:center; gap:28px; }
+.nav-link { font-size:13px; color:var(--text-dim); font-weight:500; transition:color 0.15s; }
+.nav-link:hover { color:var(--text); }
+.nav-cta {
+  background:var(--orange); color:#fff;
+  padding:8px 20px; border-radius:8px;
+  font-size:13px; font-weight:600;
+  transition:opacity 0.15s;
+}
+.nav-cta:hover { opacity:0.85; }
+
+.hero-wrap { position:relative; overflow:hidden; background:var(--surface); border-bottom:1px solid var(--border); }
+.hero-bg-grid {
+  position:absolute; inset:0;
+  background-image:linear-gradient(var(--border) 1px, transparent 1px),
+                   linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size:48px 48px; opacity:0.45;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%);
+}
+.hero-glow {
+  position:absolute; top:-120px; left:50%; transform:translateX(-50%);
+  width:700px; height:600px;
+  background:radial-gradient(ellipse at center, rgba(212,80,10,0.13) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero {
+  position:relative; z-index:2;
+  max-width:800px; margin:0 auto;
+  padding:96px 40px 72px;
+  text-align:center;
+}
+.hero-tag {
+  display:inline-flex; align-items:center; gap:7px;
+  background:var(--orange-dim);
+  border:1px solid rgba(212,80,10,0.22);
+  color:var(--orange);
+  font-size:11px; padding:5px 14px; border-radius:20px;
+  margin-bottom:28px;
+  font-family:'Inter',sans-serif; font-weight:800;
+  letter-spacing:0.06em; text-transform:uppercase;
+}
+.hero-tag-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--orange);
+  animation:pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+.hero h1 {
+  font-family:'Inter',sans-serif;
+  font-size:clamp(38px,5.6vw,64px);
+  font-weight:800; line-height:1.05;
+  letter-spacing:-0.045em;
+  margin-bottom:22px;
+}
+.hero h1 em { font-style:italic; color:var(--text-dim); font-weight:700; }
+.glow { color:var(--orange); text-shadow:0 0 28px rgba(212,80,10,0.5), 0 0 60px rgba(212,80,10,0.18); font-weight:800; }
+.hero-sub {
+  font-size:18px; color:var(--text-dim); line-height:1.65;
+  max-width:520px; margin:0 auto 40px;
+}
+.hero-sub strong { color:var(--text); font-weight:600; }
+.hero-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+.btn-primary {
+  background:var(--orange); color:#fff;
+  padding:14px 30px; border-radius:10px;
+  font-size:15px; font-weight:700;
+  transition:all 0.15s; display:inline-block;
+  box-shadow:0 2px 14px rgba(212,80,10,0.3);
+}
+.btn-primary:hover { background:#b84208; box-shadow:0 4px 20px rgba(212,80,10,0.42); transform:translateY(-1px); }
+.btn-ghost {
+  background:transparent; color:var(--text-dim);
+  padding:14px 24px; border-radius:10px;
+  font-size:15px; font-weight:500;
+  border:1px solid var(--border-strong);
+  transition:all 0.15s; display:inline-block;
+}
+.btn-ghost:hover { border-color:var(--text-dim); color:var(--text); }
+
+.band { padding:80px 0; }
+.band-surface { background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.band-alt { background:var(--surface-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.inner { max-width:960px; margin:0 auto; padding:0 40px; }
+.label {
+  font-size:10px; font-family:'DM Mono',monospace;
+  color:var(--muted); letter-spacing:0.14em;
+  text-transform:uppercase; margin-bottom:12px;
+  display:flex; align-items:center; gap:8px;
+}
+.label::before { content:''; display:inline-block; width:20px; height:1px; background:var(--muted); flex-shrink:0; }
+.title {
+  font-size:clamp(28px,3.8vw,42px); font-weight:800;
+  letter-spacing:-0.035em; margin-bottom:16px; line-height:1.08;
+  font-family:'Inter',sans-serif;
+}
+.sub { font-size:17px; color:var(--text-dim); line-height:1.65; max-width:560px; }
+
+/* -- TRY IT LIVE (demo tabs + inline chat panel) -- */
+.try-wrap {
+  margin-top:44px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:220px 1fr;
+  min-height:520px;
+}
+.try-tabs {
+  background:var(--surface-alt);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  padding:20px 0;
+}
+.try-tab {
+  padding:14px 22px;
+  cursor:pointer;
+  border-left:3px solid transparent;
+  transition:background 0.15s, border-color 0.15s;
+  font-size:13px;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.try-tab:hover { background:rgba(212,80,10,0.05); }
+.try-tab.active {
+  background:var(--surface);
+  border-left-color:var(--orange);
+}
+.try-tab-name { font-weight:700; letter-spacing:-0.01em; }
+.try-tab-kind { font-size:11px; color:var(--muted); font-family:'DM Mono',monospace; letter-spacing:0.05em; }
+.try-tab.active .try-tab-kind { color:var(--orange); }
+.try-chat {
+  padding:20px;
+  background:var(--surface);
+  display:flex;
+  flex-direction:column;
+}
+#handled-chat-inline { flex:1; height:100%; min-height:460px; }
+.try-hint {
+  margin-top:12px;
+  padding:10px 14px;
+  background:var(--bg);
+  border:1px dashed var(--border-strong);
+  border-radius:8px;
+  font-size:12px;
+  color:var(--text-dim);
+  line-height:1.5;
+}
+.try-hint strong { color:var(--text); font-weight:700; }
+
+/* -- HOW IT WORKS -- */
+.steps-wrap { position:relative; margin-top:52px; }
+.steps { display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative; }
+.steps::before {
+  content:''; position:absolute; top:32px;
+  left:calc(16.67% + 20px); right:calc(16.67% + 20px);
+  height:1px; border-top:2px dashed var(--border-strong); z-index:0;
+}
+.step {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; padding:28px 26px;
+  position:relative; z-index:1; margin:0 8px;
+  transition:border-color 0.2s, box-shadow 0.2s;
+}
+.step:hover { border-color:var(--orange); box-shadow:0 4px 24px rgba(212,80,10,0.1); }
+.step-num-wrap {
+  width:40px; height:40px; border-radius:50%;
+  background:var(--bg); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:16px; font-family:'DM Mono',monospace;
+  font-size:12px; font-weight:500; color:var(--text-dim);
+  transition:all 0.2s;
+}
+.step:hover .step-num-wrap { background:var(--orange-dim); border-color:rgba(212,80,10,0.3); color:var(--orange); }
+.step h3 { font-size:15px; font-weight:700; margin-bottom:10px; letter-spacing:-0.01em; }
+.step p { font-size:13px; color:var(--text-dim); line-height:1.65; }
+.step strong { color:var(--text); }
+
+/* -- WHAT YOU GET (included grid) -- */
+.included-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:44px; }
+.included-item {
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:12px; padding:18px 20px;
+  display:flex; gap:14px; align-items:flex-start;
+  transition:border-color 0.2s, background 0.2s;
+}
+.included-item:hover { border-color:var(--orange); background:var(--surface); }
+.check-icon {
+  width:28px; height:28px; border-radius:8px;
+  background:rgba(21,128,61,0.1); border:1px solid rgba(21,128,61,0.2);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; margin-top:1px;
+}
+.included-item h4 { font-size:13px; font-weight:700; margin-bottom:4px; }
+.included-item p { font-size:12px; color:var(--text-dim); line-height:1.55; }
+
+/* -- PRICING -- */
+.plans-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:52px; align-items:start; max-width:640px; margin-left:auto; margin-right:auto; }
+.plan {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; padding:30px;
+  display:flex; flex-direction:column;
+  position:relative; text-align:left;
+  transition:box-shadow 0.2s;
+}
+.plan:hover { box-shadow:0 8px 40px rgba(0,0,0,0.07); }
+.plan-featured { border:2px solid var(--orange); }
+.plan-badge {
+  position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+  background:var(--orange); color:#fff;
+  font-size:10px; font-weight:700;
+  padding:3px 14px; border-radius:20px;
+  letter-spacing:0.06em; text-transform:uppercase;
+}
+.plan-name { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.plan-headline { font-size:16px; font-weight:700; letter-spacing:-0.01em; margin-bottom:20px; line-height:1.3; }
+.plan-price { font-size:48px; font-weight:800; font-family:'DM Mono',monospace; letter-spacing:-0.04em; line-height:1; }
+.plan-price-sub { font-size:12px; color:var(--muted); font-family:'DM Mono',monospace; margin-top:4px; margin-bottom:24px; }
+.plan-features { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:28px; flex:1; }
+.plan-features li { display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--text-dim); line-height:1.45; }
+.plan-features li svg { flex-shrink:0; margin-top:2px; }
+.plan-features .no { opacity:0.4; }
+.plan-btn {
+  display:block; text-align:center;
+  padding:13px 20px; border-radius:10px;
+  font-size:14px; font-weight:700;
+  border:1px solid var(--border-strong);
+  color:var(--text); background:var(--bg);
+  transition:all 0.15s; margin-top:auto;
+}
+.plan-btn:hover { background:var(--border); }
+.plan-btn-dark { background:var(--orange); color:#fff; border-color:var(--orange); box-shadow:0 2px 14px rgba(212,80,10,0.3); }
+.plan-btn-dark:hover { background:#b84208; }
+
+/* -- FAQ -- */
+.faq-list { margin-top:44px; }
+.faq-item { border-top:1px solid var(--border); }
+.faq-item:last-child { border-bottom:1px solid var(--border); }
+.faq-q {
+  font-size:15px; font-weight:700;
+  padding:22px 0; cursor:pointer;
+  display:flex; justify-content:space-between;
+  align-items:center; gap:20px;
+  user-select:none; transition:color 0.15s;
+}
+.faq-q:hover { color:var(--orange); }
+.faq-q-icon {
+  width:22px; height:22px; border-radius:50%;
+  border:1.5px solid var(--border-strong);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; color:var(--text-dim);
+  font-size:14px; font-weight:700; line-height:1;
+  transition:all 0.2s;
+}
+.faq-item.open .faq-q-icon { background:var(--orange); border-color:var(--orange); color:#fff; transform:rotate(45deg); }
+.faq-a {
+  font-size:14px; color:var(--text-dim); line-height:1.75;
+  max-height:0; overflow:hidden;
+  transition:max-height 0.35s ease, padding 0.35s ease;
+}
+.faq-item.open .faq-a { max-height:400px; padding-bottom:22px; }
+.faq-a strong { color:var(--text); }
+
+/* -- CTA BAND -- */
+.cta-band {
+  background:var(--text); color:#fff;
+  padding:80px 40px;
+  text-align:center;
+  position:relative; overflow:hidden;
+}
+.cta-band::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 100%, rgba(212,80,10,0.2) 0%, transparent 70%);
+  pointer-events:none;
+}
+.cta-headline {
+  font-family:'Inter',sans-serif; font-weight:800;
+  font-size:clamp(26px,4vw,42px);
+  letter-spacing:-0.035em; line-height:1.14;
+  max-width:640px; margin:0 auto 14px;
+  position:relative;
+}
+.cta-headline .big { color:var(--orange-light); text-shadow:0 0 40px rgba(244,135,74,0.5); }
+.cta-sub { font-size:16px; color:rgba(255,255,255,0.55); max-width:460px; margin:0 auto 36px; line-height:1.65; position:relative; }
+
+/* -- FOOTER -- */
+footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 40px; }
+.footer-inner {
+  max-width:960px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:16px;
+}
+.footer-brand { font-size:15px; font-weight:700; letter-spacing:-0.01em; }
+.footer-tagline { font-size:12px; color:var(--muted); margin-top:3px; }
+.footer-links { display:flex; gap:24px; }
+.footer-links a { font-size:12px; color:var(--muted); transition:color 0.15s; }
+.footer-links a:hover { color:var(--text); }
+.footer-right { font-size:11px; color:var(--muted); font-family:'DM Mono',monospace; }
+
+/* -- SCROLL REVEAL -- */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.55s ease, transform 0.55s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:0.08s; }
+.reveal-delay-2 { transition-delay:0.16s; }
+
+@media (max-width:760px) {
+  nav { padding:0 20px; }
+  .nav-links .nav-link { display:none; }
+  .hero { padding:64px 20px 60px; }
+  .inner, footer { padding-left:20px; padding-right:20px; }
+  .band { padding:60px 0; }
+  .try-wrap { grid-template-columns:1fr; }
+  .try-tabs { flex-direction:row; overflow-x:auto; border-right:none; border-bottom:1px solid var(--border); padding:0; }
+  .try-tab { border-left:none; border-bottom:3px solid transparent; padding:14px 18px; flex-shrink:0; }
+  .try-tab.active { border-left-color:transparent; border-bottom-color:var(--orange); }
+  .steps { grid-template-columns:1fr; }
+  .steps::before { display:none; }
+  .step { margin:0; margin-bottom:12px; }
+  .included-grid { grid-template-columns:1fr; }
+  .plans-grid { grid-template-columns:1fr; }
+  .cta-band { padding:56px 20px; }
+  .footer-inner { flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Handled Chat</div>
+  <div class="nav-links">
+    <a href="#try" class="nav-link">Try it live</a>
+    <a href="#how" class="nav-link">How it works</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="/" class="nav-link">Handled</a>
+    <a href="#pricing" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- -- HERO -- -->
+<div class="hero-wrap">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span>Live in 24 Hours</div>
+    <h1>An AI chatbot for your site.<br><em>One line of code.</em> <span class="glow">Zero setup.</span></h1>
+    <p class="hero-sub">
+      We scrape your site, you approve what it knows, we hand you a script tag.<br>
+      <strong>$49/month.</strong> Cancel anytime.
+    </p>
+    <div class="hero-actions">
+      <a href="#try" class="btn-primary">Try a live demo &rarr;</a>
+      <a href="#pricing" class="btn-ghost">See pricing</a>
+    </div>
+  </div>
+</div>
+
+<!-- -- TRY IT LIVE -- -->
+<div class="band band-surface" id="try">
+  <div class="inner">
+    <div class="label reveal">Try It Live</div>
+    <div class="title reveal">Ask them anything.</div>
+    <p class="sub reveal">Four real chatbots, four different businesses. Same code, different knowledge. Pick one and ask about hours, services, pricing, whatever you want.</p>
+    <div class="try-wrap reveal">
+      <div class="try-tabs">
+        <div class="try-tab active" data-client="demo_hvac" data-name="Peak Valley HVAC" data-opener="Peak Valley HVAC here. Got a heating or cooling question I can help with?">
+          <span class="try-tab-name">Peak Valley HVAC</span>
+          <span class="try-tab-kind">Home services</span>
+        </div>
+        <div class="try-tab" data-client="demo_salon" data-name="Bloom Hair Studio" data-opener="Welcome to Bloom Hair Studio. What can I help you with today?">
+          <span class="try-tab-name">Bloom Hair Studio</span>
+          <span class="try-tab-kind">Beauty &amp; salon</span>
+        </div>
+        <div class="try-tab" data-client="demo_restaurant" data-name="Farro Kitchen" data-opener="Hi, thanks for stopping by Farro Kitchen. Question about the menu or reservations?">
+          <span class="try-tab-name">Farro Kitchen</span>
+          <span class="try-tab-kind">Restaurant</span>
+        </div>
+        <div class="try-tab" data-client="demo_law" data-name="Kestrel Law Group" data-opener="Kestrel Law Group. How can I help you today?">
+          <span class="try-tab-name">Kestrel Law Group</span>
+          <span class="try-tab-kind">Professional services</span>
+        </div>
+      </div>
+      <div class="try-chat">
+        <div id="handled-chat-inline"></div>
+        <div class="try-hint">
+          <strong>Try asking:</strong> &quot;What are your hours?&quot; &middot; &quot;Do you take walk-ins?&quot; &middot; &quot;How much does X cost?&quot; &middot; &quot;What's on the menu?&quot;
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -- HOW IT WORKS -- -->
+<div class="band" id="how">
+  <div class="inner">
+    <div class="label reveal">How It Works</div>
+    <div class="title reveal">Three steps. Then it just runs.</div>
+    <p class="sub reveal">The customer does one thing: pastes a script tag. Everything else is on us.</p>
+    <div class="steps-wrap reveal">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num-wrap">01</div>
+          <h3>Give us your URL</h3>
+          <p>Sign up, drop your website, we <strong>scrape your public pages</strong> and build a draft knowledge base your bot will answer from.</p>
+        </div>
+        <div class="step">
+          <div class="step-num-wrap">02</div>
+          <h3>Approve what it knows</h3>
+          <p>We show you the summary. You edit anything wrong, add anything missing, <strong>approve when ready</strong>. Nothing goes live until you say so.</p>
+        </div>
+        <div class="step">
+          <div class="step-num-wrap">03</div>
+          <h3>Paste one line of code</h3>
+          <p>You get a <code>&lt;script&gt;</code> tag. Add it to your site once and <strong>it just works.</strong> No logins, no dashboards, no maintenance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -- WHAT YOU GET -- -->
+<div class="band band-alt">
+  <div class="inner">
+    <div class="label reveal">What's Included</div>
+    <div class="title reveal">Everything a chatbot should do.<br>Nothing you have to manage.</div>
+    <div class="included-grid">
+      <div class="included-item reveal">
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div><h4>Trained on your site</h4><p>We scrape your pages so it actually knows your business, not generic answers.</p></div>
+      </div>
+      <div class="included-item reveal reveal-delay-1">
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div><h4>Answers in your voice</h4><p>Friendly, concise, and never makes up hours, prices, or policies you didn't set.</p></div>
+      </div>
+      <div class="included-item reveal">
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div><h4>Full conversation log</h4><p>Every message logged. Come back anytime and see what your visitors are actually asking.</p></div>
+      </div>
+      <div class="included-item reveal reveal-delay-1">
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div><h4>Edit anytime</h4><p>Business hours change? Prices change? Update the knowledge base whenever, no code changes.</p></div>
+      </div>
+      <div class="included-item reveal">
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div><h4>Works everywhere</h4><p>WordPress, Squarespace, Wix, Webflow, custom sites - anywhere you can paste a script tag.</p></div>
+      </div>
+      <div class="included-item reveal reveal-delay-1">
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div><h4>No lock-in</h4><p>Cancel anytime. Your data is yours - export the knowledge base and conversation logs on request.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -- PRICING -- -->
+<div class="band band-surface" id="pricing">
+  <div class="inner">
+    <div class="label reveal">Pricing</div>
+    <div class="title reveal">One price. Cancel anytime.</div>
+    <p class="sub reveal" style="margin:0 auto 0;">No setup fee. No annual contract. Try it for a month and see if it earns its keep.</p>
+    <div class="plans-grid">
+      <div class="plan plan-featured reveal">
+        <div class="plan-badge">Standard</div>
+        <div class="plan-name">Handled Chat</div>
+        <div class="plan-headline">Everything one small business needs.</div>
+        <div class="plan-price">$49<span style="font-size:20px;color:var(--muted);">/mo</span></div>
+        <div class="plan-price-sub">no setup fee, cancel anytime</div>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>1 chatbot on 1 website</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Trained on your site, edited by you</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live in 24 hours from approval</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Up to 1,000 conversations/month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full conversation logs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Update knowledge base anytime</li>
+        </ul>
+        <a href="mailto:hello@justhandled.net?subject=Handled%20Chat%20signup&amp;body=Hi%20-%20I%27d%20like%20to%20sign%20up%20for%20Handled%20Chat.%20My%20website%20is%3A%20" class="plan-btn plan-btn-dark">Get Started</a>
+      </div>
+      <div class="plan reveal reveal-delay-1">
+        <div class="plan-name">Custom</div>
+        <div class="plan-headline">Multiple sites, high volume, or unusual needs.</div>
+        <div class="plan-price" style="font-size:32px;font-family:'Inter',sans-serif;font-weight:800;">Let's talk</div>
+        <div class="plan-price-sub">scoped to your setup</div>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Multiple sites or subdomains</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Higher conversation volumes</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Custom voice or persona</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Priority support</li>
+          <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Not a standard plan</li>
+          <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Not the same $49/mo price</li>
+        </ul>
+        <a href="mailto:hello@justhandled.net?subject=Handled%20Chat%20custom%20plan" class="plan-btn">Talk to us</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -- FAQ -- -->
+<div class="band">
+  <div class="inner">
+    <div class="label reveal">FAQ</div>
+    <div class="title reveal">Straight answers.</div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Do I need any technical knowledge to install it?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">You copy one <code>&lt;script&gt;</code> tag into your site's HTML. If you can add a Google Analytics or Facebook Pixel tag, you can install this. If not, we'll do it for you.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What if it says something wrong?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">The bot is instructed to say "I don't know, please contact the business" when it doesn't have the info. You approve the entire knowledge base before it goes live, and you can <strong>edit or pause anytime.</strong></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I see what people are asking it?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a"><strong>Yes.</strong> Every conversation is logged. You can review them, spot common questions, and update your knowledge base to answer them better.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What happens if I hit 1,000 conversations?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">We reach out. Most small business sites are nowhere near this. If you're routinely over, we'll bump you to a custom plan - never a surprise charge.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a"><strong>Yes.</strong> Monthly billing, no annual contract, cancel and it stops. No cancellation fees or awkward retention emails.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Does it work with WordPress / Squarespace / Wix?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">Yes, all of them. Anywhere you can paste an HTML snippet or embed code, our widget works.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How is this different from ChatGPT on my site?<span class="faq-q-icon">+</span></div>
+        <div class="faq-a">A raw ChatGPT will make things up about your business. This one is <strong>constrained to what you approve</strong> and told to defer to you when it doesn't know. That difference matters when a visitor is deciding whether to book.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -- FINAL CTA -- -->
+<div class="cta-band">
+  <div class="cta-headline"><span class="big">One tag.</span><br>One line. Live in 24 hours.</div>
+  <div class="cta-sub">$49/month. Cancel anytime. Sign up in the next 24 hours and it's live by tomorrow.</div>
+  <a href="mailto:hello@justhandled.net?subject=Handled%20Chat%20signup" class="btn-primary">Get Handled Chat &rarr;</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Handled Chat</div>
+      <div class="footer-tagline">AI chatbot for your website</div>
+    </div>
+    <div class="footer-links">
+      <a href="#try">Try it live</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="/">Handled Home</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="mailto:hello@justhandled.net">Contact</a>
+    </div>
+    <div class="footer-right">&copy; 2026 Handled</div>
+  </div>
+</footer>
+
+<script>
+// -- SCROLL REVEAL --
+(function(){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('visible'); obs.unobserve(en.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+})();
+
+// -- FAQ --
+function toggleFaq(qEl) {
+  var item = qEl.closest('.faq-item');
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(i){ i.classList.remove('open'); });
+  if(!isOpen) item.classList.add('open');
+}
+
+// -- DEMO TAB SWITCHER --
+(function(){
+  var tabs = document.querySelectorAll('.try-tab');
+  function activate(tab) {
+    tabs.forEach(function(t){ t.classList.remove('active'); });
+    tab.classList.add('active');
+    if (window.HandledChat && window.HandledChat.setClient) {
+      window.HandledChat.setTitle(tab.dataset.name);
+      window.HandledChat.setOpener(tab.dataset.opener);
+      window.HandledChat.setClient(tab.dataset.client);
+    }
+  }
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){ activate(tab); });
+  });
+
+  var readyPoll = setInterval(function(){
+    if (window.HandledChat && window.HandledChat.setTitle) {
+      clearInterval(readyPoll);
+      var initial = document.querySelector('.try-tab.active');
+      if (initial) {
+        window.HandledChat.setTitle(initial.dataset.name);
+        window.HandledChat.setOpener(initial.dataset.opener);
+      }
+    }
+  }, 100);
+  setTimeout(function(){ clearInterval(readyPoll); }, 5000);
+})();
+</script>
+
+<!-- Load the same widget script real customers will use. Inline mode auto-detected via #handled-chat-inline. -->
+<script src="/widget.js" data-client="demo_hvac" data-title="Peak Valley HVAC"></script>
+
+</body>
+</html>
