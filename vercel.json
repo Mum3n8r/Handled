@@ -1,52 +1,16 @@
-﻿{
-    "rewrites":  [
-                     {
-                         "source":  "/order/:id",
-                         "destination":  "/order.html"
-                     },
-                     {
-                         "source":  "/order",
-                         "destination":  "/order.html"
-                     },
-                     {
-                         "source":  "/success",
-                         "destination":  "/success.html"
-                     },
-                     {
-                         "source":  "/onboard",
-                         "destination":  "/onboard.html"
-                     },
-                     {
-                         "source":  "/privacy",
-                         "destination":  "/privacy.html"
-                     },
-                     {
-                         "source":  "/terms",
-                         "destination":  "/terms.html"
-                     },
-                     {
-                         "source":  "/pricing",
-                         "destination":  "/pricing.html"
-                     },
-                     {
-                         "source":  "/about",
-                         "destination":  "/about.html"
-                     },
-                     {
-                         "source":  "/salons",
-                         "destination":  "/handled_salons.html"
-                     },
-                     {
-                         "source":  "/personalizer",
-                         "destination":  "/personalizer.html"
-                     },
-                     {
-                         "source":  "/mcp",
-                         "destination":  "/api/mcp"
-                     },
-                     {
-                         "source":  "/chatbot",
-                         "destination":  "/chatbot.html"
-                     }
-                 ]
+{
+  "rewrites": [
+    { "source": "/order/:id", "destination": "/order.html" },
+    { "source": "/order", "destination": "/order.html" },
+    { "source": "/success", "destination": "/success.html" },
+    { "source": "/onboard", "destination": "/onboard.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/pricing", "destination": "/pricing.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/salons", "destination": "/handled_salons.html" },
+    { "source": "/personalizer", "destination": "/personalizer.html" },
+    { "source": "/mcp", "destination": "/api/mcp" },
+    { "source": "/chatbot", "destination": "/chatbot.html" }
+  ]
 }
