@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -376,7 +376,78 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
   .cta-band { padding:56px 20px; }
   .footer-inner { flex-direction:column; text-align:center; }
 }
-</style>
+
+/* -- WIDGET SHOWCASE -- */
+.widget-showcase { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; margin-top:52px; }
+.ws-browser { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,0.1); }
+.ws-bar { background:var(--surface-alt); border-bottom:1px solid var(--border); padding:10px 14px; display:flex; align-items:center; gap:12px; }
+.ws-dots { display:flex; gap:5px; }
+.ws-dots span { width:8px; height:8px; border-radius:50%; background:var(--border-strong); }
+.ws-dots span:nth-child(1) { background:#ff5f57; }
+.ws-dots span:nth-child(2) { background:#ffbd2e; }
+.ws-dots span:nth-child(3) { background:#28c840; }
+.ws-url { flex:1; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:4px 10px; font-size:11px; font-family:'DM Mono',monospace; color:var(--muted); text-align:center; }
+.ws-page { position:relative; background:var(--bg); min-height:320px; overflow:hidden; }
+.ws-page-nav { height:40px; background:var(--surface); border-bottom:1px solid var(--border); }
+.ws-page-hero { padding:28px 28px 20px; }
+.ws-page-h { height:20px; background:var(--border-strong); border-radius:4px; width:70%; margin-bottom:10px; }
+.ws-page-sub { height:10px; background:var(--border); border-radius:4px; width:85%; margin-bottom:7px; }
+.ws-page-sub-sm { width:55%; }
+.ws-page-btn { height:32px; width:120px; background:var(--orange); border-radius:8px; margin-top:14px; opacity:0.7; }
+.ws-page-body { padding:0 28px 28px; display:flex; flex-direction:column; gap:8px; }
+.ws-page-line { height:9px; background:var(--border); border-radius:4px; }
+.ws-page-line.ws-short { width:60%; }
+.ws-fab {
+  position:absolute; bottom:16px; right:16px;
+  width:46px; height:46px; border-radius:50%;
+  background:var(--orange); display:flex; align-items:center; justify-content:center;
+  cursor:pointer; box-shadow:0 4px 16px rgba(212,80,10,0.4);
+  transition:transform 0.15s, box-shadow 0.15s; z-index:10;
+}
+.ws-fab:hover { transform:translateY(-2px); box-shadow:0 6px 22px rgba(212,80,10,0.5); }
+.ws-panel {
+  position:absolute; bottom:70px; right:16px;
+  width:220px; height:240px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; box-shadow:0 8px 32px rgba(0,0,0,0.18);
+  display:flex; flex-direction:column; overflow:hidden;
+  opacity:0; transform:translateY(8px) scale(0.96);
+  transition:opacity 0.2s ease, transform 0.2s ease;
+  pointer-events:none; z-index:10;
+}
+.ws-panel.open { opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+.ws-panel-header { padding:10px 12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+.ws-panel-avatar { font-size:16px; }
+.ws-panel-title { font-size:11px; font-weight:700; }
+.ws-panel-sub { font-size:9px; color:var(--muted); }
+.ws-panel-status { width:6px; height:6px; border-radius:50%; background:var(--green); margin-left:auto; }
+.ws-panel-messages { flex:1; overflow-y:auto; padding:10px; display:flex; flex-direction:column; gap:6px; }
+.ws-msg { max-width:85%; padding:7px 10px; border-radius:10px; font-size:11px; line-height:1.45; word-break:break-word; animation:wsIn 0.15s ease; }
+@keyframes wsIn { from{opacity:0;transform:translateY(3px)} to{opacity:1;transform:translateY(0)} }
+.ws-msg-ai { background:var(--surface-alt); border:1px solid var(--border); color:var(--text); align-self:flex-start; border-bottom-left-radius:3px; }
+.ws-msg-user { background:var(--orange); color:#fff; align-self:flex-end; border-bottom-right-radius:3px; }
+.ws-typing { background:var(--surface-alt); border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:3px; padding:8px 10px; border-radius:10px; display:flex; gap:3px; align-items:center; }
+.ws-typing span { width:4px; height:4px; background:var(--muted); border-radius:50%; animation:wsBounce 1.2s infinite; }
+.ws-typing span:nth-child(2) { animation-delay:.15s; }
+.ws-typing span:nth-child(3) { animation-delay:.3s; }
+@keyframes wsBounce { 0%,80%,100%{transform:scale(.7);opacity:.4} 40%{transform:scale(1);opacity:1} }
+.ws-panel-input { padding:8px; border-top:1px solid var(--border); display:flex; gap:6px; }
+.ws-panel-input input { flex:1; padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:11px; font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); outline:none; }
+.ws-panel-input input:focus { border-color:var(--orange); }
+#ws-send { width:26px; height:26px; background:var(--orange); border:none; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.15s; flex-shrink:0; }
+#ws-send:hover { background:#b84208; }
+#ws-send:disabled { opacity:0.4; cursor:not-allowed; }
+.ws-code-wrap { }
+.ws-code-label { font-size:11px; font-family:'DM Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:12px; }
+.ws-code { background:var(--text); border-radius:10px; padding:16px 18px; font-family:'DM Mono',monospace; font-size:12px; line-height:1.6; word-break:break-all; }
+.ws-code-tag { color:#f4874a; }
+.ws-code-attr { color:#86efac; }
+.ws-code-eq { color:#cbd5e1; }
+.ws-code-str { color:#fde68a; }
+.ws-code-note { font-size:12px; color:var(--text-dim); margin-top:12px; line-height:1.5; }
+@media (max-width:760px) {
+  .widget-showcase { grid-template-columns:1fr; gap:32px; }
+}</style>
 </head>
 <body>
 
@@ -387,7 +458,7 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
     <a href="#how" class="nav-link">How it works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
     <a href="/" class="nav-link">Handled</a>
-    <a href="#pricing" class="nav-cta">Get Started</a>
+    <a href="/signup" class="nav-cta">Get Started</a>
   </div>
 </nav>
 
@@ -444,6 +515,72 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
   </div>
 </div>
 
+
+<!-- -- WHAT IT LOOKS LIKE -- -->
+<div class="band" id="widget-demo">
+  <div class="inner">
+    <div class="label reveal">On Your Site</div>
+    <div class="title reveal">One line. That's the whole install.</div>
+    <p class="sub reveal">Your visitors see a floating chat bubble in the corner. Click it, a panel opens. They ask questions, get answers, and stay on your site.</p>
+    <div class="widget-showcase reveal">
+      <div class="ws-browser">
+        <div class="ws-bar">
+          <div class="ws-dots"><span></span><span></span><span></span></div>
+          <div class="ws-url">https://yoursite.com</div>
+        </div>
+        <div class="ws-page">
+          <div class="ws-page-nav"></div>
+          <div class="ws-page-hero">
+            <div class="ws-page-h"></div>
+            <div class="ws-page-sub"></div>
+            <div class="ws-page-sub ws-page-sub-sm"></div>
+            <div class="ws-page-btn"></div>
+          </div>
+          <div class="ws-page-body">
+            <div class="ws-page-line"></div>
+            <div class="ws-page-line ws-short"></div>
+            <div class="ws-page-line"></div>
+          </div>
+          <!-- The floating bubble -->
+          <div class="ws-fab" id="ws-fab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <!-- The chat panel, hidden by default -->
+          <div class="ws-panel" id="ws-panel">
+            <div class="ws-panel-header">
+              <div class="ws-panel-avatar">💬</div>
+              <div>
+                <div class="ws-panel-title">Your Business</div>
+                <div class="ws-panel-sub">Powered by Handled</div>
+              </div>
+              <div class="ws-panel-status"></div>
+            </div>
+            <div class="ws-panel-messages" id="ws-messages">
+              <div class="ws-msg ws-msg-ai">Hi! How can I help you today?</div>
+            </div>
+            <div class="ws-panel-input">
+              <input id="ws-input" type="text" placeholder="Type a message..." oninput="wsCheckSend()" onkeydown="if(event.key==='Enter')wsSend()">
+              <button id="ws-send" onclick="wsSend()" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ws-code-wrap">
+        <div class="ws-code-label">The entire install is one line:</div>
+        <div class="ws-code">
+          <span class="ws-code-tag">&lt;script</span>
+          <span class="ws-code-attr"> src</span><span class="ws-code-eq">=</span><span class="ws-code-str">"https://justhandled.net/widget.js"</span>
+          <span class="ws-code-attr"> data-client</span><span class="ws-code-eq">=</span><span class="ws-code-str">"your-id"</span>
+          <span class="ws-code-tag">&gt;&lt;/script&gt;</span>
+        </div>
+        <div class="ws-code-note">Works on WordPress, Squarespace, Wix, Webflow, or any custom site.</div>
+        <a href="/signup" class="btn-primary" style="display:inline-block;margin-top:20px;">Get this on my site →</a>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- -- HOW IT WORKS -- -->
 <div class="band" id="how">
   <div class="inner">
@@ -527,7 +664,7 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full conversation logs</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Update knowledge base anytime</li>
         </ul>
-        <a href="mailto:hello@justhandled.net?subject=Handled%20Chat%20signup&amp;body=Hi%20-%20I%27d%20like%20to%20sign%20up%20for%20Handled%20Chat.%20My%20website%20is%3A%20" class="plan-btn plan-btn-dark">Get Started</a>
+        <a href="/signup" class="plan-btn plan-btn-dark">Get Started</a>
       </div>
       <div class="plan reveal reveal-delay-1">
         <div class="plan-name">Custom</div>
@@ -590,7 +727,7 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
 <div class="cta-band">
   <div class="cta-headline"><span class="big">One tag.</span><br>One line. Live in 24 hours.</div>
   <div class="cta-sub">$49/month. Cancel anytime. Sign up in the next 24 hours and it's live by tomorrow.</div>
-  <a href="mailto:hello@justhandled.net?subject=Handled%20Chat%20signup" class="btn-primary">Get Handled Chat &rarr;</a>
+  <a href="/signup" class="btn-primary">Get Handled Chat &rarr;</a>
 </div>
 
 <footer>
@@ -659,10 +796,131 @@ function toggleFaq(qEl) {
   }, 100);
   setTimeout(function(){ clearInterval(readyPoll); }, 5000);
 })();
-</script>
+
+// -- WIDGET SHOWCASE --
+(function(){
+  var fab = document.getElementById('ws-fab');
+  var panel = document.getElementById('ws-panel');
+  var msgs = document.getElementById('ws-messages');
+  var input = document.getElementById('ws-input');
+  var send = document.getElementById('ws-send');
+  var open = false;
+  if(!fab) return;
+
+  fab.addEventListener('click', function(){
+    open = !open;
+    panel.classList.toggle('open', open);
+    if(open) setTimeout(function(){ input && input.focus(); }, 200);
+  });
+
+  function wsCheckSend(){
+    send.disabled = !input.value.trim();
+  }
+  window.wsCheckSend = wsCheckSend;
+
+  var canned = [
+    "We're open Mon-Fri 8am-6pm. Appointments available online or by phone.",
+    "Yes! We take walk-ins when space allows, though we recommend booking ahead.",
+    "Prices vary by service. Our basic service starts at $49. Want more details?",
+    "We've been serving the local area for over 10 years. Happy to answer any questions!",
+    "Great question! You can reach us at hello@yourbiz.com or call us directly."
+  ];
+  var cannedIdx = 0;
+
+  function wsSend(){
+    var text = input.value.trim();
+    if(!text) return;
+    input.value = '';
+    send.disabled = true;
+
+    var um = document.createElement('div');
+    um.className = 'ws-msg ws-msg-user';
+    um.textContent = text;
+    msgs.appendChild(um);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    var typing = document.createElement('div');
+    typing.className = 'ws-typing';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    setTimeout(function(){
+      typing.remove();
+      var am = document.createElement('div');
+      am.className = 'ws-msg ws-msg-ai';
+      am.textContent = canned[cannedIdx % canned.length];
+      cannedIdx++;
+      msgs.appendChild(am);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 1000 + Math.random()*600);
+  }
+  window.wsSend = wsSend;
+})();</script>
 
 <!-- Load the same widget script real customers will use. Inline mode auto-detected via #handled-chat-inline. -->
-<script src="/widget.js" data-client="demo_hvac" data-title="Peak Valley HVAC"></script>
+<script src="/widget.js" data-client="demo_hvac" data-title="Peak Valley HVAC">
+// -- WIDGET SHOWCASE --
+(function(){
+  var fab = document.getElementById('ws-fab');
+  var panel = document.getElementById('ws-panel');
+  var msgs = document.getElementById('ws-messages');
+  var input = document.getElementById('ws-input');
+  var send = document.getElementById('ws-send');
+  var open = false;
+  if(!fab) return;
+
+  fab.addEventListener('click', function(){
+    open = !open;
+    panel.classList.toggle('open', open);
+    if(open) setTimeout(function(){ input && input.focus(); }, 200);
+  });
+
+  function wsCheckSend(){
+    send.disabled = !input.value.trim();
+  }
+  window.wsCheckSend = wsCheckSend;
+
+  var canned = [
+    "We're open Mon-Fri 8am-6pm. Appointments available online or by phone.",
+    "Yes! We take walk-ins when space allows, though we recommend booking ahead.",
+    "Prices vary by service. Our basic service starts at $49. Want more details?",
+    "We've been serving the local area for over 10 years. Happy to answer any questions!",
+    "Great question! You can reach us at hello@yourbiz.com or call us directly."
+  ];
+  var cannedIdx = 0;
+
+  function wsSend(){
+    var text = input.value.trim();
+    if(!text) return;
+    input.value = '';
+    send.disabled = true;
+
+    var um = document.createElement('div');
+    um.className = 'ws-msg ws-msg-user';
+    um.textContent = text;
+    msgs.appendChild(um);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    var typing = document.createElement('div');
+    typing.className = 'ws-typing';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    setTimeout(function(){
+      typing.remove();
+      var am = document.createElement('div');
+      am.className = 'ws-msg ws-msg-ai';
+      am.textContent = canned[cannedIdx % canned.length];
+      cannedIdx++;
+      msgs.appendChild(am);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 1000 + Math.random()*600);
+  }
+  window.wsSend = wsSend;
+})();</script>
 
 </body>
 </html>
+

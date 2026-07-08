@@ -11,6 +11,7 @@
     { "source": "/salons", "destination": "/handled_salons.html" },
     { "source": "/personalizer", "destination": "/personalizer.html" },
     { "source": "/mcp", "destination": "/api/mcp" },
-    { "source": "/chatbot", "destination": "/chatbot.html" }
+    { "source": "/chatbot", "destination": "/chatbot.html" },
+    { "source": "/signup", "destination": "/signup.html" }
   ]
 }
