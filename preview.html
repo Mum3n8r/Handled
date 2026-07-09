@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Your Chatbot — Handled Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#f5f0ea; --surface:#fdfaf6; --surface-alt:#f0ebe3;
+  --border:#e0d6cc; --border-strong:#c8bab0;
+  --text:#1e1612; --text-dim:#6b5d52; --muted:#a09082;
+  --green:#15803d; --green-dim:rgba(21,128,61,0.1);
+  --orange:#d4500a; --orange-dim:rgba(212,80,10,0.10);
+}
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; }
+a { text-decoration:none; color:inherit; }
+
+nav { background:var(--surface); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.nav-brand { font-size:17px; font-weight:700; letter-spacing:-0.02em; }
+
+.page { max-width:960px; margin:0 auto; padding:48px 24px 80px; }
+
+.page-header { margin-bottom:40px; }
+.page-eyebrow { font-size:11px; font-family:'DM Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px; }
+.page-title { font-family:'Inter',sans-serif; font-size:32px; font-weight:800; letter-spacing:-0.035em; margin-bottom:8px; }
+.page-sub { font-size:15px; color:var(--text-dim); line-height:1.6; }
+
+.layout { display:grid; grid-template-columns:1fr 380px; gap:32px; align-items:start; }
+
+/* Left: knowledge base editor */
+.editor-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; }
+.editor-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:4px; font-family:'DM Mono',monospace; }
+.editor-title { font-size:16px; font-weight:700; margin-bottom:6px; }
+.editor-hint { font-size:12px; color:var(--text-dim); line-height:1.5; margin-bottom:16px; }
+.editor-ta {
+  width:100%; min-height:380px; padding:14px 16px;
+  border:1.5px solid var(--border); border-radius:10px;
+  font-size:13px; font-family:'DM Mono',monospace; line-height:1.7;
+  background:var(--bg); color:var(--text); outline:none; resize:vertical;
+  transition:border-color 0.15s;
+}
+.editor-ta:focus { border-color:var(--orange); }
+.save-btn {
+  margin-top:12px; padding:10px 20px;
+  background:var(--surface-alt); border:1px solid var(--border);
+  border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;
+  font-family:'DM Sans',sans-serif; color:var(--text); transition:all 0.15s;
+}
+.save-btn:hover { background:var(--border); }
+.save-msg { font-size:12px; color:var(--green); margin-left:10px; display:none; }
+
+/* Right: live preview + approve */
+.right-col { display:flex; flex-direction:column; gap:20px; }
+
+.chat-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.chat-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+.chat-avatar { width:32px; height:32px; border-radius:50%; background:var(--orange-dim); border:1px solid rgba(212,80,10,0.2); display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+.chat-title { font-size:13px; font-weight:700; }
+.chat-sub { font-size:11px; color:var(--muted); }
+.chat-status { width:7px; height:7px; border-radius:50%; background:var(--green); margin-left:auto; }
+.chat-messages { height:280px; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:8px; background:var(--bg); }
+.chat-messages::-webkit-scrollbar { width:4px; }
+.chat-messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.msg { max-width:85%; padding:10px 13px; border-radius:14px; font-size:13px; line-height:1.55; word-break:break-word; animation:msgIn .15s ease; }
+@keyframes msgIn { from{opacity:0;transform:translateY(3px)} to{opacity:1;transform:none} }
+.msg-ai { background:var(--surface); border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:4px; }
+.msg-user { background:var(--orange); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+.typing { background:var(--surface); border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:4px; padding:13px 15px; border-radius:14px; display:flex; gap:4px; }
+.typing span { width:6px; height:6px; background:var(--muted); border-radius:50%; animation:bounce 1.2s infinite; }
+.typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:scale(.75);opacity:.4}40%{transform:scale(1.05);opacity:1}}
+.chat-input-row { padding:12px 14px; border-top:1px solid var(--border); display:flex; gap:8px; background:var(--surface); }
+.chat-input { flex:1; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; padding:9px 12px; font-size:13px; color:var(--text); outline:none; font-family:'DM Sans',sans-serif; transition:border-color 0.15s; }
+.chat-input:focus { border-color:var(--orange); }
+.chat-send { width:36px; height:36px; background:var(--orange); border:0; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.15s; }
+.chat-send:hover { background:#b84208; }
+.chat-send:disabled { opacity:0.4; cursor:not-allowed; }
+
+/* Approve panel */
+.approve-card { background:var(--surface); border:2px solid var(--orange); border-radius:16px; padding:24px; }
+.approve-title { font-size:16px; font-weight:800; margin-bottom:6px; font-family:'Inter',sans-serif; }
+.approve-sub { font-size:13px; color:var(--text-dim); line-height:1.55; margin-bottom:20px; }
+.approve-price { font-size:28px; font-weight:800; font-family:'DM Mono',monospace; letter-spacing:-0.03em; margin-bottom:4px; }
+.approve-price-sub { font-size:11px; color:var(--muted); font-family:'DM Mono',monospace; margin-bottom:20px; }
+.approve-btn {
+  display:block; width:100%; text-align:center;
+  background:var(--orange); color:#fff;
+  padding:14px 24px; border-radius:12px;
+  font-size:15px; font-weight:700; font-family:'DM Sans',sans-serif;
+  transition:all 0.15s; box-shadow:0 2px 14px rgba(212,80,10,0.3);
+  border:none; cursor:pointer;
+}
+.approve-btn:hover { background:#b84208; box-shadow:0 4px 20px rgba(212,80,10,0.4); transform:translateY(-1px); }
+.approve-note { font-size:11px; color:var(--muted); text-align:center; margin-top:10px; line-height:1.5; }
+
+/* Loading / error states */
+.loading { text-align:center; padding:80px 24px; }
+.loading-spinner { width:40px; height:40px; border:3px solid var(--border); border-top-color:var(--orange); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 20px; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.error-state { text-align:center; padding:80px 24px; }
+.error-state h2 { font-size:22px; font-weight:700; margin-bottom:10px; }
+.error-state p { color:var(--text-dim); font-size:15px; line-height:1.6; }
+
+@media (max-width:760px) {
+  .layout { grid-template-columns:1fr; }
+  nav { padding:0 20px; }
+  .page { padding:32px 16px 60px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Handled Chat</div>
+  <a href="/chatbot" style="font-size:13px;color:var(--text-dim);">← Back to site</a>
+</nav>
+
+<div class="page">
+
+  <div id="loading-view" class="loading">
+    <div class="loading-spinner"></div>
+    <p style="color:var(--text-dim);font-size:15px;">Loading your chatbot draft...</p>
+  </div>
+
+  <div id="error-view" class="error-state" style="display:none;">
+    <h2>Draft not found</h2>
+    <p>This preview link may have expired or be invalid.<br>
+    <a href="/signup" style="color:var(--orange);">Start over →</a></p>
+  </div>
+
+  <div id="main-view" style="display:none;">
+    <div class="page-header">
+      <div class="page-eyebrow">Step 2 of 3 — Review your draft</div>
+      <div class="page-title" id="page-title">Your chatbot draft</div>
+      <p class="page-sub">We scraped your site and built this knowledge base. Edit anything that's wrong or missing, then try the live chat on the right. When it answers correctly, click Approve &amp; Go Live.</p>
+    </div>
+
+    <div class="layout">
+      <div class="editor-card">
+        <div class="editor-label">Knowledge Base</div>
+        <div class="editor-title">What your bot knows</div>
+        <div class="editor-hint">This is what your bot uses to answer questions. Edit freely — fix wrong info, add missing details, remove anything you don't want it to say.</div>
+        <textarea class="editor-ta" id="kb-editor" spellcheck="true"></textarea>
+        <div style="display:flex;align-items:center;margin-top:12px;">
+          <button class="save-btn" onclick="saveKb()">Save changes</button>
+          <span class="save-msg" id="save-msg">✓ Saved</span>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="chat-card">
+          <div class="chat-header">
+            <div class="chat-avatar">💬</div>
+            <div>
+              <div class="chat-title" id="chat-title">Your Bot</div>
+              <div class="chat-sub">Powered by Handled Chat</div>
+            </div>
+            <div class="chat-status" title="Online"></div>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <div class="msg msg-ai" id="opener-msg">Hi! Ask me anything about the business.</div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chat-input" type="text" placeholder="Type a question..." onkeydown="if(event.key==='Enter')sendChat()">
+            <button class="chat-send" id="chat-send" onclick="sendChat()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="approve-card">
+          <div class="approve-title">Looks good? Go live.</div>
+          <div class="approve-sub">Once you approve, you pay $49/month and get a single <code style="font-family:'DM Mono',monospace;font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;">&lt;script&gt;</code> tag to paste into your site. That's it.</div>
+          <div class="approve-price">$49<span style="font-size:16px;font-weight:500;color:var(--muted);">/mo</span></div>
+          <div class="approve-price-sub">no setup fee · cancel anytime</div>
+          <button class="approve-btn" onclick="approveDraft()">Approve &amp; Go Live →</button>
+          <div class="approve-note">You'll be taken to Stripe to complete payment.<br>Your bot goes live within minutes after checkout.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const BACKEND = 'https://duvet-habitant-stimulate.ngrok-free.dev';
+const STRIPE_LINK = 'https://buy.stripe.com/bJecN43ZL4yEa0d0o58Ra0h';
+
+const params = new URLSearchParams(window.location.search);
+const clientId = params.get('id');
+let clientData = null;
+let messages = [];
+
+async function init() {
+  if (!clientId) return showError();
+
+  try {
+    const res = await fetch(`${BACKEND}/preview/client?id=${clientId}`, {
+      headers: { 'ngrok-skip-browser-warning': 'true' }
+    });
+    if (!res.ok) return showError();
+    clientData = await res.json();
+
+    document.getElementById('page-title').textContent = `${clientData.business_name} — chatbot draft`;
+    document.getElementById('chat-title').textContent = clientData.business_name;
+    document.getElementById('kb-editor').value = clientData.knowledge_base || '';
+
+    // Opener message
+    const opener = `Hi! I'm the ${clientData.business_name} chatbot. Ask me anything about the business.`;
+    document.getElementById('opener-msg').textContent = opener;
+    messages = [{ role: 'assistant', content: opener }];
+
+    document.getElementById('loading-view').style.display = 'none';
+    document.getElementById('main-view').style.display = 'block';
+
+  } catch(e) {
+    showError();
+  }
+}
+
+function showError() {
+  document.getElementById('loading-view').style.display = 'none';
+  document.getElementById('error-view').style.display = 'block';
+}
+
+async function saveKb() {
+  const kb = document.getElementById('kb-editor').value.trim();
+  try {
+    await fetch(`${BACKEND}/preview/save`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+      body: JSON.stringify({ client_id: clientId, knowledge_base: kb }),
+    });
+    const msg = document.getElementById('save-msg');
+    msg.style.display = 'inline';
+    setTimeout(() => msg.style.display = 'none', 2000);
+  } catch(e) { alert('Save failed — check your connection.'); }
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  appendMsg(text, 'user');
+  messages.push({ role: 'user', content: text });
+
+  const typing = showTyping();
+  try {
+    const res = await fetch(`${BACKEND}/widget/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', 'Origin': 'https://justhandled.net' },
+      body: JSON.stringify({ client_id: clientId, messages, session_id: 'preview_' + clientId }),
+    });
+    const d = await res.json();
+    removeTyping(typing);
+    const reply = d.reply || 'Sorry, something went wrong.';
+    appendMsg(reply, 'ai');
+    messages.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    removeTyping(typing);
+    appendMsg('Connection error — please try again.', 'ai');
+  }
+}
+
+function appendMsg(text, role) {
+  const el = document.createElement('div');
+  el.className = 'msg ' + (role === 'user' ? 'msg-user' : 'msg-ai');
+  el.textContent = text;
+  const container = document.getElementById('chat-messages');
+  container.appendChild(el);
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTyping() {
+  const el = document.createElement('div');
+  el.className = 'typing';
+  el.innerHTML = '<span></span><span></span><span></span>';
+  const container = document.getElementById('chat-messages');
+  container.appendChild(el);
+  container.scrollTop = container.scrollHeight;
+  return el;
+}
+
+function removeTyping(el) { if (el && el.parentNode) el.parentNode.removeChild(el); }
+
+function approveDraft() {
+  // Mark client as approved in backend, then redirect to Stripe with client_id in metadata
+  const stripeUrl = `${STRIPE_LINK}?client_reference_id=${encodeURIComponent(clientId)}`;
+  // Save any unsaved KB changes first
+  saveKb().catch(() => {}).finally(() => {
+    window.location.href = stripeUrl;
+  });
+}
+
+init();
+</script>
+
+</body>
+</html>
