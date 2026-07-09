@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Get Started — Handled Chat</title>
+<title>Get Started â€” Handled Chat</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -162,19 +162,19 @@ h1 { font-family:'Inter',sans-serif; font-size:36px; font-weight:800; letter-spa
       <input id="f-name" type="text" placeholder="Peak Valley HVAC" autocomplete="organization">
     </div>
     <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
-      <span id="btn-text">Get my chatbot draft →</span>
+      <span id="btn-text">Get my chatbot draft â†’</span>
     </button>
     <div class="error-msg" id="error-msg"></div>
     <div class="guarantee">
-      <span class="guarantee-icon">🔒</span>
+      <span class="guarantee-icon">ðŸ”’</span>
       <div><strong>No charge until you approve.</strong> We build the draft for free. If you like it, you pay $49/month to go live. Cancel anytime, no contracts.</div>
     </div>
   </div>
 
   <div class="success-view card" id="success-view">
-    <span class="success-icon">✅</span>
+    <span class="success-icon">âœ…</span>
     <h2>You're in the queue.</h2>
-    <p>We'll have a draft ready and send it to <strong id="success-email"></strong> — usually within a few hours.</p>
+    <p>We'll have a draft ready and send it to <strong id="success-email"></strong> â€” usually within a few hours.</p>
     <div class="success-next">
       <div class="success-next-item">
         <span class="success-next-num">1</span>
@@ -215,20 +215,20 @@ async function handleSubmit() {
   document.getElementById('btn-text').textContent = 'Submitting...';
 
   try {
-    const res = await fetch('https://duvet-habitant-stimulate.ngrok-free.dev/signup', {
+    const res = await fetch('/api/signup', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url: cleanUrl, email, business_name: name }),
     });
 
     if (res.ok) {
       showSuccess(email);
     } else {
-      // Backend might not have /signup yet — still show success and email Leland
+      // Backend might not have /signup yet â€” still show success and email Leland
       showSuccess(email);
     }
   } catch (e) {
-    // Network error or backend not yet wired — show success + fire mailto fallback silently
+    // Network error or backend not yet wired â€” show success + fire mailto fallback silently
     showSuccess(email);
     // Fallback: fire a mailto so Leland gets notified even if backend endpoint isn't live
     setTimeout(() => {
@@ -249,7 +249,7 @@ function showError(msg) {
   err.textContent = msg;
   err.style.display = 'block';
   document.getElementById('submit-btn').disabled = false;
-  document.getElementById('btn-text').textContent = 'Get my chatbot draft →';
+  document.getElementById('btn-text').textContent = 'Get my chatbot draft â†’';
 }
 
 // Allow Enter to submit
@@ -260,3 +260,4 @@ document.addEventListener('keydown', e => {
 
 </body>
 </html>
+
