@@ -188,10 +188,14 @@
       method: 'GET',
       headers: { 'ngrok-skip-browser-warning': 'true' },
     }).then(function(r) { return r.ok ? r.json() : null; }).then(function(cfg) {
-      if (cfg && cfg.brand_color && cfg.brand_color !== '#d4500a') {
-        BRAND_COLOR = cfg.brand_color;
-        var cs = document.querySelector('[data-handled-color]');
-        if (cs) cs.firstChild.nodeValue = '.hch-root{--hch-brand:' + BRAND_COLOR + ';--hch-brand-dark:' + BRAND_COLOR + 'cc;}';
+      if (cfg) {
+        if (cfg.brand_color) {
+          BRAND_COLOR = cfg.brand_color;
+          var cs = document.querySelector('[data-handled-color]');
+          if (cs) cs.firstChild.nodeValue = '.hch-root{--hch-brand:' + BRAND_COLOR + ';--hch-brand-dark:' + BRAND_COLOR + 'cc;}';
+        }
+        if (cfg.opener && !OPENER) { OPENER = cfg.opener; }
+        if (cfg.title && !TITLE && titleEl) { titleEl.textContent = cfg.title; }
       }
     }).catch(function() {});
   }
