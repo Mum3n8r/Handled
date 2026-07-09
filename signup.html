@@ -1,263 +1,263 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Get Started â€” Handled Chat</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --bg:#f5f0ea; --surface:#fdfaf6; --surface-alt:#f0ebe3;
-  --border:#e0d6cc; --border-strong:#c8bab0;
-  --text:#1e1612; --text-dim:#6b5d52; --muted:#a09082;
-  --green:#15803d; --orange:#d4500a; --orange-dim:rgba(212,80,10,0.10);
-}
-body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column; }
-a { text-decoration:none; color:inherit; }
-
-nav {
-  background:var(--surface); border-bottom:1px solid var(--border);
-  padding:0 40px; height:56px;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.nav-brand { font-size:17px; font-weight:700; letter-spacing:-0.02em; }
-.nav-back { font-size:13px; color:var(--text-dim); display:flex; align-items:center; gap:6px; transition:color 0.15s; }
-.nav-back:hover { color:var(--text); }
-
-.page { flex:1; max-width:560px; margin:0 auto; padding:64px 24px 80px; width:100%; }
-
-.eyebrow {
-  display:inline-flex; align-items:center; gap:7px;
-  background:var(--orange-dim); border:1px solid rgba(212,80,10,0.2);
-  color:var(--orange); font-size:11px; font-weight:800;
-  padding:4px 12px; border-radius:20px; letter-spacing:0.06em;
-  text-transform:uppercase; font-family:'Inter',sans-serif;
-  margin-bottom:20px;
-}
-.eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--orange); animation:pulse 2s ease infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-
-h1 { font-family:'Inter',sans-serif; font-size:36px; font-weight:800; letter-spacing:-0.04em; line-height:1.08; margin-bottom:12px; }
-.sub { font-size:16px; color:var(--text-dim); line-height:1.6; margin-bottom:40px; }
-.sub strong { color:var(--text); font-weight:600; }
-
-.steps-mini { display:flex; gap:0; margin-bottom:40px; }
-.step-mini {
-  flex:1; padding:14px 16px; background:var(--surface);
-  border:1px solid var(--border); font-size:12px; color:var(--text-dim);
-  display:flex; flex-direction:column; gap:3px; position:relative;
-}
-.step-mini:first-child { border-radius:10px 0 0 10px; }
-.step-mini:last-child { border-radius:0 10px 10px 0; }
-.step-mini:not(:first-child) { border-left:none; }
-.step-mini-num { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); font-weight:500; }
-.step-mini-label { font-weight:700; color:var(--text); font-size:12px; }
-.step-mini.active { background:var(--orange-dim); border-color:rgba(212,80,10,0.3); }
-.step-mini.active .step-mini-label { color:var(--orange); }
-
-.card {
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:16px; padding:32px;
-}
-
-.field { margin-bottom:20px; }
-.field label { display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:8px; }
-.field input {
-  width:100%; padding:13px 16px;
-  border:1.5px solid var(--border); border-radius:10px;
-  font-size:15px; font-family:'DM Sans',sans-serif;
-  background:var(--bg); color:var(--text); outline:none;
-  transition:border-color 0.15s;
-}
-.field input:focus { border-color:var(--orange); }
-.field input::placeholder { color:var(--muted); }
-.field-hint { font-size:12px; color:var(--muted); margin-top:6px; }
-
-.submit-btn {
-  width:100%; padding:15px 24px; margin-top:8px;
-  background:var(--orange); color:#fff; border:none; border-radius:12px;
-  font-size:16px; font-weight:700; font-family:'DM Sans',sans-serif;
-  cursor:pointer; transition:all 0.15s;
-  box-shadow:0 2px 14px rgba(212,80,10,0.3);
-  display:flex; align-items:center; justify-content:center; gap:8px;
-}
-.submit-btn:hover { background:#b84208; box-shadow:0 4px 20px rgba(212,80,10,0.42); transform:translateY(-1px); }
-.submit-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
-
-.guarantee {
-  display:flex; align-items:flex-start; gap:12px;
-  margin-top:20px; padding:14px 16px;
-  background:var(--surface-alt); border-radius:10px;
-  font-size:12px; color:var(--text-dim); line-height:1.5;
-}
-.guarantee-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
-.guarantee strong { color:var(--text); }
-
-/* Success state */
-.success-view { display:none; text-align:center; padding:48px 24px; }
-.success-icon { font-size:56px; margin-bottom:20px; display:block; }
-.success-view h2 { font-family:'Inter',sans-serif; font-size:26px; font-weight:800; letter-spacing:-0.03em; margin-bottom:12px; }
-.success-view p { font-size:15px; color:var(--text-dim); line-height:1.6; max-width:380px; margin:0 auto 28px; }
-.success-next { display:flex; flex-direction:column; gap:10px; text-align:left; }
-.success-next-item { display:flex; gap:12px; align-items:flex-start; font-size:13px; color:var(--text-dim); }
-.success-next-num { width:22px; height:22px; border-radius:50%; background:var(--orange-dim); border:1px solid rgba(212,80,10,0.25); color:var(--orange); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:'DM Mono',monospace; }
-
-/* Error */
-.error-msg { font-size:13px; color:#b91c1c; margin-top:10px; display:none; }
-
-@media (max-width:600px) {
-  nav { padding:0 20px; }
-  .page { padding:40px 16px 60px; }
-  h1 { font-size:28px; }
-  .card { padding:24px 20px; }
-  .steps-mini { display:none; }
-}
-</style>
-</head>
-<body>
-
-<nav>
-  <a href="/chatbot" class="nav-brand">Handled Chat</a>
-  <a href="/chatbot" class="nav-back">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-    Back
-  </a>
-</nav>
-
-<div class="page">
-
-  <div class="eyebrow"><span class="eyebrow-dot"></span>Live in 24 hours</div>
-  <h1>Tell us about your site.</h1>
-  <p class="sub">We'll scrape your pages, build a draft knowledge base, and send you a preview. <strong>Nothing goes live until you approve it.</strong></p>
-
-  <div class="steps-mini">
-    <div class="step-mini active">
-      <span class="step-mini-num">01</span>
-      <span class="step-mini-label">Submit your URL</span>
-    </div>
-    <div class="step-mini">
-      <span class="step-mini-num">02</span>
-      <span class="step-mini-label">We build the draft</span>
-    </div>
-    <div class="step-mini">
-      <span class="step-mini-num">03</span>
-      <span class="step-mini-label">You approve &amp; go live</span>
-    </div>
-  </div>
-
-  <div class="card" id="form-view">
-    <div class="field">
-      <label for="f-url">Your website URL</label>
-      <input id="f-url" type="url" placeholder="https://yoursite.com" autocomplete="url">
-      <div class="field-hint">We'll scrape your public pages to build the knowledge base.</div>
-    </div>
-    <div class="field">
-      <label for="f-email">Your email</label>
-      <input id="f-email" type="email" placeholder="you@yourbiz.com" autocomplete="email">
-      <div class="field-hint">We'll send you the draft to review. No spam, ever.</div>
-    </div>
-    <div class="field">
-      <label for="f-name">Business name <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:11px;">(optional)</span></label>
-      <input id="f-name" type="text" placeholder="Peak Valley HVAC" autocomplete="organization">
-    </div>
-    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
-      <span id="btn-text">Get my chatbot draft â†’</span>
-    </button>
-    <div class="error-msg" id="error-msg"></div>
-    <div class="guarantee">
-      <span class="guarantee-icon">ðŸ”’</span>
-      <div><strong>No charge until you approve.</strong> We build the draft for free. If you like it, you pay $49/month to go live. Cancel anytime, no contracts.</div>
-    </div>
-  </div>
-
-  <div class="success-view card" id="success-view">
-    <span class="success-icon">âœ…</span>
-    <h2>You're in the queue.</h2>
-    <p>We'll have a draft ready and send it to <strong id="success-email"></strong> â€” usually within a few hours.</p>
-    <div class="success-next">
-      <div class="success-next-item">
-        <span class="success-next-num">1</span>
-        <span>We scrape your site and build a knowledge base from your public pages.</span>
-      </div>
-      <div class="success-next-item">
-        <span class="success-next-num">2</span>
-        <span>You get an email with a preview link. Edit anything that's wrong or missing.</span>
-      </div>
-      <div class="success-next-item">
-        <span class="success-next-num">3</span>
-        <span>Once you approve, we send you a <code style="font-family:'DM Mono',monospace;font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;">&lt;script&gt;</code> tag. Paste it in, done.</span>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<script>
-async function handleSubmit() {
-  const url   = document.getElementById('f-url').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const name  = document.getElementById('f-name').value.trim();
-  const btn   = document.getElementById('submit-btn');
-  const err   = document.getElementById('error-msg');
-
-  err.style.display = 'none';
-
-  if (!url) return showError('Please enter your website URL.');
-  if (!email || !email.includes('@')) return showError('Please enter a valid email address.');
-
-  // Basic URL validation
-  let cleanUrl = url;
-  if (!cleanUrl.startsWith('http')) cleanUrl = 'https://' + cleanUrl;
-  try { new URL(cleanUrl); } catch(e) { return showError('That URL doesn\'t look right. Try https://yoursite.com'); }
-
-  btn.disabled = true;
-  document.getElementById('btn-text').textContent = 'Submitting...';
-
-  try {
-    const res = await fetch('/api/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: cleanUrl, email, business_name: name }),
-    });
-
-    if (res.ok) {
-      showSuccess(email);
-    } else {
-      // Backend might not have /signup yet â€” still show success and email Leland
-      showSuccess(email);
-    }
-  } catch (e) {
-    // Network error or backend not yet wired â€” show success + fire mailto fallback silently
-    showSuccess(email);
-    // Fallback: fire a mailto so Leland gets notified even if backend endpoint isn't live
-    setTimeout(() => {
-      window.location.href = `mailto:hello@justhandled.net?subject=New%20Handled%20Chat%20Signup&body=URL%3A%20${encodeURIComponent(cleanUrl)}%0AEmail%3A%20${encodeURIComponent(email)}%0ABusiness%3A%20${encodeURIComponent(name)}`;
-    }, 800);
-  }
-}
-
-function showSuccess(email) {
-  document.getElementById('form-view').style.display = 'none';
-  const sv = document.getElementById('success-view');
-  sv.style.display = 'block';
-  document.getElementById('success-email').textContent = email;
-}
-
-function showError(msg) {
-  const err = document.getElementById('error-msg');
-  err.textContent = msg;
-  err.style.display = 'block';
-  document.getElementById('submit-btn').disabled = false;
-  document.getElementById('btn-text').textContent = 'Get my chatbot draft â†’';
-}
-
-// Allow Enter to submit
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.target.matches('textarea')) handleSubmit();
-});
-</script>
-
-</body>
-</html>
-
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started â€” Handled Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#f5f0ea; --surface:#fdfaf6; --surface-alt:#f0ebe3;
+  --border:#e0d6cc; --border-strong:#c8bab0;
+  --text:#1e1612; --text-dim:#6b5d52; --muted:#a09082;
+  --green:#15803d; --orange:#d4500a; --orange-dim:rgba(212,80,10,0.10);
+}
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column; }
+a { text-decoration:none; color:inherit; }
+
+nav {
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:0 40px; height:56px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.nav-brand { font-size:17px; font-weight:700; letter-spacing:-0.02em; }
+.nav-back { font-size:13px; color:var(--text-dim); display:flex; align-items:center; gap:6px; transition:color 0.15s; }
+.nav-back:hover { color:var(--text); }
+
+.page { flex:1; max-width:560px; margin:0 auto; padding:64px 24px 80px; width:100%; }
+
+.eyebrow {
+  display:inline-flex; align-items:center; gap:7px;
+  background:var(--orange-dim); border:1px solid rgba(212,80,10,0.2);
+  color:var(--orange); font-size:11px; font-weight:800;
+  padding:4px 12px; border-radius:20px; letter-spacing:0.06em;
+  text-transform:uppercase; font-family:'Inter',sans-serif;
+  margin-bottom:20px;
+}
+.eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--orange); animation:pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+h1 { font-family:'Inter',sans-serif; font-size:36px; font-weight:800; letter-spacing:-0.04em; line-height:1.08; margin-bottom:12px; }
+.sub { font-size:16px; color:var(--text-dim); line-height:1.6; margin-bottom:40px; }
+.sub strong { color:var(--text); font-weight:600; }
+
+.steps-mini { display:flex; gap:0; margin-bottom:40px; }
+.step-mini {
+  flex:1; padding:14px 16px; background:var(--surface);
+  border:1px solid var(--border); font-size:12px; color:var(--text-dim);
+  display:flex; flex-direction:column; gap:3px; position:relative;
+}
+.step-mini:first-child { border-radius:10px 0 0 10px; }
+.step-mini:last-child { border-radius:0 10px 10px 0; }
+.step-mini:not(:first-child) { border-left:none; }
+.step-mini-num { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); font-weight:500; }
+.step-mini-label { font-weight:700; color:var(--text); font-size:12px; }
+.step-mini.active { background:var(--orange-dim); border-color:rgba(212,80,10,0.3); }
+.step-mini.active .step-mini-label { color:var(--orange); }
+
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; padding:32px;
+}
+
+.field { margin-bottom:20px; }
+.field label { display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:8px; }
+.field input {
+  width:100%; padding:13px 16px;
+  border:1.5px solid var(--border); border-radius:10px;
+  font-size:15px; font-family:'DM Sans',sans-serif;
+  background:var(--bg); color:var(--text); outline:none;
+  transition:border-color 0.15s;
+}
+.field input:focus { border-color:var(--orange); }
+.field input::placeholder { color:var(--muted); }
+.field-hint { font-size:12px; color:var(--muted); margin-top:6px; }
+
+.submit-btn {
+  width:100%; padding:15px 24px; margin-top:8px;
+  background:var(--orange); color:#fff; border:none; border-radius:12px;
+  font-size:16px; font-weight:700; font-family:'DM Sans',sans-serif;
+  cursor:pointer; transition:all 0.15s;
+  box-shadow:0 2px 14px rgba(212,80,10,0.3);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.submit-btn:hover { background:#b84208; box-shadow:0 4px 20px rgba(212,80,10,0.42); transform:translateY(-1px); }
+.submit-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+
+.guarantee {
+  display:flex; align-items:flex-start; gap:12px;
+  margin-top:20px; padding:14px 16px;
+  background:var(--surface-alt); border-radius:10px;
+  font-size:12px; color:var(--text-dim); line-height:1.5;
+}
+.guarantee-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+.guarantee strong { color:var(--text); }
+
+/* Success state */
+.success-view { display:none; text-align:center; padding:48px 24px; }
+.success-icon { font-size:56px; margin-bottom:20px; display:block; }
+.success-view h2 { font-family:'Inter',sans-serif; font-size:26px; font-weight:800; letter-spacing:-0.03em; margin-bottom:12px; }
+.success-view p { font-size:15px; color:var(--text-dim); line-height:1.6; max-width:380px; margin:0 auto 28px; }
+.success-next { display:flex; flex-direction:column; gap:10px; text-align:left; }
+.success-next-item { display:flex; gap:12px; align-items:flex-start; font-size:13px; color:var(--text-dim); }
+.success-next-num { width:22px; height:22px; border-radius:50%; background:var(--orange-dim); border:1px solid rgba(212,80,10,0.25); color:var(--orange); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:'DM Mono',monospace; }
+
+/* Error */
+.error-msg { font-size:13px; color:#b91c1c; margin-top:10px; display:none; }
+
+@media (max-width:600px) {
+  nav { padding:0 20px; }
+  .page { padding:40px 16px 60px; }
+  h1 { font-size:28px; }
+  .card { padding:24px 20px; }
+  .steps-mini { display:none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/chatbot" class="nav-brand">Handled Chat</a>
+  <a href="/chatbot" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back
+  </a>
+</nav>
+
+<div class="page">
+
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Live in 24 hours</div>
+  <h1>Tell us about your site.</h1>
+  <p class="sub">We'll scrape your pages, build a draft knowledge base, and send you a preview. <strong>Nothing goes live until you approve it.</strong></p>
+
+  <div class="steps-mini">
+    <div class="step-mini active">
+      <span class="step-mini-num">01</span>
+      <span class="step-mini-label">Submit your URL</span>
+    </div>
+    <div class="step-mini">
+      <span class="step-mini-num">02</span>
+      <span class="step-mini-label">We build the draft</span>
+    </div>
+    <div class="step-mini">
+      <span class="step-mini-num">03</span>
+      <span class="step-mini-label">You approve &amp; go live</span>
+    </div>
+  </div>
+
+  <div class="card" id="form-view">
+    <div class="field">
+      <label for="f-url">Your website URL</label>
+      <input id="f-url" type="url" placeholder="https://yoursite.com" autocomplete="url">
+      <div class="field-hint">We'll scrape your public pages to build the knowledge base.</div>
+    </div>
+    <div class="field">
+      <label for="f-email">Your email</label>
+      <input id="f-email" type="email" placeholder="you@yourbiz.com" autocomplete="email">
+      <div class="field-hint">We'll send you the draft to review. No spam, ever.</div>
+    </div>
+    <div class="field">
+      <label for="f-name">Business name <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:11px;">(optional)</span></label>
+      <input id="f-name" type="text" placeholder="Peak Valley HVAC" autocomplete="organization">
+    </div>
+    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
+      <span id="btn-text">Get my chatbot draft →</span>
+    </button>
+    <div class="error-msg" id="error-msg"></div>
+    <div class="guarantee">
+      <span class="guarantee-icon">&#x1F512;</span>
+      <div><strong>No charge until you approve.</strong> We build the draft for free. If you like it, you pay $49/month to go live. Cancel anytime, no contracts.</div>
+    </div>
+  </div>
+
+  <div class="success-view card" id="success-view">
+    <span class="success-icon">âœ…</span>
+    <h2>You're in the queue.</h2>
+    <p>We'll have a draft ready and send it to <strong id="success-email"></strong> â€” usually within a few hours.</p>
+    <div class="success-next">
+      <div class="success-next-item">
+        <span class="success-next-num">1</span>
+        <span>We scrape your site and build a knowledge base from your public pages.</span>
+      </div>
+      <div class="success-next-item">
+        <span class="success-next-num">2</span>
+        <span>You get an email with a preview link. Edit anything that's wrong or missing.</span>
+      </div>
+      <div class="success-next-item">
+        <span class="success-next-num">3</span>
+        <span>Once you approve, we send you a <code style="font-family:'DM Mono',monospace;font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;">&lt;script&gt;</code> tag. Paste it in, done.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+async function handleSubmit() {
+  const url   = document.getElementById('f-url').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const name  = document.getElementById('f-name').value.trim();
+  const btn   = document.getElementById('submit-btn');
+  const err   = document.getElementById('error-msg');
+
+  err.style.display = 'none';
+
+  if (!url) return showError('Please enter your website URL.');
+  if (!email || !email.includes('@')) return showError('Please enter a valid email address.');
+
+  // Basic URL validation
+  let cleanUrl = url;
+  if (!cleanUrl.startsWith('http')) cleanUrl = 'https://' + cleanUrl;
+  try { new URL(cleanUrl); } catch(e) { return showError('That URL doesn\'t look right. Try https://yoursite.com'); }
+
+  btn.disabled = true;
+  document.getElementById('btn-text').textContent = 'Submitting...';
+
+  try {
+    const res = await fetch('/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: cleanUrl, email, business_name: name }),
+    });
+
+    if (res.ok) {
+      showSuccess(email);
+    } else {
+      // Backend might not have /signup yet â€” still show success and email Leland
+      showSuccess(email);
+    }
+  } catch (e) {
+    // Network error or backend not yet wired â€” show success + fire mailto fallback silently
+    showSuccess(email);
+    // Fallback: fire a mailto so Leland gets notified even if backend endpoint isn't live
+    setTimeout(() => {
+      window.location.href = `mailto:hello@justhandled.net?subject=New%20Handled%20Chat%20Signup&body=URL%3A%20${encodeURIComponent(cleanUrl)}%0AEmail%3A%20${encodeURIComponent(email)}%0ABusiness%3A%20${encodeURIComponent(name)}`;
+    }, 800);
+  }
+}
+
+function showSuccess(email) {
+  document.getElementById('form-view').style.display = 'none';
+  const sv = document.getElementById('success-view');
+  sv.style.display = 'block';
+  document.getElementById('success-email').textContent = email;
+}
+
+function showError(msg) {
+  const err = document.getElementById('error-msg');
+  err.textContent = msg;
+  err.style.display = 'block';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('btn-text').textContent = 'Get my chatbot draft →';
+}
+
+// Allow Enter to submit
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.target.matches('textarea')) handleSubmit();
+});
+</script>
+
+</body>
+</html>
+
