@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Handled Chat widget - single embeddable script.
  * Customer embeds: <script src="https://justhandled.net/widget.js" data-client="abc123"></script>
  * That's it. No config file, no login, no OAuth.
@@ -31,6 +31,7 @@
   var THEME     = scriptTag ? scriptTag.getAttribute('data-theme')  : null;      // 'light' | 'dark'
   var TITLE     = scriptTag ? scriptTag.getAttribute('data-title')  : null;      // header text override
   var OPENER    = scriptTag ? scriptTag.getAttribute('data-opener') : null;      // first assistant message
+  var COLOR     = scriptTag ? scriptTag.getAttribute('data-color')   : null;      // hex brand color e.g. var(--hch-brand)
 
   if (!API_BASE) {
     // Prod default. Overridable via data-api for local dev / staging.
@@ -43,6 +44,7 @@
 
   // session_id -- stable within one page load, per tab. Used for message threading in Supabase logs.
   var SESSION_ID = 'sess_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+  var BRAND_COLOR = COLOR || 'var(--hch-brand)'; // resolved after config fetch if no data-color
 
   // -- rendering target -----------------------------------------------------
   var inlineHost = document.getElementById('handled-chat-inline');
@@ -57,7 +59,7 @@
   // Kept minimal on purpose so it inherits typography/colors from the host page's own vars if present.
   var css = [
     '.hch-root, .hch-root *{box-sizing:border-box;font-family:inherit;}',
-    '.hch-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#d4500a;color:#fff;',
+    '.hch-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--hch-brand);color:#fff;',
       'display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.18);',
       'z-index:2147483000;border:0;transition:transform .18s ease,box-shadow .18s ease;}',
     '.hch-fab:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.24);}',
@@ -80,7 +82,7 @@
       'animation:hchIn .18s ease;}',
     '@keyframes hchIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}',
     '.hch-msg-ai{background:#f5f0ea;border:1px solid #e0d6cc;color:#1e1612;align-self:flex-start;border-bottom-left-radius:4px;}',
-    '.hch-msg-user{background:#d4500a;color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}',
+    '.hch-msg-user{background:var(--hch-brand);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}',
     '.hch-typing{background:#f5f0ea;border:1px solid #e0d6cc;align-self:flex-start;border-bottom-left-radius:4px;padding:13px 15px;}',
     '.hch-dots{display:flex;gap:4px;}',
     '.hch-dots span{width:6px;height:6px;background:#a09082;border-radius:50%;animation:hchBounce 1.2s infinite;}',
@@ -90,9 +92,9 @@
     '.hch-input-row{padding:12px 14px;border-top:1px solid #e0d6cc;display:flex;gap:8px;align-items:flex-end;background:#fdfaf6;flex-shrink:0;}',
     '.hch-input{flex:1;background:#f5f0ea;border:1px solid #e0d6cc;border-radius:10px;padding:9px 12px;font-size:13px;color:#1e1612;',
       'resize:none;outline:none;max-height:96px;line-height:1.45;font-family:inherit;}',
-    '.hch-input:focus{border-color:#d4500a;}',
+    '.hch-input:focus{border-color:var(--hch-brand);}',
     '.hch-input::placeholder{color:#a09082;}',
-    '.hch-send{width:36px;height:36px;background:#d4500a;border:0;border-radius:10px;cursor:pointer;display:flex;align-items:center;',
+    '.hch-send{width:36px;height:36px;background:var(--hch-brand);border:0;border-radius:10px;cursor:pointer;display:flex;align-items:center;',
       'justify-content:center;flex-shrink:0;transition:background .15s ease,transform .15s ease;}',
     '.hch-send:hover{background:#b84208;transform:translateY(-1px);}',
     '.hch-send:disabled{opacity:.4;cursor:not-allowed;transform:none;}',
@@ -101,6 +103,14 @@
     '.hch-footer a{color:#6b5d52;text-decoration:none;}',
     '.hch-footer a:hover{color:#1e1612;}',
   ].join('');
+
+  // Inject brand color as a CSS variable scoped to .hch-root
+  var colorStyle = document.createElement('style');
+  colorStyle.setAttribute('data-handled-color', '1');
+  colorStyle.appendChild(document.createTextNode(
+    '.hch-root{--hch-brand:' + BRAND_COLOR + ';--hch-brand-dark:' + BRAND_COLOR + 'cc;}'
+  ));
+  document.head.appendChild(colorStyle);
 
   var styleEl = document.createElement('style');
   styleEl.setAttribute('data-handled-chat', '1');
@@ -172,6 +182,20 @@
   }
 
   // -- health check ---------------------------------------------------------
+  // Fetch client config (brand color, etc.) unless already set via data-color
+  if (!COLOR) {
+    fetch(API_BASE + '/widget/config?id=' + CLIENT_ID, {
+      method: 'GET',
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+    }).then(function(r) { return r.ok ? r.json() : null; }).then(function(cfg) {
+      if (cfg && cfg.brand_color && cfg.brand_color !== '#d4500a') {
+        BRAND_COLOR = cfg.brand_color;
+        var cs = document.querySelector('[data-handled-color]');
+        if (cs) cs.firstChild.nodeValue = '.hch-root{--hch-brand:' + BRAND_COLOR + ';--hch-brand-dark:' + BRAND_COLOR + 'cc;}';
+      }
+    }).catch(function() {});
+  }
+
   fetch(API_BASE + '/widget/health', {
     method: 'GET',
     headers: { 'ngrok-skip-browser-warning': 'true' },
