@@ -13,6 +13,8 @@
     { "source": "/mcp", "destination": "/api/mcp" },
     { "source": "/chatbot", "destination": "/chatbot.html" },
     { "source": "/signup", "destination": "/signup.html" },
-    { "source": "/preview", "destination": "/preview.html" }
+    { "source": "/preview", "destination": "/preview.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" }
   ]
 }

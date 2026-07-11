@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in - Handled Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#f5f0ea; --surface:#fdfaf6; --surface-alt:#f0ebe3;
+  --border:#e0d6cc; --text:#1e1612; --text-dim:#6b5d52; --muted:#a09082;
+  --orange:#d4500a; --orange-dim:rgba(212,80,10,0.10);
+}
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; }
+a { text-decoration:none; color:inherit; }
+.wrap { width:100%; max-width:400px; }
+.brand { font-size:18px; font-weight:800; letter-spacing:-0.02em; margin-bottom:40px; text-align:center; }
+.brand span { color:var(--orange); }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:36px 32px; }
+h1 { font-family:'Inter',sans-serif; font-size:22px; font-weight:800; letter-spacing:-0.03em; margin-bottom:6px; }
+.sub { font-size:14px; color:var(--text-dim); margin-bottom:28px; line-height:1.5; }
+.field label { display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:8px; }
+.field input {
+  width:100%; padding:12px 14px;
+  border:1.5px solid var(--border); border-radius:10px;
+  font-size:15px; font-family:'DM Sans',sans-serif;
+  background:var(--bg); color:var(--text); outline:none;
+  transition:border-color 0.15s;
+}
+.field input:focus { border-color:var(--orange); }
+.field input::placeholder { color:var(--muted); }
+.btn {
+  width:100%; margin-top:20px; padding:13px 20px;
+  background:var(--orange); color:#fff; border:none; border-radius:10px;
+  font-size:15px; font-weight:700; font-family:'DM Sans',sans-serif;
+  cursor:pointer; transition:all 0.15s;
+  box-shadow:0 2px 12px rgba(212,80,10,0.28);
+}
+.btn:hover { background:#b84208; transform:translateY(-1px); }
+.btn:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
+.msg { margin-top:14px; font-size:13px; line-height:1.5; display:none; }
+.msg.success { color:#15803d; }
+.msg.error { color:#b91c1c; }
+.success-card { display:none; text-align:center; padding:8px 0; }
+.success-icon { font-size:44px; margin-bottom:16px; }
+.success-card h2 { font-family:'Inter',sans-serif; font-size:20px; font-weight:800; letter-spacing:-0.03em; margin-bottom:8px; }
+.success-card p { font-size:14px; color:var(--text-dim); line-height:1.6; }
+.back { display:block; text-align:center; margin-top:24px; font-size:13px; color:var(--muted); }
+.back:hover { color:var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Handled<span>.</span></div>
+  <div class="card">
+    <div id="form-view">
+      <h1>Welcome back.</h1>
+      <p class="sub">Enter your email and we'll send you a login link. No password needed.</p>
+      <div class="field">
+        <label for="f-email">Email address</label>
+        <input id="f-email" type="email" placeholder="you@yourbiz.com" autocomplete="email">
+      </div>
+      <button class="btn" id="submit-btn" onclick="handleSubmit()">Send login link</button>
+      <div class="msg error" id="error-msg"></div>
+    </div>
+    <div class="success-card" id="success-view">
+      <div class="success-icon">&#128231;</div>
+      <h2>Check your inbox.</h2>
+      <p>We sent a login link to <strong id="sent-email"></strong>. Click it to open your dashboard.</p>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted);">Didn't get it? Check spam, or <a href="#" onclick="reset()" style="color:var(--orange);">try again</a>.</p>
+    </div>
+  </div>
+  <a href="/chatbot" class="back">&#8592; Back to Handled Chat</a>
+</div>
+
+<script>
+const API = 'https://duvet-habitant-stimulate.ngrok-free.dev';
+
+async function handleSubmit() {
+  const email = document.getElementById('f-email').value.trim();
+  const btn   = document.getElementById('submit-btn');
+  const err   = document.getElementById('error-msg');
+  err.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    err.textContent = 'Please enter a valid email address.';
+    err.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  try {
+    const res = await fetch(API + '/auth/magic-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+      body: JSON.stringify({ email }),
+    });
+
+    if (res.ok) {
+      showSuccess(email);
+    } else {
+      const d = await res.json().catch(() => ({}));
+      if (res.status === 404) {
+        err.textContent = "We don't have an account for that email. Did you sign up yet?";
+      } else {
+        err.textContent = d.error || 'Something went wrong. Try again.';
+      }
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Send login link';
+    }
+  } catch (e) {
+    err.textContent = 'Could not connect. Please try again.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Send login link';
+  }
+}
+
+function showSuccess(email) {
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('sent-email').textContent = email;
+  document.getElementById('success-view').style.display = 'block';
+}
+
+function reset() {
+  document.getElementById('form-view').style.display = 'block';
+  document.getElementById('success-view').style.display = 'none';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').textContent = 'Send login link';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') handleSubmit();
+});
+</script>
+</body>
+</html>

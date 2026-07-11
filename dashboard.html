@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Handled Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#f5f0ea; --surface:#fdfaf6; --surface-alt:#f0ebe3;
+  --border:#e0d6cc; --border-strong:#c8bab0;
+  --text:#1e1612; --text-dim:#6b5d52; --muted:#a09082;
+  --green:#15803d; --red:#b91c1c;
+  --orange:#d4500a; --orange-dim:rgba(212,80,10,0.10);
+}
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; }
+a { text-decoration:none; color:inherit; }
+
+/* Loading / auth gate */
+#loading { display:flex; align-items:center; justify-content:center; min-height:100vh; font-size:14px; color:var(--muted); }
+
+/* Nav */
+nav { background:var(--surface); border-bottom:1px solid var(--border); padding:0 32px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.nav-brand { font-size:16px; font-weight:800; letter-spacing:-0.02em; }
+.nav-biz { font-size:13px; color:var(--text-dim); font-weight:600; }
+.nav-right { display:flex; align-items:center; gap:16px; }
+.status-pill { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; letter-spacing:0.04em; }
+.status-pill.active { background:rgba(21,128,61,0.12); color:#15803d; }
+.status-pill.inactive { background:rgba(185,28,28,0.10); color:#b91c1c; }
+.status-dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+.logout-btn { font-size:13px; color:var(--muted); cursor:pointer; background:none; border:none; font-family:inherit; padding:4px 8px; border-radius:6px; transition:color 0.15s; }
+.logout-btn:hover { color:var(--text); }
+
+/* Layout */
+.main { max-width:880px; margin:0 auto; padding:40px 24px 80px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media (max-width:640px) { .grid { grid-template-columns:1fr; } nav { padding:0 16px; } .main { padding:24px 16px 60px; } }
+
+/* Section cards */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px; }
+.card-title { font-family:'Inter',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); margin-bottom:16px; }
+.card-full { grid-column:1 / -1; }
+
+/* Fields */
+.field { margin-bottom:16px; }
+.field:last-child { margin-bottom:0; }
+.field label { display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:7px; }
+.field input[type="text"], .field input[type="url"], .field select {
+  width:100%; padding:10px 12px;
+  border:1.5px solid var(--border); border-radius:9px;
+  font-size:14px; font-family:'DM Sans',sans-serif;
+  background:var(--bg); color:var(--text); outline:none;
+  transition:border-color 0.15s;
+}
+.field input:focus, .field select:focus { border-color:var(--orange); }
+.field textarea {
+  width:100%; padding:10px 12px;
+  border:1.5px solid var(--border); border-radius:9px;
+  font-size:13px; font-family:'DM Mono',monospace; line-height:1.6;
+  background:var(--bg); color:var(--text); outline:none;
+  resize:vertical; min-height:180px;
+  transition:border-color 0.15s;
+}
+.field textarea:focus { border-color:var(--orange); }
+
+/* Color picker row */
+.color-row { display:flex; align-items:center; gap:10px; }
+.color-preview { width:36px; height:36px; border-radius:8px; border:1.5px solid var(--border); flex-shrink:0; cursor:pointer; transition:transform 0.1s; }
+.color-preview:hover { transform:scale(1.05); }
+input[type="color"] { width:0; height:0; opacity:0; position:absolute; }
+
+/* Save button */
+.save-btn {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:10px 20px; margin-top:16px;
+  background:var(--orange); color:#fff; border:none; border-radius:9px;
+  font-size:14px; font-weight:700; font-family:'DM Sans',sans-serif;
+  cursor:pointer; transition:all 0.15s;
+  box-shadow:0 2px 10px rgba(212,80,10,0.25);
+}
+.save-btn:hover { background:#b84208; transform:translateY(-1px); }
+.save-btn:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
+.save-feedback { font-size:12px; color:var(--green); margin-left:8px; opacity:0; transition:opacity 0.3s; }
+.save-feedback.visible { opacity:1; }
+
+/* Script tag */
+.script-block {
+  background:#1e1612; border-radius:10px; padding:14px 16px;
+  font-family:'DM Mono',monospace; font-size:12px; color:#fde68a;
+  word-break:break-all; line-height:1.6; position:relative;
+}
+.copy-btn {
+  position:absolute; top:10px; right:10px;
+  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15);
+  color:#fff; border-radius:6px; padding:4px 10px; font-size:11px;
+  cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:600;
+  transition:background 0.15s;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.18); }
+
+/* Logs table */
+.logs-table { width:100%; border-collapse:collapse; font-size:13px; }
+.logs-table th { text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); padding:0 12px 10px; border-bottom:1px solid var(--border); }
+.logs-table td { padding:10px 12px; border-bottom:1px solid var(--surface-alt); color:var(--text-dim); vertical-align:top; }
+.logs-table tr:last-child td { border-bottom:none; }
+.logs-table .role-user { color:var(--orange); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; }
+.logs-table .role-ai { color:var(--text-dim); font-size:11px; text-transform:uppercase; letter-spacing:0.04em; }
+.logs-table .content-cell { max-width:320px; }
+.logs-empty { padding:24px; text-align:center; color:var(--muted); font-size:13px; }
+
+/* Widget preview mini */
+.position-options { display:flex; gap:8px; margin-top:2px; }
+.pos-opt { flex:1; padding:10px; border:1.5px solid var(--border); border-radius:9px; cursor:pointer; text-align:center; font-size:12px; font-weight:600; color:var(--text-dim); transition:all 0.15s; }
+.pos-opt:hover { border-color:var(--orange); color:var(--text); }
+.pos-opt.selected { border-color:var(--orange); background:var(--orange-dim); color:var(--orange); }
+</style>
+</head>
+<body>
+
+<div id="loading">Loading your dashboard...</div>
+<div id="app" style="display:none;">
+
+<nav>
+  <div class="nav-brand">Handled Chat</div>
+  <div class="nav-right">
+    <div class="nav-biz" id="nav-biz"></div>
+    <span class="status-pill" id="status-pill"><span class="status-dot"></span><span id="status-text">active</span></span>
+    <button class="logout-btn" onclick="logout()">Log out</button>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="grid">
+
+    <!-- Knowledge Base -->
+    <div class="card card-full">
+      <div class="card-title">Knowledge Base</div>
+      <div class="field">
+        <label for="kb-input">What your chatbot knows about your business</label>
+        <textarea id="kb-input" placeholder="Your services, hours, pricing, FAQs, contact info..."></textarea>
+      </div>
+      <button class="save-btn" onclick="saveKB()">Save knowledge base</button>
+      <span class="save-feedback" id="kb-feedback">Saved.</span>
+    </div>
+
+    <!-- Widget Settings -->
+    <div class="card">
+      <div class="card-title">Widget Settings</div>
+      <div class="field">
+        <label>Brand color</label>
+        <div class="color-row">
+          <div class="color-preview" id="color-preview" onclick="document.getElementById('color-picker').click()"></div>
+          <input type="color" id="color-picker" onchange="updateColorPreview()">
+          <input type="text" id="color-hex" placeholder="#d4500a" maxlength="7" oninput="syncColorFromHex()" style="flex:1;">
+        </div>
+      </div>
+      <div class="field">
+        <label for="opener-input">Opener message</label>
+        <input type="text" id="opener-input" placeholder="Hi! How can I help you today?">
+      </div>
+      <div class="field">
+        <label>Widget position</label>
+        <div class="position-options">
+          <div class="pos-opt" id="pos-right" onclick="setPosition('bottom-right')">Bottom right</div>
+          <div class="pos-opt" id="pos-left" onclick="setPosition('bottom-left')">Bottom left</div>
+        </div>
+      </div>
+      <button class="save-btn" onclick="saveWidget()">Save widget settings</button>
+      <span class="save-feedback" id="widget-feedback">Saved.</span>
+    </div>
+
+    <!-- Script Tag -->
+    <div class="card">
+      <div class="card-title">Your Embed Code</div>
+      <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:14px;">Paste this right before the <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--bg);padding:1px 5px;border-radius:4px;">&lt;/body&gt;</code> tag on your site.</p>
+      <div class="script-block" id="script-block">
+        <button class="copy-btn" onclick="copyScript()">Copy</button>
+        <span id="script-tag-text"></span>
+      </div>
+    </div>
+
+    <!-- Conversation Logs -->
+    <div class="card card-full">
+      <div class="card-title">Recent Conversations</div>
+      <div id="logs-container"><div class="logs-empty">Loading...</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+const SUPABASE_URL  = 'https://vjwrsucmfqiathgcemzh.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqd3JzdWNtZnFpYXRoZ2NlbXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzIwMTIsImV4cCI6MjA5NzgwODAxMn0.g_9brBnhdLgWAfFedjlMX_m9tfImdYcajIH4QTpo-F8';
+const API_BASE      = 'https://duvet-habitant-stimulate.ngrok-free.dev';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let session = null;
+let clientData = null;
+let selectedPosition = 'bottom-right';
+
+async function init() {
+  // Check for magic link token in URL hash
+  const { data: { session: s }, error } = await sb.auth.getSession();
+  if (error || !s) {
+    // Try to exchange URL hash params (Supabase magic link lands here)
+    const { data: { session: s2 } } = await sb.auth.exchangeCodeForSession(window.location.search).catch(() => ({ data: {} }));
+    if (s2) {
+      session = s2;
+    } else {
+      window.location.href = '/login';
+      return;
+    }
+  } else {
+    session = s;
+  }
+
+  // Clean up URL
+  if (window.history.replaceState) {
+    window.history.replaceState({}, document.title, '/dashboard');
+  }
+
+  await loadClient();
+  await loadLogs();
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+async function loadClient() {
+  const res = await fetch(API_BASE + '/client/me', {
+    headers: {
+      'Authorization': 'Bearer ' + session.access_token,
+      'ngrok-skip-browser-warning': 'true',
+    },
+  });
+
+  if (res.status === 401) { window.location.href = '/login'; return; }
+  if (!res.ok) { showError('Could not load account data.'); return; }
+
+  clientData = await res.json();
+
+  // Populate fields
+  document.getElementById('nav-biz').textContent = clientData.business_name || '';
+  document.getElementById('kb-input').value = clientData.knowledge_base || '';
+  document.getElementById('opener-input').value = clientData.opener_message || '';
+
+  // Status pill
+  const pill = document.getElementById('status-pill');
+  const statusText = document.getElementById('status-text');
+  const isActive = clientData.status === 'active';
+  pill.className = 'status-pill ' + (isActive ? 'active' : 'inactive');
+  statusText.textContent = clientData.status || 'unknown';
+
+  // Color
+  const color = clientData.brand_color || '#d4500a';
+  document.getElementById('color-picker').value = color;
+  document.getElementById('color-hex').value = color;
+  document.getElementById('color-preview').style.background = color;
+
+  // Position
+  selectedPosition = clientData.widget_position || 'bottom-right';
+  document.getElementById('pos-right').className = 'pos-opt' + (selectedPosition === 'bottom-right' ? ' selected' : '');
+  document.getElementById('pos-left').className  = 'pos-opt' + (selectedPosition === 'bottom-left'  ? ' selected' : '');
+
+  // Script tag
+  const tag = '<script src="https://justhandled.net/widget.js" data-client="' + clientData.client_id + '"><\/script>';
+  document.getElementById('script-tag-text').textContent = tag;
+}
+
+async function loadLogs() {
+  const res = await fetch(API_BASE + '/messages/recent', {
+    headers: {
+      'Authorization': 'Bearer ' + session.access_token,
+      'ngrok-skip-browser-warning': 'true',
+    },
+  });
+
+  const container = document.getElementById('logs-container');
+  if (!res.ok) { container.innerHTML = '<div class="logs-empty">Could not load conversations.</div>'; return; }
+
+  const d = await res.json();
+  const msgs = d.messages || [];
+
+  if (msgs.length === 0) {
+    container.innerHTML = '<div class="logs-empty">No conversations yet. Your chatbot is ready and waiting.</div>';
+    return;
+  }
+
+  let html = '<table class="logs-table"><thead><tr><th>Role</th><th>Message</th><th>Time</th></tr></thead><tbody>';
+  msgs.forEach(function(m) {
+    const time = m.created_at ? new Date(m.created_at).toLocaleString([], {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+    const roleClass = m.role === 'user' ? 'role-user' : 'role-ai';
+    const content = (m.content || '').substring(0, 200) + ((m.content || '').length > 200 ? '...' : '');
+    html += '<tr><td><span class="' + roleClass + '">' + m.role + '</span></td><td class="content-cell">' + escHtml(content) + '</td><td style="white-space:nowrap;font-size:12px;">' + time + '</td></tr>';
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function saveKB() {
+  const kb = document.getElementById('kb-input').value.trim();
+  if (!kb) return;
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  const res = await fetch(API_BASE + '/client/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + session.access_token,
+      'ngrok-skip-browser-warning': 'true',
+    },
+    body: JSON.stringify({ knowledge_base: kb }),
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Save knowledge base';
+  if (res.ok) { showFeedback('kb-feedback'); }
+  else { alert('Save failed. Please try again.'); }
+}
+
+async function saveWidget() {
+  const color  = document.getElementById('color-picker').value;
+  const opener = document.getElementById('opener-input').value.trim();
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  const res = await fetch(API_BASE + '/client/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + session.access_token,
+      'ngrok-skip-browser-warning': 'true',
+    },
+    body: JSON.stringify({
+      brand_color: color,
+      opener_message: opener,
+      widget_position: selectedPosition,
+    }),
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Save widget settings';
+  if (res.ok) { showFeedback('widget-feedback'); }
+  else { alert('Save failed. Please try again.'); }
+}
+
+function showFeedback(id) {
+  const el = document.getElementById(id);
+  el.classList.add('visible');
+  setTimeout(function() { el.classList.remove('visible'); }, 2500);
+}
+
+function updateColorPreview() {
+  const c = document.getElementById('color-picker').value;
+  document.getElementById('color-preview').style.background = c;
+  document.getElementById('color-hex').value = c;
+}
+
+function syncColorFromHex() {
+  const val = document.getElementById('color-hex').value.trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+    document.getElementById('color-picker').value = val;
+    document.getElementById('color-preview').style.background = val;
+  }
+}
+
+function setPosition(pos) {
+  selectedPosition = pos;
+  document.getElementById('pos-right').className = 'pos-opt' + (pos === 'bottom-right' ? ' selected' : '');
+  document.getElementById('pos-left').className  = 'pos-opt' + (pos === 'bottom-left'  ? ' selected' : '');
+}
+
+function copyScript() {
+  const text = document.getElementById('script-tag-text').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  }).catch(function() {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  window.location.href = '/login';
+}
+
+init();
+</script>
+</body>
+</html>

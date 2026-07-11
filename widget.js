@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Handled Chat widget - single embeddable script.
  * Customer embeds: <script src="https://justhandled.net/widget.js" data-client="abc123"></script>
  * That's it. No config file, no login, no OAuth.
@@ -6,6 +6,7 @@
  * Backend contract (see chatbot_server.py):
  *   POST /widget/chat  { client_id, messages: [{role, content}, ...], session_id }  -> { reply } | { error }
  *   GET  /widget/health -> { ok: true }
+ *   GET  /widget/config?id=... -> { brand_color, title, opener, position }
  *
  * Two rendering modes:
  *   1. Floating bubble (default) -- injected into <body>, opens/closes on click. Real customer install.
@@ -17,7 +18,6 @@
   'use strict';
 
   // -- config resolution ----------------------------------------------------
-  // Find the <script> tag that loaded us, read data-* attrs off it.
   var scriptTag = document.currentScript || (function () {
     var scripts = document.getElementsByTagName('script');
     for (var i = scripts.length - 1; i >= 0; i--) {
@@ -28,13 +28,12 @@
 
   var CLIENT_ID = scriptTag ? scriptTag.getAttribute('data-client') : null;
   var API_BASE  = scriptTag ? scriptTag.getAttribute('data-api')    : null;
-  var THEME     = scriptTag ? scriptTag.getAttribute('data-theme')  : null;      // 'light' | 'dark'
-  var TITLE     = scriptTag ? scriptTag.getAttribute('data-title')  : null;      // header text override
-  var OPENER    = scriptTag ? scriptTag.getAttribute('data-opener') : null;      // first assistant message
-  var COLOR     = scriptTag ? scriptTag.getAttribute('data-color')   : null;      // hex brand color e.g. var(--hch-brand)
+  var THEME     = scriptTag ? scriptTag.getAttribute('data-theme')  : null;
+  var TITLE     = scriptTag ? scriptTag.getAttribute('data-title')  : null;
+  var OPENER    = scriptTag ? scriptTag.getAttribute('data-opener') : null;
+  var COLOR     = scriptTag ? scriptTag.getAttribute('data-color')  : null;
 
   if (!API_BASE) {
-    // Prod default. Overridable via data-api for local dev / staging.
     API_BASE = 'https://duvet-habitant-stimulate.ngrok-free.dev';
   }
   if (!CLIENT_ID) {
@@ -42,21 +41,19 @@
     return;
   }
 
-  // session_id -- stable within one page load, per tab. Used for message threading in Supabase logs.
-  var SESSION_ID = 'sess_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-  var BRAND_COLOR = COLOR || 'var(--hch-brand)'; // resolved after config fetch if no data-color
+  var SESSION_ID  = 'sess_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+  var BRAND_COLOR = COLOR || 'var(--hch-brand)';
 
   // -- rendering target -----------------------------------------------------
   var inlineHost = document.getElementById('handled-chat-inline');
   var mode = inlineHost ? 'inline' : 'floating';
 
   // -- shared state ---------------------------------------------------------
-  var messages = [];                // {role, content} pairs sent to backend
+  var messages   = [];
   var proxyAlive = false;
-  var opened = mode === 'inline';   // inline mode is always "open"
+  var opened     = mode === 'inline';
 
-  // -- style block, scoped by prefix ----------------------------------------
-  // Kept minimal on purpose so it inherits typography/colors from the host page's own vars if present.
+  // -- style block ----------------------------------------------------------
   var css = [
     '.hch-root, .hch-root *{box-sizing:border-box;font-family:inherit;}',
     '.hch-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--hch-brand);color:#fff;',
@@ -68,6 +65,8 @@
       'background:#fdfaf6;color:#1e1612;border:1px solid #e0d6cc;border-radius:18px;box-shadow:0 24px 64px rgba(0,0,0,.22);',
       'overflow:hidden;display:flex;flex-direction:column;z-index:2147483000;font-size:14px;}',
     '.hch-panel.hch-inline{position:relative;bottom:auto;right:auto;width:100%;height:100%;box-shadow:none;border-radius:14px;}',
+    '.hch-left .hch-fab{right:auto;left:24px;}',
+    '.hch-left .hch-panel{right:auto;left:24px;}',
     '.hch-hidden{display:none !important;}',
     '.hch-header{padding:14px 18px;border-bottom:1px solid #e0d6cc;display:flex;align-items:center;gap:10px;flex-shrink:0;}',
     '.hch-avatar{width:32px;height:32px;border-radius:50%;background:rgba(212,80,10,.12);border:1px solid rgba(212,80,10,.2);',
@@ -78,8 +77,7 @@
     '.hch-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;background:#fdfaf6;scroll-behavior:smooth;}',
     '.hch-messages::-webkit-scrollbar{width:4px;}',
     '.hch-messages::-webkit-scrollbar-thumb{background:#e0d6cc;border-radius:2px;}',
-    '.hch-msg{max-width:86%;padding:10px 13px;border-radius:14px;line-height:1.55;font-size:13px;word-wrap:break-word;',
-      'animation:hchIn .18s ease;}',
+    '.hch-msg{max-width:86%;padding:10px 13px;border-radius:14px;line-height:1.55;font-size:13px;word-wrap:break-word;animation:hchIn .18s ease;}',
     '@keyframes hchIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}',
     '.hch-msg-ai{background:#f5f0ea;border:1px solid #e0d6cc;color:#1e1612;align-self:flex-start;border-bottom-left-radius:4px;}',
     '.hch-msg-user{background:var(--hch-brand);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}',
@@ -104,7 +102,6 @@
     '.hch-footer a:hover{color:#1e1612;}',
   ].join('');
 
-  // Inject brand color as a CSS variable scoped to .hch-root
   var colorStyle = document.createElement('style');
   colorStyle.setAttribute('data-handled-color', '1');
   colorStyle.appendChild(document.createTextNode(
@@ -121,7 +118,6 @@
   var root = document.createElement('div');
   root.className = 'hch-root';
 
-  // Floating action button (skipped in inline mode)
   var fab = null;
   if (mode === 'floating') {
     fab = document.createElement('button');
@@ -146,7 +142,7 @@
 
   panel.innerHTML =
     '<div class="hch-header">' +
-      '<div class="hch-avatar">' + (mode === 'inline' ? '' : '') + '</div>' +
+      '<div class="hch-avatar"></div>' +
       '<div>' +
         '<div class="hch-title" data-hch-title>' + (TITLE || 'Chat') + '</div>' +
         '<div class="hch-sub">Powered by Handled</div>' +
@@ -168,12 +164,10 @@
   var sendBtn    = panel.querySelector('[data-hch-send]');
   var titleEl    = panel.querySelector('[data-hch-title]');
 
-  // Mount:
   if (mode === 'inline') {
     inlineHost.innerHTML = '';
     inlineHost.appendChild(root);
   } else {
-    // wait until <body> exists (script may be in <head>)
     if (document.body) {
       document.body.appendChild(root);
     } else {
@@ -181,25 +175,28 @@
     }
   }
 
-  // -- health check ---------------------------------------------------------
-  // Fetch client config (brand color, etc.) unless already set via data-color
+  // -- config fetch ---------------------------------------------------------
   if (!COLOR) {
     fetch(API_BASE + '/widget/config?id=' + CLIENT_ID, {
       method: 'GET',
       headers: { 'ngrok-skip-browser-warning': 'true' },
-    }).then(function(r) { return r.ok ? r.json() : null; }).then(function(cfg) {
-      if (cfg) {
-        if (cfg.brand_color) {
-          BRAND_COLOR = cfg.brand_color;
-          var cs = document.querySelector('[data-handled-color]');
-          if (cs) cs.firstChild.nodeValue = '.hch-root{--hch-brand:' + BRAND_COLOR + ';--hch-brand-dark:' + BRAND_COLOR + 'cc;}';
-        }
-        if (cfg.opener && !OPENER) { OPENER = cfg.opener; }
-        if (cfg.title && !TITLE && titleEl) { titleEl.textContent = cfg.title; }
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (cfg) {
+      if (!cfg) return;
+      if (cfg.brand_color) {
+        BRAND_COLOR = cfg.brand_color;
+        var cs = document.querySelector('[data-handled-color]');
+        if (cs) cs.firstChild.nodeValue = '.hch-root{--hch-brand:' + BRAND_COLOR + ';--hch-brand-dark:' + BRAND_COLOR + 'cc;}';
       }
-    }).catch(function() {});
+      if (cfg.opener && !OPENER) { OPENER = cfg.opener; }
+      if (cfg.title && !TITLE && titleEl) { titleEl.textContent = cfg.title; }
+      // Position: bottom-left flips the widget to the left side
+      if (cfg.position === 'bottom-left' && mode === 'floating') {
+        root.classList.add('hch-left');
+      }
+    }).catch(function () {});
   }
 
+  // -- health check ---------------------------------------------------------
   fetch(API_BASE + '/widget/health', {
     method: 'GET',
     headers: { 'ngrok-skip-browser-warning': 'true' },
@@ -229,7 +226,6 @@
     }
   }
 
-  // Inline mode: fire the opener as soon as health check passes (no click gate).
   if (mode === 'inline') {
     var openerInterval = setInterval(function () {
       if (proxyAlive) { clearInterval(openerInterval); maybeSendOpener(); }
@@ -271,24 +267,14 @@
 
     fetch(API_BASE + '/widget/chat', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': 'true',
-      },
-      body: JSON.stringify({
-        client_id: CLIENT_ID,
-        messages: messages,
-        session_id: SESSION_ID,
-      }),
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+      body: JSON.stringify({ client_id: CLIENT_ID, messages: messages, session_id: SESSION_ID }),
     }).then(function (r) {
       return r.json().then(function (d) { return { ok: r.ok, data: d }; });
     }).then(function (res) {
       removeTyping();
       sendBtn.disabled = false;
-      if (!res.ok || res.data.error) {
-        appendMsg('Sorry, something went wrong. Please try again.', 'ai');
-        return;
-      }
+      if (!res.ok || res.data.error) { appendMsg('Sorry, something went wrong. Please try again.', 'ai'); return; }
       var reply = res.data.reply || '';
       messages.push({ role: 'assistant', content: reply });
       appendMsg(reply, 'ai');
@@ -308,8 +294,7 @@
     this.style.height = Math.min(this.scrollHeight, 96) + 'px';
   });
 
-  // -- public API for host-page control -------------------------------------
-  // Landing page uses these to swap the client_id when the visitor picks a demo tab.
+  // -- public API -----------------------------------------------------------
   window.HandledChat = window.HandledChat || {};
   window.HandledChat.setClient = function (newId) {
     if (!newId) return;
@@ -319,13 +304,8 @@
     messagesEl.innerHTML = '';
     maybeSendOpener();
   };
-  window.HandledChat.setTitle = function (t) {
-    if (titleEl) titleEl.textContent = t;
-  };
-  window.HandledChat.setOpener = function (o) {
-    OPENER = o;
-    openerSent = false;
-  };
+  window.HandledChat.setTitle = function (t) { if (titleEl) titleEl.textContent = t; };
+  window.HandledChat.setOpener = function (o) { OPENER = o; openerSent = false; };
   window.HandledChat.open = function () {
     if (mode !== 'floating') return;
     opened = true;
