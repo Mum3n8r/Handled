@@ -104,6 +104,25 @@ nav { background:var(--surface); border-bottom:1px solid var(--border); padding:
 .error-state h2 { font-size:22px; font-weight:700; margin-bottom:10px; }
 .error-state p { color:var(--text-dim); font-size:15px; line-height:1.6; }
 
+/* Site preview */
+.site-preview-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:32px; }
+.site-frame { margin-top:16px; border:1px solid var(--border-strong); border-radius:12px; overflow:hidden; background:#fff; box-shadow:0 4px 20px rgba(30,22,18,0.06); }
+.site-frame-bar { display:flex; align-items:center; gap:6px; padding:9px 12px; background:var(--surface-alt); border-bottom:1px solid var(--border); }
+.site-frame-bar > span { width:10px; height:10px; border-radius:50%; background:var(--border-strong); display:inline-block; }
+.site-frame-url { flex:1; margin-left:10px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim); background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:4px 10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.site-shot-wrap { position:relative; width:100%; aspect-ratio:16/10; background:var(--surface-alt); overflow:hidden; }
+.site-shot { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; }
+.site-shot-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--muted); font-family:'DM Mono',monospace; }
+.mock-widget { position:absolute; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:5; }
+.mock-widget.pos-right { right:18px; align-items:flex-end; }
+.mock-widget.pos-left { left:18px; align-items:flex-start; }
+.mock-bubble { width:56px; height:56px; border-radius:50%; background:var(--orange); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.22); }
+.mock-panel { width:230px; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.20); border:1px solid rgba(0,0,0,0.06); }
+.mock-panel-head { padding:12px 14px; color:#fff; font-size:13px; font-weight:700; background:var(--orange); }
+.mock-panel-body { padding:14px; background:#faf7f3; }
+.mock-panel-msg { background:#fff; border:1px solid var(--border); border-radius:12px; border-bottom-left-radius:4px; padding:9px 12px; font-size:12px; line-height:1.5; color:var(--text); max-width:90%; }
+@media (max-width:760px) { .mock-panel { width:180px; } }
+
 @media (max-width:760px) {
   .layout { grid-template-columns:1fr; }
   nav { padding:0 20px; }
@@ -137,6 +156,28 @@ nav { background:var(--surface); border-bottom:1px solid var(--border); padding:
       <div class="page-title" id="page-title">Your chatbot draft</div>
       <p class="page-sub">We scraped your site and built this knowledge base. Edit anything that's wrong or missing, then try the live chat on the right. When it answers correctly, click Approve &amp; Go Live.</p>
     </div>
+
+      <div class="site-preview-card" id="site-preview-card" style="display:none;">
+        <div class="editor-label">Live Preview</div>
+        <div class="editor-title">Your chatbot, on your site</div>
+        <div class="editor-hint">A snapshot of your homepage with the Handled Chat widget in place - roughly how your visitors will see it.</div>
+        <div class="site-frame">
+          <div class="site-frame-bar"><span></span><span></span><span></span><div class="site-frame-url" id="site-frame-url">yoursite.com</div></div>
+          <div class="site-shot-wrap">
+            <img id="site-shot" class="site-shot" alt="Preview of your website" style="display:none;">
+            <div class="site-shot-loading" id="site-shot-loading">Rendering your site...</div>
+            <div class="mock-widget pos-right" id="mock-widget">
+              <div class="mock-panel">
+                <div class="mock-panel-head" id="mock-panel-head">Chat</div>
+                <div class="mock-panel-body"><div class="mock-panel-msg" id="mock-panel-msg">Hi! Ask me anything.</div></div>
+              </div>
+              <div class="mock-bubble" id="mock-bubble">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <div class="layout">
       <div class="editor-card">
@@ -212,6 +253,42 @@ async function init() {
     const opener = `Hi! I'm the ${clientData.business_name} chatbot. Ask me anything about the business.`;
     document.getElementById('opener-msg').textContent = opener;
     messages = [{ role: 'assistant', content: opener }];
+    // --- Website preview with mock chat widget ---
+    var siteUrl = (clientData.business_url || '').trim();
+    if (siteUrl) {
+      var norm = siteUrl;
+      if (!/^https?:\/\//i.test(norm)) norm = 'https://' + norm;
+      var brand = clientData.brand_color || '#d4500a';
+      var pos = (clientData.widget_position || 'bottom-right').indexOf('left') > -1 ? 'left' : 'right';
+      var mw = document.getElementById('mock-widget');
+      mw.className = 'mock-widget pos-' + pos;
+      document.getElementById('mock-bubble').style.background = brand;
+      document.getElementById('mock-panel-head').style.background = brand;
+      document.getElementById('mock-panel-head').textContent = clientData.business_name || 'Chat';
+      document.getElementById('mock-panel-msg').textContent = opener;
+      document.getElementById('site-frame-url').textContent = norm.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+      var shotUrl = 'https://s.wordpress.com/mshots/v1/' + encodeURIComponent(norm) + '?w=1200&h=750';
+      var shotEl = document.getElementById('site-shot');
+      var loadEl = document.getElementById('site-shot-loading');
+      var tries = 0;
+      (function loadShot() {
+        tries++;
+        var u = shotUrl + '&n=' + tries;
+        var probe = new Image();
+        probe.onload = function() {
+          if (probe.naturalWidth > 500 || tries >= 6) {
+            shotEl.src = u; shotEl.style.display = 'block'; loadEl.style.display = 'none';
+          } else { setTimeout(loadShot, 2500); }
+        };
+        probe.onerror = function() {
+          if (tries < 6) { setTimeout(loadShot, 2500); }
+          else { loadEl.textContent = 'Preview unavailable'; }
+        };
+        probe.src = u;
+      })();
+      document.getElementById('site-preview-card').style.display = 'block';
+    }
+
 
     document.getElementById('loading-view').style.display = 'none';
     document.getElementById('main-view').style.display = 'block';
