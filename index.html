@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -34,6 +34,8 @@ nav { background:var(--surface); border-bottom:1px solid var(--border); padding:
 .nav-brand { font-size:17px; font-weight:700; letter-spacing:-0.02em; }
 .nav-links { display:flex; align-items:center; gap:28px; }
 .nav-link { font-size:13px; color:var(--text-dim); font-weight:500; transition:color 0.15s; }
+.nav-login { font-size:13px; color:var(--text-dim); font-weight:600; padding:8px 16px; border:1px solid var(--border-strong); border-radius:8px; transition:all 0.15s; }
+.nav-login:hover { border-color:var(--text-dim); color:var(--text); }
 .nav-link:hover { color:var(--text); }
 .nav-cta { background:var(--orange); color:#fff; padding:8px 20px; border-radius:8px; font-size:13px; font-weight:600; transition:opacity 0.15s; }
 .nav-cta:hover { opacity:0.82; }
@@ -141,6 +143,8 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
     <a href="/personalizer" class="nav-link">Personalizer</a>
     <a href="#how" class="nav-link">How it works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="/login" class="nav-login">Log in</a>
+    <a href="/signup" class="nav-cta">Sign up</a>
     <a href="/chatbot" class="nav-cta">Try Chat</a>
   </div>
 </nav>
